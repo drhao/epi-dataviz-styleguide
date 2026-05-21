@@ -156,13 +156,19 @@ def apply_style(use_chinese=True):
     })
 
 
-def centered_ma(data, window=7):
-    """中心對齊移動平均，兩端用自適應窗口避免斷線"""
-    half = window // 2
+def trailing_ma(data, window=7):
+    """Trailing 移動平均（本日含前 window-1 日,即 i-6 到 i)
+
+    前 window-1 天因為窗口不足,使用自適應窗口(從第 1 天累積到當天)避免斷線。
+    採用 trailing 而非 centered 因為:
+      1. 通用慣例(WHO/CDC/JHU 等公開儀表板皆採 trailing)
+      2. 即時 dashboard 場景無未來資料可用
+      3. 不需要在不同情境切換不同 MA 演算法
+    """
     n = len(data)
     return [
-        round(sum(data[max(0, i-half):min(n, i+half+1)]) /
-              (min(n, i+half+1) - max(0, i-half)))
+        round(sum(data[max(0, i - window + 1):i + 1]) /
+              min(window, i + 1))
         for i in range(n)
     ]
 

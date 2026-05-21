@@ -325,8 +325,8 @@
     </div>
     <div class="rule-card">
       <span class="tag">RULE 03</span>
-      <h4>移動平均「中心對齊」</h4>
-      <p>7 日 MA 用 <code>i-3 到 i+3</code> 而非業界常見的 trailing。中心對齊與直條視覺對齊更直觀。</p>
+      <h4>移動平均用 trailing 7 日</h4>
+      <p>7 日 MA = <code>i-6 到 i</code>(本日含前 6 日),對齊 WHO/CDC 通用慣例。前 6 天用自適應累積窗口。</p>
     </div>
     <div class="rule-card">
       <span class="tag">RULE 04</span>
@@ -437,7 +437,7 @@
 <section class="slide">
   <div class="slide-title-bar">
     <h2>範例 · 每日確診 + 7 日移動平均</h2>
-    <span class="sub">Pattern A · 中心對齊 MA</span>
+    <span class="sub">Pattern A · trailing 7 日 MA</span>
     <span class="num">10 / 14</span>
   </div>
   <div class="chart-card">
@@ -447,7 +447,7 @@
     </div>
     <div class="chart-wrap"><canvas id="ch-bar"></canvas></div>
     <p class="chart-note">
-      週末填報效應造成單日抖動,以 <span class="highlight">7 日中心對齊均線</span>(i-3 到 i+3)呈現潛在趨勢。Y 軸從零開始,不截斷。
+      週末填報效應造成單日抖動,以 <span class="highlight">7 日 trailing 均線</span>(本日含前 6 日)呈現潛在趨勢。前 6 天用自適應窗口避免斷線。Y 軸從零開始,不截斷。
     </p>
   </div>
   <div class="slide-footer">
@@ -596,20 +596,21 @@ const ZERO_LINE = {
   animation: false,
 };
 
-// === Slide 10:直條 + MA ===
+// === Slide 10:直條 + MA(trailing 7 日,本日含前 6 日)===
 (function(){
   const dates = ['4/24','4/25','4/26','4/27','4/28','4/29','4/30','5/1','5/2','5/3','5/4','5/5','5/6','5/7','5/8','5/9','5/10','5/11','5/12','5/13','5/14','5/15','5/16','5/17','5/18','5/19','5/20','5/21'];
   const cases = [1402,1108,1090,1706,1771,1988,1920,2102,1602,1488,2540,2748,3010,2950,2840,2310,2080,3120,3300,3490,3520,3380,2780,2271,3976,3960,4213,4021];
+  // Trailing 7 日 MA:前 6 天用自適應窗口(從第 1 天累積)
   const ma7 = cases.map((_, i) => {
-    if (i < 3 || i > cases.length - 4) return null;
-    const w = cases.slice(i-3, i+4);
-    return Math.round(w.reduce((a,b)=>a+b,0) / 7);
+    const lo = Math.max(0, i - 6);
+    const slice = cases.slice(lo, i + 1);
+    return Math.round(slice.reduce((a,b)=>a+b,0) / slice.length);
   });
   new Chart(document.getElementById('ch-bar'), {
     type: 'bar',
     data: { labels: dates, datasets: [
       { label: '每日新增', data: cases, backgroundColor: '#739A6D', borderColor: '#739A6D', borderRadius: 2, barPercentage: 0.78, categoryPercentage: 0.78 },
-      { label: '7 日中心對齊均線', data: ma7, type: 'line', borderColor: '#374C34', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.35, pointRadius: 0 }
+      { label: '7 日移動平均(trailing)', data: ma7, type: 'line', borderColor: '#374C34', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.2, pointRadius: 0 }
     ]},
     options: ZERO_LINE,
   });

@@ -334,51 +334,65 @@ class TestColorBlindness:
 
 # ============== 函式正確性 ==============
 
-class TestCenteredMA:
-    """測試中心對齊移動平均"""
+class TestTrailingMA:
+    """測試 trailing 移動平均(本日含前 window-1 日)"""
 
     def test_constant_input_returns_constant(self):
         """常數輸入應得常數輸出"""
         data = [100] * 20
-        ma = ep.centered_ma(data, window=7)
+        ma = ep.trailing_ma(data, window=7)
         assert all(v == 100 for v in ma)
 
     def test_length_preserved(self):
         """輸出長度等於輸入長度"""
         data = list(range(1, 30))
-        ma = ep.centered_ma(data, window=7)
+        ma = ep.trailing_ma(data, window=7)
         assert len(ma) == len(data)
 
     def test_no_none_values(self):
-        """中心對齊版本不可有 None（兩端用自適應窗口）"""
+        """自適應窗口版本不可有 None(前 window-1 天用較短窗口)"""
         data = list(range(1, 30))
-        ma = ep.centered_ma(data, window=7)
+        ma = ep.trailing_ma(data, window=7)
         assert None not in ma
 
-    def test_middle_value_uses_full_window(self):
-        """中間位置應使用完整 7 點窗口"""
-        # 第 10 個位置（index=10）應為 index 7..13 共 7 個的平均
+    def test_value_at_window_minus_one_uses_full_window(self):
+        """第 window 個位置(index = window-1)起應使用完整窗口"""
         data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
                 110, 120, 130, 140, 150, 160, 170]
-        ma = ep.centered_ma(data, window=7)
-        expected = sum(data[7:14]) / 7  # = 110
-        assert ma[10] == round(expected)
+        ma = ep.trailing_ma(data, window=7)
+        # index 6 是第 7 個元素,窗口為 data[0:7]
+        expected_at_6 = sum(data[0:7]) / 7  # = 40
+        assert ma[6] == round(expected_at_6)
+        # index 10 是第 11 個,窗口為 data[4:11]
+        expected_at_10 = sum(data[4:11]) / 7  # = 80
+        assert ma[10] == round(expected_at_10)
 
-    def test_endpoint_uses_adaptive_window(self):
-        """端點應使用較短窗口而非 None"""
+    def test_early_indices_use_adaptive_window(self):
+        """前 window-1 個位置應使用較短窗口而非 None"""
+        data = list(range(1, 20))  # [1, 2, ..., 19]
+        ma = ep.trailing_ma(data, window=7)
+        # 第一個值應是 data[0:1] = data[0] = 1
+        assert ma[0] == data[0]
+        # 第二個值應是 data[0:2] = (1+2)/2 = 1.5 → 2(四捨五入)
+        assert ma[1] == round(sum(data[0:2]) / 2)
+        # 第三個值應是 data[0:3] 平均
+        assert ma[2] == round(sum(data[0:3]) / 3)
+
+    def test_endpoint_uses_full_window(self):
+        """最後一個值應使用最近 window 個元素(完整窗口)"""
         data = list(range(1, 20))
-        ma = ep.centered_ma(data, window=7)
-        # 第一個值應是 data[0..3] 平均（自適應）
-        assert ma[0] == round(sum(data[0:4]) / 4)
-        # 最後一個值應是 data[-4..] 平均
-        assert ma[-1] == round(sum(data[-4:]) / 4)
+        ma = ep.trailing_ma(data, window=7)
+        # 最後一個值應是 data[-7:] 平均
+        assert ma[-1] == round(sum(data[-7:]) / 7)
 
     def test_window_size_3(self):
         """支援不同 window 大小"""
         data = [10, 20, 30, 40, 50]
-        ma = ep.centered_ma(data, window=3)
-        # 中間 index 2 應為 data[1..3] = (20+30+40)/3 = 30
-        assert ma[2] == 30
+        ma = ep.trailing_ma(data, window=3)
+        # index 2 應為 data[0:3] = (10+20+30)/3 = 20
+        assert ma[2] == 20
+        # index 3 應為 data[1:4] = (20+30+40)/3 = 30
+        assert ma[3] == 30
 
 
 # ============== apply_style 不崩潰 ==============
@@ -727,7 +741,7 @@ def _run_without_pytest():
 
     test_classes = [
         TestHexFormat, TestCompleteness, TestOrdering,
-        TestContrast, TestColorBlindness, TestCenteredMA,
+        TestContrast, TestColorBlindness, TestTrailingMA,
         TestApplyStyle, TestCrossFileConsistency,
         TestMonochrome, TestSampleData,
     ]

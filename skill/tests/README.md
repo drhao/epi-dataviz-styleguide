@@ -13,7 +13,7 @@
 | `TestOrdering` | 主色階、序列色階單調變暗 | 2 |
 | `TestContrast` | WCAG 對比度（文字 4.5、圖形 3.0、填色 2.4） | 14 |
 | `TestColorBlindness` | 三種色覺障礙下的可區分性 | 11 |
-| `TestCenteredMA` | 中心對齊移動平均函式正確性 | 6 |
+| `TestTrailingMA` | Trailing 移動平均函式正確性 | 7 |
 | `TestApplyStyle` | matplotlib 樣式套用不崩潰 | 3 |
 | `TestCrossFileConsistency` | CSV / PowerBI JSON 與 Python 模組一致 | 3 |
 

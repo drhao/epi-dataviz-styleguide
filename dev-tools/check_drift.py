@@ -130,11 +130,11 @@ CHECKS = [
         description="紅色警示用途規範必須在三層文件都明示",
     ),
     Check(
-        name="中心對齊移動平均",
+        name="Trailing 7 日移動平均",
         # 移動平均主要規範在 01-bar-chart.md(每日新增直條加 MA 線)
         keywords=[
-            "中心對齊", "centered_ma", "centered moving",
-            "i-3 到 i+3", "centered (i-3 to i+3)",
+            "trailing_ma", "trailing 7",
+            "i-6 到 i", "i-6 to i", "本日含前 6",
         ],
         expected_in=[
             "skill/SKILL.md",
@@ -143,7 +143,7 @@ CHECKS = [
             "docs/guideline.md",
             "docs/guideline.html",
         ],
-        description="移動平均的中心對齊規範必須在多處提及",
+        description="移動平均採 trailing 7 日(本日含前 6 日)的規範必須在多處提及",
     ),
     Check(
         name="Y 軸從零開始",
@@ -237,6 +237,16 @@ CHECKS = [
 
 DEPRECATED_TERMS = [
     {
+        "term": "centered_ma",
+        "reason": "移動平均規範改為 trailing 7 日(本日含前 6 日),函式重命名為 trailing_ma()",
+        "scope": ["**/*.md", "**/*.html", "**/*.py"],
+    },
+    {
+        "term": "i-3 到 i+3",
+        "reason": "centered MA 已改為 trailing(i-6 到 i)",
+        "scope": ["**/*.md", "**/*.html", "**/*.py"],
+    },
+    {
         "term": "資料治理小組",
         "reason": "已取代為 Dr. Hao 聯絡資訊（2026.05 更新）",
         "scope": ["**/*.md", "**/*.html"],
@@ -291,12 +301,15 @@ def check_deprecated_terms() -> list[tuple[str, str, list[str]]]:
     for entry in DEPRECATED_TERMS:
         term = entry["term"]
         found_in = []
-        # 掃描所有 md / html 檔案（排除 .git 與本檔案）
-        for ext in ("md", "html"):
+        # 掃描所有 md / html / py 檔案(排除 .git、本檔案、CHANGELOG)
+        # CHANGELOG.md 內保留歷史條目作為演進記錄,故排除
+        for ext in ("md", "html", "py"):
             for path in REPO_ROOT.rglob(f"*.{ext}"):
                 if ".git" in path.parts:
                     continue
                 if path.name == "check_drift.py":
+                    continue
+                if path.name == "CHANGELOG.md":
                     continue
                 try:
                     if term in path.read_text(encoding="utf-8"):

@@ -145,7 +145,7 @@ python3 quickstart_with_sample_data.py
 ```bash
 # 找所有提及某個關鍵字的檔案
 grep -rln "barPercentage" .
-grep -rln "中心對齊" .
+grep -rln "trailing_ma\|移動平均" .
 grep -rln "MONOCHROME\|單色" .
 
 # 排除測試輸出和範例圖,只看文件
@@ -196,7 +196,7 @@ python3 dev-tools/build_pdf.py
 python3 dev-tools/check_drift.py
 ```
 
-工具會掃描關鍵概念（如「Pattern E」、「主色 #739A6D」、「中心對齊」等）在各文件層級的覆蓋情況,並警告過時用詞殘留。
+工具會掃描關鍵概念（如「Pattern E」、「主色 #739A6D」、「trailing MA」等）在各文件層級的覆蓋情況,並警告過時用詞殘留。
 
 新增規範時,記得在 `dev-tools/check_drift.py` 的 `CHECKS` 列表加入對應檢查項目,這樣未來的變動就會自動驗證。
 

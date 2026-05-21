@@ -100,9 +100,9 @@ format_date_axis_daily(ax, interval=4)
 
 這是疫情監測最重要的圖表。要點：
 
-- 資料至少 21–28 天，否則均線會缺一截
-- **使用「中心對齊」**均線（i 日 MA = i-3 到 i+3 平均），與直條視覺對齊
-- 兩端 3 天使用自適應窗口（短窗口）避免折線斷裂
+- 資料至少 21–28 天，否則 trailing 均線在前段累積期會不穩定
+- **使用 trailing 7 日均線**（i 日 MA = i-6 到 i 平均,本日含前 6 日）——對齊 WHO/CDC/JHU 公開儀表板的通用慣例,即時 dashboard 場景也適用(無需未來資料)
+- 前 6 天使用自適應窗口（從第 1 天累積到當天）避免折線斷裂
 - 直條主色，均線用主色加深版 `#374C34`
 - 直條 width 0.75（密集時序）
 - 週末資料偏低為「報告日效應」，**不可截除**——這是真實的訊號
@@ -128,7 +128,7 @@ format_date_axis_daily(ax, interval=4)
 import matplotlib.pyplot as plt
 import numpy as np
 from epidemic_palette import (
-    PRIMARY, PRIMARY_DARKER, NEUTRAL, ACCENT, apply_style, centered_ma
+    PRIMARY, PRIMARY_DARKER, NEUTRAL, ACCENT, apply_style, trailing_ma
 )
 apply_style()
 
@@ -143,12 +143,12 @@ ax.set_ylabel("執行率（%）")
 ax.set_title("各部門年度預算執行率", loc="left")
 ax.set_ylim(0, 120)
 
-# 範例 B: 每日新增 + 中心對齊均線
+# 範例 B: 每日新增 + trailing 7 日均線
 days = np.arange(28)
 daily = [...]  # 28 天的每日資料
-ma = centered_ma(daily, window=7)
+ma = trailing_ma(daily, window=7)
 ax.bar(days, daily, color=PRIMARY, width=0.75, label="每日新增")
-ax.plot(days, ma, color=PRIMARY_DARKER, linewidth=2.5, label="7 日移動平均")
+ax.plot(days, ma, color=PRIMARY_DARKER, linewidth=2.5, label="7 日移動平均(trailing)")
 ```
 
 ---

@@ -304,18 +304,18 @@
 
 ### 9.3 7 日移動平均
 
-- **使用「中心對齊」**（i 日 MA = i-3 到 i+3 平均），不用「向後看」（trailing）。中心對齊與當日資料視覺對齊，更直觀
-- **資料區間至少 3 週（21+ 天）**才能有意義
-- **兩端 3 天使用自適應窗口**（例如第 1 天用 1–4 天平均），避免折線斷掉
-- **均線顏色**：用主色深版 `#374C34`（p-800），與淺色長條形成層次
+- **使用 trailing 7 日均線**（i 日 MA = `i-6` 到 `i` 平均,即本日含前 6 日）。對齊 WHO/CDC/JHU 等公開儀表板的通用慣例,即時 dashboard 場景亦適用(無需未來資料)
+- **資料區間至少 3 週（21+ 天）**才能讓 MA 線在累積期過後穩定
+- **前 6 天使用自適應窗口**(從第 1 天累積到當天平均),避免折線斷掉
+- **均線顏色**:用主色深版 `#374C34`（p-800），與淺色長條形成層次
 
 ```python
-def centered_ma(data, window=7):
-    half = window // 2
+def trailing_ma(data, window=7):
+    n = len(data)
     return [
-        round(sum(data[max(0,i-half):min(len(data),i+half+1)]) /
-              (min(len(data),i+half+1) - max(0,i-half)))
-        for i in range(len(data))
+        round(sum(data[max(0, i - window + 1):i + 1]) /
+              min(window, i + 1))
+        for i in range(n)
     ]
 ```
 
