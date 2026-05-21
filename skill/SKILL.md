@@ -492,13 +492,15 @@ Resource files in the skill:
 - `scripts/generate_examples.py` — runnable script that produces all reference example PNGs
 - `scripts/generate_sample_data.py` — produces the 12 sample CSV datasets
 - `scripts/quickstart_with_sample_data.py` — runnable demo: reads sample-data, applies guideline
-- `tests/test_palette.py` — 65 automated tests (palette correctness + sample-data integrity)
+- `tests/test_palette.py` — 72 automated tests (palette correctness + sample-data integrity)
 - `assets/examples/*.png` — pre-generated reference images (19 canonical examples)
 - `assets/examples/quickstart/*.png` — examples produced by reading sample-data
 - `assets/sample-data/*.csv` — 12 realistic-but-fictional datasets covering all chart types
 - `assets/sample-data/README.md` — data dictionary explaining every column
 - `epidemic-dataviz-palette.csv` — full color table for Excel users
 - `epidemic-dataviz-theme.json` — Power BI theme file
+- `resources/office-templates/*.xlsx` — pre-built Excel chart templates (5 patterns: bar, line, stacked, mono-stacked, pie)
+- `resources/office-templates/epidemic-report-template.pptx` — PowerPoint report template (6 slides, embedded PNGs)
 - `dataviz-guideline.html` — interactive visual reference (full document)
 - `dataviz-guideline.pdf` — printable full document
 

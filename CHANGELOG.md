@@ -74,7 +74,7 @@
 - 縣市 × 月份矩陣
 
 #### 自動化測試
-- 65 個 pytest 案例，雙模式運作（pytest 或直接 python 執行）
+- 72 個 pytest 案例，雙模式運作（pytest 或直接 python 執行）
 - 8 個測試類別：HEX 格式、色彩完整性、色階順序、WCAG 對比度、色覺障礙、移動平均、樣式套用、跨檔案一致性、範例資料完整性
 - 三層 WCAG 對比門檻：文字 4.5、圖形 3.0、填色 2.4
 - 三種色覺障礙模擬（Protanopia、Deuteranopia、Tritanopia）
@@ -89,9 +89,26 @@
 
 ---
 
-## [Unreleased] - 暫定計畫
+## [Unreleased]
 
-未來可能的擴充方向（依優先順序）：
+### Added · 新增
+
+- **Excel/PowerPoint 預生成樣板** — `resources/office-templates/`
+  - 5 個 Excel 樣板:直條 + 7 日中心對齊 MA(Pattern A)、折線 3 條(Pattern B)、類別堆疊(Pattern B)、**單色堆疊 重症在底(Pattern E)**、圓餅 5 組
+  - 1 個 PowerPoint 簡報樣板:6 頁(封面 + 4 張嵌入既有 PNG + 色票/原則摘要)
+  - 由 `dev-tools/build_office_templates.py` 從 `skill/assets/sample-data/` 與 `epidemic_palette.py` 自動生成,色票若調整重跑即同步
+- 新增 `dev-tools/build_office_templates.py`:dev-only 依賴 `openpyxl` + `python-pptx`
+- `docs/guideline.html` Chapter 11 新增「方法 C:使用預生成樣板」段落
+- `README.md`、`docs/index.html`、`skill/SKILL.md` 同步更新工具支援指引
+
+### Changed · 變更
+
+- **依賴鐵則措辭精煉**:`AGENTS.md` 與 `CONTRIBUTING.md`「不引入新外部相依」精煉為「不引入新 **runtime** 相依」(`skill/` 仍維持 matplotlib + numpy;`dev-tools/` 可使用 playwright / openpyxl / python-pptx 等工具型依賴)
+- `README.md`、`SKILL.md` 等 6 處測試數量說法從 65 統一為 72(實際 `test_palette.py` 共 72 個測試)
+
+---
+
+## [planned] - 未來方向
 
 - [ ] Tableau 主題檔
 - [ ] Looker Studio 色票

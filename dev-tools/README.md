@@ -7,8 +7,16 @@
 | 工具 | 用途 | 何時使用 |
 |------|------|---------|
 | `build_pdf.py` | 從 `docs/guideline.html` 重新生成 `docs/guideline.pdf` | 改了 HTML 之後 |
+| `build_office_templates.py` | 從 `skill/assets/sample-data/` 生成 Excel/PPT 樣板 | 色票或範例資料調整後 |
 | `check_drift.py` | 跨檔案一致性檢查 | 重大規範變動後（Level 3） |
 | `chart.umd.js` | Chart.js 4.4.0 函式庫副本 | `build_pdf.py` 內部使用 |
+
+**Dev-only 依賴**(僅維護者執行 `dev-tools/` 內腳本時需要,**不影響 `skill/` runtime**):
+
+```bash
+pip install playwright openpyxl python-pptx
+playwright install chromium
+```
 
 ## build_pdf.py
 
@@ -41,6 +49,42 @@ cd dev-tools && python build_pdf.py
 5. 清掉暫存檔
 
 **修改列印樣式：**直接編輯 `build_pdf.py` 內的 `PRINT_CSS` 常數。
+
+## build_office_templates.py
+
+從 `skill/assets/sample-data/` 與既有色票常數,生成 5 個 Excel 樣板 + 1 個 PowerPoint 樣板,輸出至 `resources/office-templates/`。
+
+**首次使用需安裝依賴(dev-only):**
+
+```bash
+pip install openpyxl python-pptx
+```
+
+**執行:**
+
+```bash
+# 從 repo 根目錄
+python dev-tools/build_office_templates.py
+```
+
+**輸出:**
+
+| 檔案 | 圖表類型 | 配色模式 |
+|------|---------|---------|
+| `01-bar-daily-cases.xlsx` | 直條 + 7 日 MA | Pattern A |
+| `02-line-three-waves.xlsx` | 折線(3 條) | Pattern B |
+| `03-stacked-variants.xlsx` | 100% 堆疊 | Pattern B |
+| `04-stacked-monochrome.xlsx` | 100% 堆疊 | **Pattern E**(重症在底) |
+| `05-pie-age-distribution.xlsx` | 圓餅(5 組) | Pattern B |
+| `epidemic-report-template.pptx` | 6 頁簡報 | 嵌入既有 PNG |
+
+**何時重跑:**
+
+- 修改 `skill/scripts/epidemic_palette.py` 的色票常數(主色、CATEGORICAL、MONOCHROME)
+- 修改 `skill/assets/sample-data/` 中對應的 CSV 結構或數值
+- 修改 `skill/assets/examples/` 中 PPT 嵌入的 PNG
+
+腳本會把規範權威(`epidemic_palette.py`)的色票直接套用到 Excel/PPT,確保樣板永遠與規範一致。
 
 ## check_drift.py
 
