@@ -1,0 +1,37 @@
+Group,Name,Code,HEX,R,G,B,Usage
+Primary Scale,Primary 50,p-50,#F6F9F6,246,249,246,背景最淺
+Primary Scale,Primary 100,p-100,#E8EEE7,232,238,231,卡片底色
+Primary Scale,Primary 200,p-200,#D1DECF,209,222,207,淺色填充
+Primary Scale,Primary 300,p-300,#B4C9B1,180,201,177,淺強調
+Primary Scale,Primary 400,p-400,#91B08C,145,176,140,中淺
+Primary Scale,Primary 500 (PRIMARY),p-500,#739A6D,115,154,109,主色 長條圖填色
+Primary Scale,Primary 600,p-600,#5D7F58,93,127,88,折線主要序列
+Primary Scale,Primary 700,p-700,#496345,73,99,69,文字 強調
+Primary Scale,Primary 800,p-800,#374C34,55,76,52,深色標題
+Primary Scale,Primary 900,p-900,#253423,37,52,35,最深背景
+Categorical,01 Sage,cat-1,#739A6D,115,154,109,類別第一順位 主色
+Categorical,02 Slate Blue,cat-2,#587A9D,88,122,157,類別第二順位
+Categorical,03 Mustard,cat-3,#C8A041,200,160,65,類別第三順位
+Categorical,04 Teal,cat-4,#49888D,73,136,141,類別第四順位
+Categorical,05 Bronze,cat-5,#916E46,145,110,70,類別第五順位
+Categorical,06 Plum,cat-6,#955F71,149,95,113,類別第六順位
+Accent,Alert Red,alert,#BE373C,190,55,60,最強警示
+Accent,Terracotta,terracotta,#B5584A,181,88,74,次強警示
+Accent,Clay,clay,#B87B61,184,123,97,柔和強調
+Accent,Caution Amber,caution,#D2962D,210,150,45,注意提醒
+Neutral,Neutral 50,n-50,#FAFAFA,250,250,250,頁面背景
+Neutral,Neutral 100,n-100,#F2F3F1,242,243,241,卡片背景
+Neutral,Neutral 200,n-200,#E4E7E4,228,231,228,邊框
+Neutral,Neutral 300,n-300,#CACFC9,202,207,201,網格線
+Neutral,Neutral 400,n-400,#A2ABA0,162,171,160,對照線 次要文字
+Neutral,Neutral 500,n-500,#7A8778,122,135,120,輔助文字
+Neutral,Neutral 600,n-600,#5D675B,93,103,91,次標題
+Neutral,Neutral 700,n-700,#444C43,68,76,67,正文
+Neutral,Neutral 800,n-800,#2C312B,44,49,43,深色文字
+Neutral,Neutral 900,n-900,#181B18,24,27,24,最深文字
+Semantic,Success,success,#54734F,84,115,79,達標 正向
+Semantic,Warning,warning,#D2962D,210,150,45,警示 接近閾值
+Semantic,Danger,danger,#BE373C,190,55,60,未達標 異常
+Semantic,Info,info,#477A9E,71,122,158,提示 參考
+Line Variants,Line Primary (折線深主色),line-primary,#5D7F58,93,127,88,折線圖主序列
+Line Variants,Line Mustard (折線深黃),line-mustard,#A8821F,168,130,31,折線圖黃色序列

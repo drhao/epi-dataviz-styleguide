@@ -1,0 +1,2199 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>疫情資料視覺化指引｜Epidemic Data Visualization Guideline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  /* === 主色階 Primary Scale (Sage Green) === */
+  --p-50:#F6F9F6;  --p-100:#E8EEE7; --p-200:#D1DECF; --p-300:#B4C9B1;
+  --p-400:#91B08C; --p-500:#739A6D; --p-600:#5D7F58; --p-700:#496345;
+  --p-800:#374C34; --p-900:#253423;
+
+  /* === 中性灰階 Neutral (warm gray with green undertone) === */
+  --n-0:#FFFFFF;
+  --n-50:#FAFAFA;  --n-100:#F2F3F1; --n-200:#E4E7E4; --n-300:#CACFC9;
+  --n-400:#A2ABA0; --n-500:#7A8778; --n-600:#5D675B; --n-700:#444C43;
+  --n-800:#2C312B; --n-900:#181B18;
+
+  /* === 語意色 Semantic === */
+  --success:#54734F;
+  --warning:#D2962D;
+  --danger:#BE373C;
+  --info:#477A9E;
+
+  /* === 質性配色 Categorical (8 colors) === */
+  --c1:#739A6D; --c2:#B87B61; --c3:#587A9D; --c4:#C8A041;
+  --c5:#955F71; --c6:#49888D; --c7:#B5584A; --c8:#916E46;
+
+  --serif:'Noto Serif TC', serif;
+  --sans:'Noto Sans TC', sans-serif;
+  --mono:'JetBrains Mono', monospace;
+
+  --maxw: 1280px;
+  --sidebar-w: 260px;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans);
+  font-weight:400;
+  color:var(--n-800);
+  background:var(--n-50);
+  line-height:1.7;
+  font-size:15px;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* === 頂部官方文件式標頭 === */
+.masthead{
+  background:var(--n-900);
+  color:var(--n-100);
+  border-bottom:4px solid var(--p-500);
+}
+.masthead-inner{
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:18px 32px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+.masthead-left{display:flex; align-items:center; gap:14px;}
+.crest{
+  width:36px; height:36px;
+  border:1.5px solid var(--p-400);
+  display:grid; place-items:center;
+  font-family:var(--serif);
+  font-weight:700;
+  color:var(--p-300);
+  font-size:14px;
+  letter-spacing:1px;
+}
+.masthead-title{
+  font-family:var(--serif);
+  font-size:16px;
+  font-weight:600;
+  letter-spacing:.5px;
+}
+.masthead-sub{
+  font-size:11px;
+  color:var(--n-400);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-top:2px;
+}
+.masthead-meta{
+  font-size:11px;
+  color:var(--n-400);
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  text-align:right;
+}
+
+/* === Hero === */
+.hero{
+  background:var(--n-0);
+  border-bottom:1px solid var(--n-200);
+  padding:88px 0 72px;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  right:-120px; top:-80px;
+  width:520px; height:520px;
+  background:radial-gradient(circle, var(--p-100) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-inner{
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:0 32px;
+  position:relative;
+}
+.eyebrow{
+  font-size:11px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--p-700);
+  font-weight:500;
+  margin-bottom:24px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.eyebrow::before{
+  content:'';
+  display:block;
+  width:32px; height:1px;
+  background:var(--p-600);
+}
+h1.hero-title{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:clamp(38px, 5.5vw, 68px);
+  line-height:1.1;
+  color:var(--n-900);
+  letter-spacing:-1px;
+  margin-bottom:24px;
+  max-width:920px;
+}
+h1.hero-title em{
+  font-style:italic;
+  color:var(--p-700);
+  font-weight:600;
+}
+.hero-lead{
+  font-family:var(--serif);
+  font-size:19px;
+  line-height:1.7;
+  color:var(--n-700);
+  max-width:680px;
+  margin-bottom:40px;
+}
+.hero-stats{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:0;
+  border-top:1px solid var(--n-200);
+  padding-top:32px;
+  max-width:880px;
+}
+.hero-stat{
+  padding-right:24px;
+  border-right:1px solid var(--n-200);
+}
+.hero-stat:last-child{border-right:none;}
+.hero-stat .num{
+  font-family:var(--serif);
+  font-size:28px;
+  font-weight:600;
+  color:var(--p-700);
+  display:block;
+  line-height:1.1;
+}
+.hero-stat .lbl{
+  font-size:12px;
+  color:var(--n-600);
+  margin-top:8px;
+  letter-spacing:.5px;
+}
+
+/* === 主版面：side nav + content === */
+.shell{
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:0 32px;
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  gap:64px;
+  align-items:start;
+}
+
+nav.toc{
+  position:sticky;
+  top:24px;
+  padding:48px 0;
+  font-size:13px;
+  border-right:1px solid var(--n-200);
+  padding-right:24px;
+  max-height:calc(100vh - 48px);
+  overflow-y:auto;
+}
+nav.toc h4{
+  font-size:10px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:var(--n-500);
+  font-weight:500;
+  margin-bottom:16px;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--n-200);
+}
+nav.toc ol{list-style:none; counter-reset:toc;}
+nav.toc li{counter-increment:toc; margin:0;}
+nav.toc a{
+  display:flex;
+  gap:10px;
+  padding:9px 0;
+  color:var(--n-700);
+  text-decoration:none;
+  border-bottom:1px solid var(--n-100);
+  transition:all .15s ease;
+}
+nav.toc a::before{
+  content:counter(toc, decimal-leading-zero);
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--n-400);
+  padding-top:3px;
+}
+nav.toc a:hover{color:var(--p-700);}
+nav.toc a:hover::before{color:var(--p-600);}
+
+main{padding:56px 0 96px; min-width:0;}
+
+section.chapter{
+  margin-bottom:88px;
+  scroll-margin-top:24px;
+}
+.chapter-head{
+  display:flex;
+  align-items:baseline;
+  gap:20px;
+  margin-bottom:32px;
+  padding-bottom:20px;
+  border-bottom:2px solid var(--n-800);
+}
+.chapter-num{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--p-600);
+  font-weight:500;
+  letter-spacing:1px;
+}
+.chapter-head h2{
+  font-family:var(--serif);
+  font-size:34px;
+  font-weight:700;
+  color:var(--n-900);
+  letter-spacing:-.5px;
+  line-height:1.2;
+}
+.chapter-sub{
+  font-size:14px;
+  color:var(--n-500);
+  margin-left:auto;
+  font-style:italic;
+}
+
+.lead-para{
+  font-family:var(--serif);
+  font-size:17px;
+  line-height:1.75;
+  color:var(--n-700);
+  margin-bottom:32px;
+  max-width:720px;
+}
+p{margin-bottom:14px; max-width:760px;}
+h3{
+  font-family:var(--serif);
+  font-size:22px;
+  font-weight:600;
+  color:var(--n-900);
+  margin:40px 0 14px;
+  letter-spacing:-.2px;
+}
+h4{
+  font-size:14px;
+  font-weight:700;
+  color:var(--n-800);
+  margin:24px 0 10px;
+  letter-spacing:.3px;
+}
+strong{color:var(--n-900); font-weight:600;}
+
+/* === 原則卡片 === */
+.principles{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:1px;
+  background:var(--n-200);
+  border:1px solid var(--n-200);
+  margin-top:24px;
+}
+.principle{
+  background:var(--n-0);
+  padding:28px;
+}
+.principle-num{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--p-600);
+  letter-spacing:2px;
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.principle-num::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--p-200);
+}
+.principle h4{
+  font-family:var(--serif);
+  font-size:19px;
+  font-weight:600;
+  color:var(--n-900);
+  margin:0 0 10px;
+  letter-spacing:0;
+}
+.principle p{
+  font-size:14px;
+  color:var(--n-600);
+  line-height:1.65;
+  margin:0;
+}
+
+/* === 色卡 === */
+.scale-grid{
+  display:grid;
+  grid-template-columns:repeat(10, 1fr);
+  margin-top:16px;
+  margin-bottom:32px;
+  border:1px solid var(--n-200);
+}
+.swatch{
+  aspect-ratio: 1 / 1.3;
+  padding:10px 8px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  font-family:var(--mono);
+  font-size:10px;
+  cursor:pointer;
+  transition:transform .15s;
+  position:relative;
+}
+.swatch:hover{transform:scale(1.04); z-index:2; box-shadow:0 4px 16px rgba(0,0,0,.15);}
+.swatch .step{font-weight:500; opacity:.85;}
+.swatch .hex{font-size:9px; opacity:.7; letter-spacing:.5px;}
+.swatch.light{color:var(--n-800);}
+.swatch.dark{color:var(--n-50);}
+
+/* 主色突顯標記 */
+.scale-grid{position:relative;}
+.scale-grid.has-primary [data-primary="true"]::after{
+  content:'PRIMARY';
+  position:absolute;
+  top:-22px; left:50%;
+  transform:translateX(-50%);
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:2px;
+  color:var(--p-700);
+  background:var(--n-0);
+  padding:2px 8px;
+  border:1px solid var(--p-300);
+  white-space:nowrap;
+}
+.scale-grid.has-primary{margin-top:36px;}
+
+/* === 類別配色 === */
+.cat-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:14px;
+  margin-top:16px;
+}
+.cat-chip{
+  border:1px solid var(--n-200);
+  background:var(--n-0);
+}
+.cat-chip .color{
+  height:80px;
+  display:flex;
+  align-items:flex-end;
+  padding:10px;
+}
+.cat-chip .meta{
+  padding:10px 12px 14px;
+  font-size:11px;
+  font-family:var(--mono);
+}
+.cat-chip .name{
+  font-family:var(--sans);
+  font-size:13px;
+  font-weight:500;
+  color:var(--n-900);
+  margin-bottom:4px;
+}
+.cat-chip .hex{color:var(--n-500);}
+
+/* === 配色搭配模式卡片 === */
+.combo-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:18px;
+  margin-top:14px;
+  margin-bottom:28px;
+}
+.combo-card{
+  border:1px solid var(--n-200);
+  background:var(--n-0);
+  display:flex;
+  align-items:stretch;
+}
+.combo-swatches{
+  display:flex;
+  flex-direction:column;
+  width:60px;
+  flex-shrink:0;
+}
+.combo-sw{
+  flex:1;
+  min-height:24px;
+}
+.combo-meta{
+  padding:14px 16px;
+  flex:1;
+}
+.combo-name{
+  font-size:13px;
+  font-weight:600;
+  color:var(--n-900);
+  margin-bottom:4px;
+}
+.combo-meta code{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--n-600);
+  background:var(--n-100);
+  padding:2px 6px;
+  margin-bottom:8px;
+  letter-spacing:.3px;
+}
+.combo-meta p{
+  font-size:12px;
+  color:var(--n-600);
+  margin:0;
+  line-height:1.5;
+}
+
+/* === 圖表卡片 === */
+.chart-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:24px;
+  margin-top:24px;
+}
+.chart-card{
+  background:var(--n-0);
+  border:1px solid var(--n-200);
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+}
+.chart-card.full{grid-column:1 / -1;}
+.chart-card-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  border-bottom:1px solid var(--n-200);
+  padding-bottom:12px;
+  margin-bottom:16px;
+}
+.chart-card-head h4{
+  font-family:var(--serif);
+  font-size:16px;
+  font-weight:600;
+  color:var(--n-900);
+  margin:0;
+}
+.chart-card-tag{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:1.5px;
+  color:var(--p-700);
+  background:var(--p-50);
+  padding:3px 8px;
+  border:1px solid var(--p-200);
+}
+.chart-card .desc{
+  font-size:13px;
+  color:var(--n-600);
+  margin-bottom:14px;
+  line-height:1.6;
+}
+.chart-wrap{
+  flex:1;
+  min-height:240px;
+  position:relative;
+}
+.chart-wrap.tall{min-height:300px;}
+.chart-meta{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px dashed var(--n-200);
+  font-size:11px;
+  color:var(--n-500);
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+}
+.chart-meta dt{color:var(--n-700); font-weight:500;}
+
+/* === Do / Don't === */
+.do-dont{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-top:20px;
+}
+.dd-card{
+  border:1px solid var(--n-200);
+  background:var(--n-0);
+  padding:0;
+  overflow:hidden;
+}
+.dd-card .label{
+  padding:10px 16px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:2px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.dd-card.do .label{background:var(--p-50); color:var(--p-800); border-bottom:1px solid var(--p-200);}
+.dd-card.dont .label{background:#FBEEED; color:#7A2B2F; border-bottom:1px solid #E8C9C9;}
+.dd-card .body{padding:18px;}
+.dd-card h5{
+  font-size:14px;
+  margin-bottom:6px;
+  color:var(--n-900);
+  font-weight:600;
+}
+.dd-card p{
+  font-size:13px;
+  color:var(--n-600);
+  margin:0;
+  line-height:1.6;
+}
+.dd-card .chart-mini{
+  min-height:160px;
+  padding:12px;
+  background:var(--n-50);
+  border-top:1px solid var(--n-100);
+}
+
+/* === 圖表選用矩陣 === */
+.matrix{
+  width:100%;
+  margin-top:24px;
+  border-collapse:collapse;
+  font-size:13px;
+}
+.matrix th, .matrix td{
+  text-align:left;
+  padding:14px 16px;
+  border-bottom:1px solid var(--n-200);
+  vertical-align:top;
+}
+.matrix thead{
+  background:var(--n-900);
+  color:var(--n-100);
+}
+.matrix th{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+.matrix tbody tr:hover{background:var(--p-50);}
+.matrix td:first-child{
+  font-weight:600;
+  color:var(--n-900);
+  font-family:var(--serif);
+  font-size:15px;
+  width:18%;
+}
+.matrix .use-when{color:var(--n-600);}
+.matrix .avoid{color:var(--n-500); font-style:italic; font-size:12px;}
+.matrix code{
+  font-family:var(--mono);
+  font-size:11px;
+  background:var(--n-100);
+  padding:2px 6px;
+  border:1px solid var(--n-200);
+  color:var(--n-700);
+}
+
+/* === Callout === */
+.callout{
+  border-left:3px solid var(--p-600);
+  background:var(--p-50);
+  padding:18px 22px;
+  margin:24px 0;
+  font-size:14px;
+}
+.callout .tag{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:2px;
+  color:var(--p-700);
+  margin-bottom:6px;
+}
+.callout p{margin:0; color:var(--n-700); line-height:1.7;}
+.callout.warn{border-color:var(--warning); background:#FBF4E5;}
+.callout.warn .tag{color:#8B5A06;}
+
+/* === 對比度檢查表 === */
+.contrast-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:16px;
+  font-size:13px;
+}
+.contrast-table th, .contrast-table td{
+  padding:10px 14px;
+  text-align:left;
+  border-bottom:1px solid var(--n-200);
+}
+.contrast-table th{
+  font-size:11px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--n-500);
+  font-weight:500;
+}
+.contrast-table .sample{
+  font-family:var(--mono);
+  font-size:11px;
+  padding:6px 10px;
+  display:inline-block;
+}
+.grade{
+  font-family:var(--mono);
+  font-size:10px;
+  padding:2px 6px;
+  letter-spacing:1px;
+}
+.grade.aaa{background:var(--p-700); color:var(--n-0);}
+.grade.aa{background:var(--p-500); color:var(--n-0);}
+.grade.aal{background:var(--warning); color:var(--n-0);}
+.grade.fail{background:var(--danger); color:var(--n-0);}
+
+/* === Code === */
+pre.code{
+  background:var(--n-900);
+  color:var(--n-100);
+  padding:20px 24px;
+  font-family:var(--mono);
+  font-size:12px;
+  line-height:1.7;
+  overflow-x:auto;
+  border-left:3px solid var(--p-500);
+  margin:18px 0;
+}
+pre.code .c-key{color:var(--p-300);}
+pre.code .c-str{color:#D4B97A;}
+pre.code .c-com{color:var(--n-500); font-style:italic;}
+
+/* === Footer === */
+footer{
+  background:var(--n-900);
+  color:var(--n-300);
+  padding:48px 0 32px;
+  margin-top:80px;
+}
+.foot-inner{
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:0 32px;
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:48px;
+}
+footer h5{
+  font-family:var(--serif);
+  font-size:15px;
+  color:var(--n-100);
+  margin-bottom:12px;
+  font-weight:600;
+}
+footer p, footer li{
+  font-size:13px;
+  color:var(--n-400);
+  line-height:1.7;
+}
+footer ul{list-style:none;}
+.foot-bar{
+  max-width:var(--maxw);
+  margin:32px auto 0;
+  padding:18px 32px 0;
+  border-top:1px solid var(--n-700);
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--n-500);
+  letter-spacing:1px;
+}
+
+/* Responsive */
+@media (max-width: 960px){
+  .shell{grid-template-columns:1fr; gap:0;}
+  nav.toc{display:none;}
+  .hero-stats{grid-template-columns:repeat(2,1fr); gap:24px 0;}
+  .hero-stat{padding:14px 0; border-right:none; border-bottom:1px solid var(--n-200);}
+  .principles, .do-dont, .chart-grid{grid-template-columns:1fr;}
+  .cat-grid{grid-template-columns:repeat(2,1fr);}
+  .scale-grid{grid-template-columns:repeat(5,1fr);}
+  .foot-inner{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============== 標頭 ============== -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-left">
+      <div class="crest">DV</div>
+      <div>
+        <div class="masthead-title">疫情資料視覺化準則</div>
+        <div class="masthead-sub">Epidemic Data Visualization Standards</div>
+      </div>
+    </div>
+    <div class="masthead-meta">
+      Version 1.0 ／ 2026<br>
+      Public Sector Edition
+    </div>
+  </div>
+</header>
+
+<!-- ============== Hero ============== -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Public Health Data ／ 疫情分析應用</div>
+    <h1 class="hero-title">將疫情資料化為<em>清晰、可信、不引發恐慌</em>的公共溝通</h1>
+    <p class="hero-lead">
+      本指引提供組織內所有疫情資料分析、流行病學報告、儀表板與對外公告製作視覺化時的色彩、圖表與設計準則。考量疫情資訊的高敏感度，特別規範紅色僅用於強調與警示，避免過度引發公眾焦慮，同時確保關鍵風險訊息能被正確接收。
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="num">綠藍黃</span><div class="lbl">主要配色順序</div></div>
+      <div class="hero-stat"><span class="num">紅</span><div class="lbl">僅用於警示強調</div></div>
+      <div class="hero-stat"><span class="num">10</span><div class="lbl">疫情圖表範例</div></div>
+      <div class="hero-stat"><span class="num">Excel<br>Power BI</span><div class="lbl">支援匯入</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 主內容 ============== -->
+<div class="shell">
+
+  <!-- 目錄 -->
+  <nav class="toc">
+    <h4>目次 Contents</h4>
+    <ol>
+      <li><a href="#ch1">核心原則</a></li>
+      <li><a href="#ch2">主色與色階</a></li>
+      <li><a href="#ch3">類別配色與強調色</a></li>
+      <li><a href="#ch3b">配色搭配模式</a></li>
+      <li><a href="#ch4">序列與發散</a></li>
+      <li><a href="#ch5">語意色與狀態</a></li>
+      <li><a href="#ch6">字體與排版</a></li>
+      <li><a href="#ch7">圖表選用</a></li>
+      <li><a href="#ch8">圖表範例</a></li>
+      <li><a href="#ch9">Do &amp; Don't</a></li>
+      <li><a href="#ch10">無障礙</a></li>
+      <li><a href="#ch11">技術實作</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+  <!-- ============== Ch.1 核心原則 ============== -->
+  <section id="ch1" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">CH. 01</span>
+      <h2>核心原則</h2>
+      <span class="chapter-sub">Guiding Principles</span>
+    </div>
+    <p class="lead-para">
+      資料視覺化的目的不在於美觀，而在於讓觀者以最少的認知負擔，正確理解資料所要傳達的訊息。本指引建立在以下四項原則之上。
+    </p>
+
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-num">001</div>
+        <h4>清晰優先 ／ Clarity First</h4>
+        <p>每一個視覺元素都必須服務於訊息。移除所有不傳達資訊的裝飾（chartjunk）：3D 效果、過度的網格線、不必要的陰影。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">002</div>
+        <h4>誠實呈現 ／ Honest Representation</h4>
+        <p>Y 軸原則上從零開始；不截斷座標軸誤導比例；不刻意挑選有利的時間區間。資料的真實性高於敘事的戲劇性。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">003</div>
+        <h4>一致性 ／ Consistency</h4>
+        <p>同一份報告中，相同的指標應使用相同顏色；類別的順序與配色在跨頁面間維持一致；單位、時間格式、四捨五入規則統一。</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">004</div>
+        <h4>負責任溝通 ／ Responsible Communication</h4>
+        <p>疫情資料涉及公眾情緒。紅色不可濫用於一般類別配色，僅在標示警示閾值、關鍵異常時使用。色彩選擇須通過 WCAG AA 對比，並考量色覺障礙者。</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="tag">PRIMARY GOAL</div>
+      <p>疫情視覺化的核心問題：「這個視覺呈現會讓民眾正確理解風險，還是會放大／低估風險？」資料誠實永遠優先於敘事衝擊力。當不確定一個視覺選擇是否恰當，預設選擇<strong>較克制的版本</strong>。</p>
+    </div>
+  </section>
+
+  <!-- ============== Ch.2 主色與色階 ============== -->
+  <section id="ch2" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">CH. 02</span>
+      <h2>主色與色階</h2>
+      <span class="chapter-sub">Primary Color &amp; Scale</span>
+    </div>
+    <p class="lead-para">
+      組織主色為 <strong>#739A6D（鼠尾草綠／Sage Green）</strong>，HSL(112°, 18%, 52%)。此色屬中明度、低彩度的自然色系，傳達穩重、平和、可信賴的調性，適合公部門使用情境。
+    </p>
+
+    <h3>主色階 Primary Scale</h3>
+    <p>主色發展為 10 階色彩系統。<strong>500 為基準主色</strong>，淺色階（50–300）用於背景、卡片底色；中間色階（400–600）用於圖表填色；深色階（700–900）用於文字、強調與深色主題。</p>
+
+    <div class="scale-grid has-primary">
+      <div class="swatch light" style="background:#F6F9F6"><span class="step">50</span><span class="hex">#F6F9F6</span></div>
+      <div class="swatch light" style="background:#E8EEE7"><span class="step">100</span><span class="hex">#E8EEE7</span></div>
+      <div class="swatch light" style="background:#D1DECF"><span class="step">200</span><span class="hex">#D1DECF</span></div>
+      <div class="swatch light" style="background:#B4C9B1"><span class="step">300</span><span class="hex">#B4C9B1</span></div>
+      <div class="swatch light" style="background:#91B08C"><span class="step">400</span><span class="hex">#91B08C</span></div>
+      <div class="swatch dark" style="background:#739A6D" data-primary="true"><span class="step">500</span><span class="hex">#739A6D</span></div>
+      <div class="swatch dark" style="background:#5D7F58"><span class="step">600</span><span class="hex">#5D7F58</span></div>
+      <div class="swatch dark" style="background:#496345"><span class="step">700</span><span class="hex">#496345</span></div>
+      <div class="swatch dark" style="background:#374C34"><span class="step">800</span><span class="hex">#374C34</span></div>
+      <div class="swatch dark" style="background:#253423"><span class="step">900</span><span class="hex">#253423</span></div>
+    </div>
+
+    <h3>中性色階 Neutral Scale</h3>
+    <p>中性色帶有極微的綠色色溫（H=112°, S=6%），與主色協調但不喧賓奪主。用於文字、邊框、背景與軸線。</p>
+
+    <div class="scale-grid">
+      <div class="swatch light" style="background:#FAFAFA"><span class="step">50</span><span class="hex">#FAFAFA</span></div>
+      <div class="swatch light" style="background:#F2F3F1"><span class="step">100</span><span class="hex">#F2F3F1</span></div>
+      <div class="swatch light" style="background:#E4E7E4"><span class="step">200</span><span class="hex">#E4E7E4</span></div>
+      <div class="swatch light" style="background:#CACFC9"><span class="step">300</span><span class="hex">#CACFC9</span></div>
+      <div class="swatch light" style="background:#A2ABA0"><span class="step">400</span><span class="hex">#A2ABA0</span></div>
+      <div class="swatch dark" style="background:#7A8778"><span class="step">500</span><span class="hex">#7A8778</span></div>
+      <div class="swatch dark" style="background:#5D675B"><span class="step">600</span><span class="hex">#5D675B</span></div>
+      <div class="swatch dark" style="background:#444C43"><span class="step">700</span><span class="hex">#444C43</span></div>
+      <div class="swatch dark" style="background:#2C312B"><span class="step">800</span><span class="hex">#2C312B</span></div>
+      <div class="swatch dark" style="background:#181B18"><span class="step">900</span><span class="hex">#181B18</span></div>
+    </div>
+
+    <div class="callout warn">
+      <div class="tag">⚠ ACCESSIBILITY NOTE</div>
+      <p>主色 #739A6D（500）對白色背景的對比度為 3.20（僅符合大字級 AA）。<strong>正文用色應使用 600 以上（對比度 ≥ 4.5）</strong>。500 適合用於大型標題、圖表填色、按鈕背景（搭配白色文字 4.7+）。</p>
+    </div>
+  </section>
+
+  <!-- ============== Ch.3 類別配色 ============== -->
+  <section id="ch3" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">CH. 03</span>
+      <h2>類別配色與強調色</h2>
+      <span class="chapter-sub">Categorical &amp; Accent</span>
+    </div>
+    <p class="lead-para">
+      用於表示<strong>質性資料（無順序的分類）</strong>，例如不同年齡層、變異株、地區、疫苗廠牌。本指引將配色分為兩組：<strong>類別配色（綠 → 藍 → 黃 → 中性色）依優先順序使用</strong>；<strong>強調色（紅／橙色系）獨立保留</strong>，僅用於凸顯警示、超標、異常等關鍵資料點。
+    </p>
+
+    <h3>類別配色（依使用優先順序）</h3>
+    <p>當你只需 2 色時，使用前 2 色；只需 3 色時，使用前 3 色，以此類推。最多 6 色，超過建議合併。</p>
+
+    <div class="cat-grid">
+      <div class="cat-chip"><div class="color" style="background:#739A6D"></div><div class="meta"><div class="name">01 Sage（主色）</div><div class="hex">#739A6D</div></div></div>
+      <div class="cat-chip"><div class="color" style="background:#587A9D"></div><div class="meta"><div class="name">02 Slate Blue</div><div class="hex">#587A9D</div></div></div>
+      <div class="cat-chip"><div class="color" style="background:#C8A041"></div><div class="meta"><div class="name">03 Mustard</div><div class="hex">#C8A041</div></div></div>
+      <div class="cat-chip"><div class="color" style="background:#49888D"></div><div class="meta"><div class="name">04 Teal</div><div class="hex">#49888D</div></div></div>
+      <div class="cat-chip"><div class="color" style="background:#916E46"></div><div class="meta"><div class="name">05 Bronze</div><div class="hex">#916E46</div></div></div>
+      <div class="cat-chip"><div class="color" style="background:#955F71"></div><div class="meta"><div class="name">06 Plum</div><div class="hex">#955F71</div></div></div>
+    </div>
+
+    <h3>強調色 ／ Accent Colors</h3>
+    <p>強調色為紅／橙色系，<strong>不得作為一般類別配色使用</strong>，僅用於：超過警戒值的資料點、關鍵異常、年度高峰、需要立即注意的訊息。一張圖中強調色出現的元素應少於 20%。強調強度由強到弱：Alert Red &gt; Terracotta &gt; Clay &gt; Caution Amber。</p>
+
+    <div class="cat-grid">
+      <div class="cat-chip" style="border-color:#BE373C"><div class="color" style="background:#BE373C"></div><div class="meta"><div class="name" style="color:#BE373C">⚠ Alert Red（最強）</div><div class="hex">#BE373C</div></div></div>
+      <div class="cat-chip" style="border-color:#B5584A"><div class="color" style="background:#B5584A"></div><div class="meta"><div class="name" style="color:#8B3F33">▲ Terracotta</div><div class="hex">#B5584A</div></div></div>
+      <div class="cat-chip" style="border-color:#B87B61"><div class="color" style="background:#B87B61"></div><div class="meta"><div class="name" style="color:#7A4A36">△ Clay</div><div class="hex">#B87B61</div></div></div>
+      <div class="cat-chip" style="border-color:#D2962D"><div class="color" style="background:#D2962D"></div><div class="meta"><div class="name" style="color:#8B5A06">▢ Caution Amber</div><div class="hex">#D2962D</div></div></div>
+    </div>
+
+    <p><strong>使用情境分級：</strong></p>
+    <p>• <strong>Alert Red #BE373C</strong>：超過警戒閾值、危險、新增高峰、需立即行動。最強烈，使用最節制。</p>
+    <p>• <strong>Terracotta #B5584A</strong>：次強警示、發散色階的負向端、與主色配對的對比強調。</p>
+    <p>• <strong>Clay #B87B61</strong>：柔和的強調、長期趨勢中的反向指標、不需引發焦慮但需區分的紅色系類別。</p>
+    <p>• <strong>Caution Amber #D2962D</strong>：注意、提醒、接近閾值。</p>
+
+    <div class="callout warn">
+      <div class="tag">⚠ 疫情情境特別注意</div>
+      <p>紅色在公共衛生溝通中具有強烈情緒效應。<strong>勿用紅色標示確診數的長條本身</strong>——即使數字很高，紅色化會放大恐慌感受。建議做法：長條本身使用中性色或主色，<strong>僅將「超過警戒閾值的部分」或標示線標為紅色</strong>。若需要紅色系類別（例如風險族群分類），優先使用 Clay 而非 Alert Red。</p>
+    </div>
+  </section>
+
+  <!-- ============== Ch.3.5 配色搭配模式 ============== -->
+  <section id="ch3b" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">CH. 03·5</span>
+      <h2>配色搭配模式</h2>
+      <span class="chapter-sub">Combination Patterns</span>
+    </div>
+    <p class="lead-para">
+      圖表配色不是隨機從類別色盤中挑選，而是依「資料的敘事意圖」選擇搭配模式。以下是四種建議搭配，從簡到繁排列。<strong>能用 2 色講清楚就不用 3 色</strong>——色彩越少，訊息越聚焦。
+    </p>
+
+    <h3>模式 A ── 主色 + 中性對照</h3>
+    <p>最常用、最有焦點感的搭配。<strong>當你要凸顯「某一個對象」時使用</strong>，例如：本縣市 vs 全國平均、目標族群 vs 其他、本波 vs 歷史波次。主色突出焦點，中性灰退為背景。</p>
+
+    <div class="combo-grid">
+      <div class="combo-card">
+        <div class="combo-swatches">
+          <div class="combo-sw" style="background:#739A6D"></div>
+          <div class="combo-sw" style="background:#A2ABA0"></div>
+        </div>
+        <div class="combo-meta">
+          <div class="combo-name">主色 + 中性 400</div>
+          <code>#739A6D + #A2ABA0</code>
+          <p>適用：折線對照（本機關 vs. 平均）、雙條比較</p>
+        </div>
+      </div>
+      <div class="combo-card">
+        <div class="combo-swatches">
+          <div class="combo-sw" style="background:#5D7F58"></div>
+          <div class="combo-sw" style="background:#CACFC9"></div>
+        </div>
+        <div class="combo-meta">
+          <div class="combo-name">主色深 + 中性 300</div>
+          <code>#5D7F58 + #CACFC9</code>
+          <p>適用：強對比場合、需明確區分前景背景</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>模式 B ── 主色 + 主色 + 中性對照（2 主 1 灰）</h3>
+    <p>當你要比較「兩個主要對象」並保留一個對照基準時使用，例如：第 1 劑 vs 第 2 劑（接種率）vs 全國平均。前兩色用類別配色的前 2 色，最後一色用中性灰。</p>
+
+    <div class="combo-grid">
+      <div class="combo-card">
+        <div class="combo-swatches">
+          <div class="combo-sw" style="background:#739A6D"></div>
+          <div class="combo-sw" style="background:#587A9D"></div>
+          <div class="combo-sw" style="background:#A2ABA0"></div>
+        </div>
+        <div class="combo-meta">
+          <div class="combo-name">主色 + 藍 + 中性</div>
+          <code>#739A6D + #587A9D + #A2ABA0</code>
+          <p>適用：兩主指標 + 一基準線；本國 vs 鄰國 vs 全球平均</p>
+        </div>
+      </div>
+      <div class="combo-card">
+        <div class="combo-swatches">
+          <div class="combo-sw" style="background:#739A6D"></div>
+          <div class="combo-sw" style="background:#C8A041"></div>
+          <div class="combo-sw" style="background:#A2ABA0"></div>
+        </div>
+        <div class="combo-meta">
+          <div class="combo-name">主色 + 黃 + 中性</div>
+          <code>#739A6D + #C8A041 + #A2ABA0</code>
+          <p>適用：陽性 vs 陰性 + 未受檢；高低風險 + 不適用</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>模式 C ── 純類別配色（多類別）</h3>
+    <p>當所有類別<strong>地位平等、無焦點對象</strong>時使用，例如：六大區域的比較、所有疫苗廠牌的比例。依優先順序使用 cat-1 至 cat-6，類別越少越好讀。</p>
+
+    <div class="combo-grid">
+      <div class="combo-card">
+        <div class="combo-swatches">
+          <div class="combo-sw" style="background:#739A6D"></div>
+          <div class="combo-sw" style="background:#587A9D"></div>
+          <div class="combo-sw" style="background:#C8A041"></div>
+        </div>
+        <div class="combo-meta">
+          <div class="combo-name">3 色組合</div>
+          <code>cat-1 + cat-2 + cat-3</code>
+          <p>適用：三變異株比例、輕／中／重症</p>
+        </div>
+      </div>
+      <div class="combo-card">
+        <div class="combo-swatches">
+          <div class="combo-sw" style="background:#739A6D"></div>
+          <div class="combo-sw" style="background:#587A9D"></div>
+          <div class="combo-sw" style="background:#C8A041"></div>
+          <div class="combo-sw" style="background:#49888D"></div>
+        </div>
+        <div class="combo-meta">
+          <div class="combo-name">4 色組合</div>
+          <code>cat-1 ~ cat-4</code>
+          <p>適用：四大主要變異株、四季資料</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>模式 D ── 類別配色 + 強調</h3>
+    <p>當<strong>多類別中有一個需要警示</strong>時使用，例如：六縣市中有一個超過警戒值；多個變異株中有一個新出現的高關注株。其他類別用 cat 系列，警示對象用 Alert Red 或 Terracotta。</p>
+
+    <div class="combo-grid">
+      <div class="combo-card">
+        <div class="combo-swatches">
+          <div class="combo-sw" style="background:#739A6D"></div>
+          <div class="combo-sw" style="background:#587A9D"></div>
+          <div class="combo-sw" style="background:#BE373C"></div>
+        </div>
+        <div class="combo-meta">
+          <div class="combo-name">2 類別 + 警示</div>
+          <code>cat-1 + cat-2 + Alert Red</code>
+          <p>適用：正常 + 注意 + 危險三級警示</p>
+        </div>
+      </div>
+      <div class="combo-card">
+        <div class="combo-swatches">
+          <div class="combo-sw" style="background:#A2ABA0"></div>
+          <div class="combo-sw" style="background:#A2ABA0"></div>
+          <div class="combo-sw" style="background:#A2ABA0"></div>
+          <div class="combo-sw" style="background:#BE373C"></div>
+        </div>
+        <div class="combo-meta">
+          <div class="combo-name">多中性 + 單一強調</div>
+          <code>Neutral × N + Alert Red</code>
+          <p>適用：縣市排名中超過閾值者標紅</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="tag">DECISION TREE</div>
+      <p><strong>選擇配色模式的順序：</strong>① 我要凸顯某個對象嗎？→ 模式 A 或 D。② 沒有焦點，多類別比較？→ 模式 C。③ 兩個主要對象 + 一個基準？→ 模式 B。<strong>若不確定，從模式 A 開始</strong>，這是最不會出錯的選擇。</p>
+    </div>
+  </section>
+
+  <!-- ============== Ch.4 序列與發散 ============== -->
+  <section id="ch4" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">CH. 04</span>
+      <h2>序列與發散色階</h2>
+      <span class="chapter-sub">Sequential &amp; Diverging</span>
+    </div>
+    <p class="lead-para">
+      用於<strong>有順序的量化資料</strong>，例如熱力圖、地圖填色、密度等。依資料性質選擇單色或雙向漸層。
+    </p>
+
+    <h3>序列色階 Sequential（單向：低 → 高）</h3>
+    <p>用於有明確高低、由小到大的數值，例如人口密度、預算規模、完成率。以主色相延伸 7 階。</p>
+    <div class="scale-grid">
+      <div class="swatch light" style="background:#F1F5F0; grid-column:span 2"><span class="step">step1</span><span class="hex">#F1F5F0</span></div>
+      <div class="swatch light" style="background:#D4E0D2; grid-column:span 1"><span class="step">step2</span><span class="hex">#D4E0D2</span></div>
+      <div class="swatch light" style="background:#AEC5AB; grid-column:span 2"><span class="step">step3</span><span class="hex">#AEC5AB</span></div>
+      <div class="swatch dark" style="background:#8BAC86; grid-column:span 1"><span class="step">step4</span><span class="hex">#8BAC86</span></div>
+      <div class="swatch dark" style="background:#6A9164; grid-column:span 2"><span class="step">step5</span><span class="hex">#6A9164</span></div>
+      <div class="swatch dark" style="background:#506D4B; grid-column:span 1"><span class="step">step6</span><span class="hex">#506D4B</span></div>
+      <div class="swatch dark" style="background:#354832; grid-column:span 1"><span class="step">step7</span><span class="hex">#354832</span></div>
+    </div>
+
+    <h3>發散色階 Diverging（雙向：負 ← 中 → 正）</h3>
+    <p>用於有自然中點的資料，例如預算差額（超支 vs. 結餘）、滿意度（正面 vs. 負面）、人口變動（流入 vs. 流出）。以主色（綠）與互補色（陶土橘紅）對稱發散。</p>
+    <div class="scale-grid">
+      <div class="swatch dark" style="background:#476043"><span class="step">-3</span><span class="hex">#476043</span></div>
+      <div class="swatch dark" style="background:#71936C"><span class="step">-2</span><span class="hex">#71936C</span></div>
+      <div class="swatch light" style="background:#B2BFB0"><span class="step">-1</span><span class="hex">#B2BFB0</span></div>
+      <div class="swatch light" style="background:#F2F3F2"><span class="step">0</span><span class="hex">#F2F3F2</span></div>
+      <div class="swatch light" style="background:#D8C5C0"><span class="step">+1</span><span class="hex">#D8C5C0</span></div>
+      <div class="swatch dark" style="background:#BC8776"><span class="step">+2</span><span class="hex">#BC8776</span></div>
+      <div class="swatch dark" style="background:#965440"><span class="step">+3</span><span class="hex">#965440</span></div>
+    </div>
+
+    <div class="callout">
+      <div class="tag">TIP</div>
+      <p>在發散色階中，<strong>中間色不可使用純白</strong>，否則資料為零的區域會被誤認為「無資料」。本指引採用淺灰綠 #F2F3F2 作為中性過渡色。</p>
+    </div>
+  </section>
+
+  <!-- ============== Ch.5 語意色 ============== -->
+  <section id="ch5" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">CH. 05</span>
+      <h2>語意色與狀態</h2>
+      <span class="chapter-sub">Semantic Colors</span>
+    </div>
+    <p class="lead-para">
+      語意色僅用於有明確「狀態意義」的場合：成功、警示、危險、資訊。<strong>不可用於一般類別配色</strong>，以免稀釋其警示效果。
+    </p>
+
+    <div class="cat-grid">
+      <div class="cat-chip"><div class="color" style="background:#54734F"></div><div class="meta"><div class="name">Success ／ 成功</div><div class="hex">#54734F</div></div></div>
+      <div class="cat-chip"><div class="color" style="background:#D2962D"></div><div class="meta"><div class="name">Warning ／ 警示</div><div class="hex">#D2962D</div></div></div>
+      <div class="cat-chip"><div class="color" style="background:#BE373C"></div><div class="meta"><div class="name">Danger ／ 危險</div><div class="hex">#BE373C</div></div></div>
+      <div class="cat-chip"><div class="color" style="background:#477A9E"></div><div class="meta"><div class="name">Info ／ 資訊</div><div class="hex">#477A9E</div></div></div>
+    </div>
+
+    <h3>使用情境</h3>
+    <p><strong>Success（深綠）：</strong>達標、通過、上升等正面指標。例如「執行率達 105%」。</p>
+    <p><strong>Warning（暖黃）：</strong>接近門檻、需注意。例如「預算已使用 85%」。</p>
+    <p><strong>Danger（朱紅）：</strong>未達標、超支、下降等負面指標。注意：在公部門情境中應克制使用，避免引發過度恐慌。</p>
+    <p><strong>Info（鋼藍）：</strong>中性提示、補充說明、參考基準線。</p>
+  </section>
+
+  <!-- ============== Ch.6 字體與排版 ============== -->
+  <section id="ch6" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">CH. 06</span>
+      <h2>字體與排版</h2>
+      <span class="chapter-sub">Typography</span>
+    </div>
+    <p class="lead-para">
+      圖表中的文字應比想像中再大、再清楚一些。資料視覺化的閱讀情境通常包括投影、列印、行動裝置，必須在最差的情境下仍可辨識。
+    </p>
+
+    <h3>字級規範</h3>
+    <table class="contrast-table">
+      <thead><tr><th>用途</th><th>字級</th><th>字重</th><th>字距</th></tr></thead>
+      <tbody>
+        <tr><td>圖表標題</td><td>16–18 px</td><td>600 (SemiBold)</td><td>−0.2px</td></tr>
+        <tr><td>軸標籤</td><td>12–13 px</td><td>500 (Medium)</td><td>0</td></tr>
+        <tr><td>軸刻度數值</td><td>11–12 px</td><td>400 (Regular)</td><td>0.3px</td></tr>
+        <tr><td>圖例</td><td>12 px</td><td>400 (Regular)</td><td>0</td></tr>
+        <tr><td>資料標籤</td><td>11 px</td><td>500 (Medium)</td><td>0</td></tr>
+        <tr><td>資料來源／註腳</td><td>10–11 px</td><td>400 (Regular)</td><td>0.3px</td></tr>
+      </tbody>
+    </table>
+
+    <h3>建議字體</h3>
+    <p><strong>中文：</strong>思源黑體（Noto Sans TC）／ 思源宋體（Noto Serif TC，僅標題）。避免使用裝飾性字體。</p>
+    <p><strong>英文／數字：</strong>Noto Sans、Inter、IBM Plex Sans。<strong>數字務必使用 tabular-nums 等寬數字</strong>，以利對齊比較。</p>
+    <pre class="code"><span class="c-com">/* CSS 範例 */</span>
+.chart-number {
+  font-variant-numeric: <span class="c-str">tabular-nums</span>;
+  font-feature-settings: <span class="c-str">"tnum"</span>;
+}</pre>
+  </section>
+
+  <!-- ============== Ch.7 圖表選用 ============== -->
+  <section id="ch7" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">CH. 07</span>
+      <h2>圖表選用矩陣</h2>
+      <span class="chapter-sub">Chart Selection Matrix</span>
+    </div>
+    <p class="lead-para">
+      選擇圖表的第一原則：先確認你要回答的問題，再選圖表類型。常見問題類型對應建議圖表如下。
+    </p>
+
+    <table class="matrix">
+      <thead>
+        <tr><th>疫情分析問題</th><th>建議圖表</th><th>適用時機</th><th>避免使用</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>每日新增</td>
+          <td><code>column</code> 直條圖<br><code>line</code> 7日移動平均線</td>
+          <td class="use-when">每日確診／死亡／檢驗數。建議直條搭配 7 日均線，平滑週末效應。</td>
+          <td class="avoid">純折線（會忽略每日波動）；面積堆疊（混淆絕對數）</td>
+        </tr>
+        <tr>
+          <td>長期趨勢</td>
+          <td><code>line</code> 折線圖<br><code>area</code> 區域圖</td>
+          <td class="use-when">觀察數週或數月的疫情走向、波次比較。</td>
+          <td class="avoid">直條圖（資料點 &gt; 30 時過於擁擠）</td>
+        </tr>
+        <tr>
+          <td>地區比較</td>
+          <td><code>bar</code> 水平長條圖<br><code>choropleth</code> 面量圖</td>
+          <td class="use-when">22 縣市發生率比較。建議以每 10 萬人口標準化。</td>
+          <td class="avoid">未標準化的絕對數（人口大的縣市永遠最多）</td>
+        </tr>
+        <tr>
+          <td>變異株／疫苗組成</td>
+          <td><code>100% stacked</code> 百分比堆疊<br><code>stream</code> 流域圖</td>
+          <td class="use-when">病毒株消長、疫苗廠牌比例隨時間變化。</td>
+          <td class="avoid">圓餅圖（無法呈現時間變化）</td>
+        </tr>
+        <tr>
+          <td>年齡／性別分布</td>
+          <td><code>pyramid</code> 人口金字塔<br><code>grouped bar</code></td>
+          <td class="use-when">分析高風險族群、重症集中於哪些年齡層。</td>
+          <td class="avoid">圓餅圖；3D 立體圖</td>
+        </tr>
+        <tr>
+          <td>關鍵指標</td>
+          <td><code>big number</code> 大數字<br><code>kpi card</code> 指標卡</td>
+          <td class="use-when">儀表板首屏：今日新增、累計死亡、Rt 值、疫苗覆蓋率。</td>
+          <td class="avoid">儀表盤（gauge）；過多裝飾元素</td>
+        </tr>
+        <tr>
+          <td>超額死亡／基準對照</td>
+          <td><code>line</code> 折線圖<br>+ 對照基準線／陰影區間</td>
+          <td class="use-when">與歷年平均比較、預期值與實際值的差距。</td>
+          <td class="avoid">單獨呈現實際值（無基準難以判讀）</td>
+        </tr>
+        <tr>
+          <td>同期比較</td>
+          <td><code>line</code> 折線圖<br>+ 歷史範圍填色帶</td>
+          <td class="use-when">今年 vs 去年同期、季節性疾病監測。X 軸用「相對週」對齊。</td>
+          <td class="avoid">並排兩根長條（無法呈現連續性）</td>
+        </tr>
+        <tr>
+          <td>單一時點組成</td>
+          <td><code>horizontal stack</code> 水平堆疊條（推薦）<br><code>pie / donut</code>（條件使用）</td>
+          <td class="use-when">類別 2–4 個、總和 100%、單一時點。優先用水平堆疊。</td>
+          <td class="avoid">3D 圓餅；超過 4 類的圓餅；多個圓餅並列比較</td>
+        </tr>
+        <tr>
+          <td>傳播鏈／關聯</td>
+          <td><code>scatter</code> 散布圖<br><code>network</code> 網絡圖</td>
+          <td class="use-when">探索變數相關性（例如疫苗接種率 vs. 重症率）。</td>
+          <td class="avoid">折線圖（暗示時間順序）</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============== Ch.8 圖表範例 ============== -->
+  <section id="ch8" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">CH. 08</span>
+      <h2>圖表範例</h2>
+      <span class="chapter-sub">Reference Charts</span>
+    </div>
+    <p class="lead-para">
+      以下是套用本指引色彩、搭配模式與設計規範的疫情圖表範例。每張圖均標註所採用的「配色模式」（A/B/C/D，對應 Ch. 3·5）。所有範例可作為實作參考。
+    </p>
+
+    <h3>折線圖配色注意事項</h3>
+    <p>折線比長條纖細許多，<strong>同樣的顏色，畫成折線會比長條看起來更淺</strong>。為確保可讀性，本指引採以下調整：</p>
+
+    <table class="contrast-table">
+      <thead><tr><th>用途</th><th>長條圖／填色</th><th>折線圖建議</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr><td>主要序列</td><td><code>#739A6D</code> 主色 500</td><td><code>#5D7F58</code> 主色 600</td><td>主色 500 對白底對比僅 3.20，折線太細時不夠清楚</td></tr>
+        <tr><td>第二序列</td><td><code>#587A9D</code> Slate Blue</td><td><code>#587A9D</code> 同色可用</td><td>原色對比 4.48，足夠</td></tr>
+        <tr><td>第三序列</td><td><code>#C8A041</code> Mustard</td><td><code>#A8821F</code> 加深</td><td>Mustard 對比僅 2.45，折線會明顯偏淺，需加深</td></tr>
+        <tr><td>對照／背景線</td><td><code>#A2ABA0</code> Neutral 400</td><td><code>#A2ABA0</code> 同色可用</td><td>對照線本就應該退為背景</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>除了用色，可同時搭配以下技巧增強折線可讀性：</strong></p>
+    <p>① <strong>加粗線寬</strong>：主要序列 2.5–3px、次要序列 2px、對照線 1.5px</p>
+    <p>② <strong>標示資料點</strong>：在關鍵位置（起點、終點、極值、最新）加上 4–5px 的圓點</p>
+    <p>③ <strong>區分線型</strong>：對照線改用虛線 <code>borderDash:[5,4]</code>，與主線形成質感差異</p>
+    <p>④ <strong>直接標籤</strong>：在線條末端加上類別名稱，可移除圖例，視覺更清楚</p>
+    <p>⑤ <strong>填色輔助</strong>：單線圖可加 20–25% 透明度的填色（區域圖），擴大視覺份量</p>
+
+    <div class="callout">
+      <div class="tag">RULE OF THUMB</div>
+      <p>判斷折線是否夠清楚的測試：<strong>把瀏覽器縮小到 70%，仍可看清楚每條線嗎？</strong>如果不行，需要加粗或加深顏色。</p>
+    </div>
+
+    <h3>直條圖比例規範</h3>
+    <p>直條的粗細與間距比例直接影響視覺重量與可讀性。本指引採以下規範：</p>
+
+    <table class="contrast-table">
+      <thead><tr><th>圖表類型</th><th>barPercentage</th><th>categoryPercentage</th><th>實際條寬比例</th><th>視覺說明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>單組直條</strong></td><td><code>0.55</code></td><td><code>0.85</code></td><td>類別槽 47%</td><td>條寬 &lt; 間距，留白較多，適合報告</td></tr>
+        <tr><td><strong>密集時序直條</strong>（每日資料）</td><td><code>0.75</code></td><td><code>0.9</code></td><td>類別槽 68%</td><td>資料點多時加寬，避免過細不可讀</td></tr>
+        <tr><td><strong>堆疊直條</strong></td><td><code>0.6</code></td><td><code>0.85</code></td><td>類別槽 51%</td><td>略寬，強化整體感</td></tr>
+        <tr><td><strong>分組直條</strong></td><td><code>0.85</code></td><td><code>0.75</code></td><td>組內緊鄰</td><td>組間距 &gt; 組內距，凸顯主分類</td></tr>
+        <tr><td><strong>水平排名長條</strong></td><td><code>0.7</code></td><td><code>0.85</code></td><td>類別槽 60%</td><td>橫向需較粗，避免顯得單薄</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="tag">CHART.JS 參數說明</div>
+      <p><code>barPercentage</code> 控制條相對於類別槽的寬度；<code>categoryPercentage</code> 控制類別槽相對於可用空間的寬度。<strong>實際條寬 ＝ barPercentage × categoryPercentage</strong>。Matplotlib 對應參數為 <code>width</code>（建議 0.6–0.7）。</p>
+    </div>
+
+
+    <h3>圓餅圖使用準則</h3>
+    <p>圓餅圖在資料視覺化領域長期備受爭議，<strong>本指引將其列為「條件使用」圖表</strong>。原因：人眼對「扇形角度」的判讀遠不如「長度」精確，多項實驗顯示讀者經常誤判 5–10% 的差異。</p>
+
+    <table class="contrast-table">
+      <thead><tr><th>適用情境 ✓</th><th>應避免 ✗</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>類別 2–4 個</td>
+          <td>類別超過 4 個（改用水平堆疊條）</td>
+        </tr>
+        <tr>
+          <td>總和為 100%，且各類別差異明顯</td>
+          <td>類別間差異 &lt; 5%（讀者無法區分）</td>
+        </tr>
+        <tr>
+          <td>單一時點，無需跨期比較</td>
+          <td>需比較多個時點（改用百分比堆疊柱）</td>
+        </tr>
+        <tr>
+          <td>視覺直覺優先於精確讀取</td>
+          <td>需要精確百分比（改用水平條搭配直接標籤）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>使用圓餅圖時的必要規範：</strong></p>
+    <p>① <strong>直接標籤</strong>：百分比與類別名稱標於切片旁，不依賴圖例</p>
+    <p>② <strong>不使用 3D 效果</strong>：3D 圓餅會嚴重扭曲比例感受</p>
+    <p>③ <strong>不使用甜甜圈圖空心化</strong>：空心會進一步降低判讀精度（除非中心放置關鍵數字）</p>
+    <p>④ <strong>切片排序</strong>：由大到小，從 12 點方向順時針排列</p>
+    <p>⑤ <strong>顏色克制</strong>：依類別配色順序使用，不為追求視覺效果而採用高飽和色</p>
+
+    <div class="callout warn">
+      <div class="tag">⚠ 強烈建議</div>
+      <p>遇到要畫圓餅圖時，<strong>先問自己：「同樣資料用水平堆疊條呈現會更好嗎？」</strong>多數情況下答案是肯定的。下方範例同時提供圓餅圖與其水平堆疊條替代版，可直接比較兩者的優劣。</p>
+    </div>
+
+    <h3>圖表範例</h3>
+
+    <div class="chart-grid">
+
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <h4>每日新增確診 ／ Daily Cases</h4>
+          <span class="chart-card-tag">PATTERN A · 主+中性</span>
+        </div>
+        <p class="desc">近 4 週（28 日）每日新增確診數。直條使用主色，搭配 7 日移動平均線（中心對齊）平滑週末填報延遲造成的波動。週末資料明顯偏低不可截去——這是真實的「報告日效應」，需如實呈現。</p>
+        <div class="chart-wrap"><canvas id="chart1"></canvas></div>
+        <dl class="chart-meta">
+          <dt>配色</dt><dd>直條 <code>#739A6D</code>（主色）+ 均線 <code>#374C34</code>（主色 800）</dd>
+          <dt>直條比例</dt><dd>barPercentage=0.75；條寬約佔類別槽 68%</dd>
+          <dt>均線</dt><dd>中心對齊（i 日 = i−3 到 i+3 平均），與當日資料視覺對齊；兩端 3 日用較短窗口避免斷線</dd>
+        </dl>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <h4>波次比較 ／ Wave Comparison</h4>
+          <span class="chart-card-tag">PATTERN A · 主+中性</span>
+        </div>
+        <p class="desc">歷次疫情波段的每日新增曲線（以波峰對齊）。當前波段使用加深的主色 + 較粗線寬凸顯，歷史波段以中性灰退為背景。警戒閾值以紅色虛線標示。</p>
+        <div class="chart-wrap"><canvas id="chart2"></canvas></div>
+        <dl class="chart-meta">
+          <dt>配色</dt><dd>當前 <code>#5D7F58</code>（主色 600）+ 歷史 Neutral 400／300</dd>
+          <dt>線寬</dt><dd>當前 3px、歷史 1.5px、警戒線 1.5px 虛線</dd>
+        </dl>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <h4>縣市發生率排名</h4>
+          <span class="chart-card-tag">PATTERN D · 中性+強調</span>
+        </div>
+        <p class="desc">各縣市每 10 萬人口確診率（前 10 名）。已標準化以避免人口偏誤。超過警戒值的縣市以 Terracotta 強調（不使用最強的 Alert Red，避免過度警示）。</p>
+        <div class="chart-wrap tall"><canvas id="chart3"></canvas></div>
+        <dl class="chart-meta">
+          <dt>配色</dt><dd>一般 <code>#739A6D</code>（主色）+ 超標 <code>#B5584A</code>（Terracotta）</dd>
+          <dt>排序</dt><dd>由大至小，強調集中於頂部</dd>
+        </dl>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <h4>變異株組成 ／ Variant Composition</h4>
+          <span class="chart-card-tag">PATTERN C · 多類別</span>
+        </div>
+        <p class="desc">近六個月主要變異株比例變化。百分比堆疊圖能清楚呈現「消長」關係。「其他」類別使用中性灰，避免分散注意力。</p>
+        <div class="chart-wrap"><canvas id="chart4"></canvas></div>
+        <dl class="chart-meta">
+          <dt>配色</dt><dd>cat-1 ~ cat-4 + Neutral 300（其他）</dd>
+          <dt>順序</dt><dd>由下至上：綠 → 藍 → 黃 → 鴨綠 → 灰</dd>
+        </dl>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <h4>多指標監測 ／ Multi-Metric</h4>
+          <span class="chart-card-tag">PATTERN C · 3 色組合</span>
+        </div>
+        <p class="desc">確診數、住院數、重症數的同期變化（標準化後比較）。可觀察各指標的領先／落後關係。折線使用「加深版」色階，避免細線過淺。</p>
+        <div class="chart-wrap"><canvas id="chart5"></canvas></div>
+        <dl class="chart-meta">
+          <dt>配色</dt><dd>主色 <code>#5D7F58</code> + 藍 <code>#587A9D</code> + 深黃 <code>#A8821F</code></dd>
+          <dt>線寬</dt><dd>主指標 2.5px、其餘 2px，配資料點增強辨識</dd>
+        </dl>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <h4>疫苗累計覆蓋率</h4>
+          <span class="chart-card-tag">PATTERN C+D · 3 色+強調</span>
+        </div>
+        <p class="desc">疫苗第 1、2、3 劑累計覆蓋率。區域圖適合強調「累積進度」。目標線以 Alert Red 虛線標示，是整張圖唯一的強調色。</p>
+        <div class="chart-wrap"><canvas id="chart6"></canvas></div>
+        <dl class="chart-meta">
+          <dt>配色</dt><dd>cat-1 + cat-2 + 深黃 + Alert Red（目標線）</dd>
+          <dt>填色透明度</dt><dd>主色 25%；線條本身使用 600 加深版</dd>
+        </dl>
+      </div>
+
+      <div class="chart-card full">
+        <div class="chart-card-head">
+          <h4>年齡層 × 嚴重度分組長條圖</h4>
+          <span class="chart-card-tag">PATTERN C · 3 色組合</span>
+        </div>
+        <p class="desc">各年齡層的輕症、中症、重症比例。分組長條中組間留白較大，組內條間緊鄰，視覺上明確區分「年齡層」與「嚴重度」兩個維度。</p>
+        <div class="chart-wrap"><canvas id="chart7"></canvas></div>
+      </div>
+
+      <div class="chart-card full">
+        <div class="chart-card-head">
+          <h4>同期比較 ／ Year-over-Year</h4>
+          <span class="chart-card-tag">PATTERN A · 主+中性</span>
+        </div>
+        <p class="desc">今年 vs. 去年同期每週新增確診比較。同期比較是疫情分析最常見的圖表之一，用於判斷「今年是否異於常態」。本年使用主色 + 填色，去年同期使用中性灰虛線。陰影區帶顯示去年同期的歷史變動範圍（±1 標準差），讓「異常」更直觀可辨。</p>
+        <div class="chart-wrap tall"><canvas id="chart8"></canvas></div>
+        <dl class="chart-meta">
+          <dt>配色</dt><dd>今年 <code>#5D7F58</code>（主色 600）+ 去年 <code>#A2ABA0</code>（Neutral 400 虛線）+ 歷史範圍 <code>#E4E7E4</code> 填色</dd>
+          <dt>對齊原則</dt><dd>X 軸用「相對週」（W1–W52）而非絕對日期，便於跨年比較</dd>
+          <dt>標籤</dt><dd>當資料明顯偏離歷史範圍時，在該點加註文字標籤</dd>
+        </dl>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <h4>圓餅圖 ／ Pie Chart</h4>
+          <span class="chart-card-tag">PATTERN C · 限制使用</span>
+        </div>
+        <p class="desc">確診者疫苗接種狀態組成。圓餅圖<strong>僅適用於 2–4 類、總和為 100%、不需精確比較</strong>的單一時點組成。資料標籤直接標於切片旁，不依賴圖例。</p>
+        <div class="chart-wrap tall"><canvas id="chart9"></canvas></div>
+        <dl class="chart-meta">
+          <dt>配色</dt><dd>cat-1 + cat-2 + cat-3 + Neutral 300（未知／其他）</dd>
+          <dt>切片排序</dt><dd>由大至小，從 12 點方向順時針</dd>
+          <dt>標籤</dt><dd>同時顯示類別名稱與百分比，避免讀者反覆對照圖例</dd>
+        </dl>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <h4>水平堆疊條 ／ 圓餅替代</h4>
+          <span class="chart-card-tag">PATTERN C · 推薦</span>
+        </div>
+        <p class="desc">同樣資料用 100% 水平堆疊條呈現，<strong>更易精確比較各部分</strong>。當類別超過 4 個、或需要精確讀取百分比時，優先採用此圖而非圓餅圖。</p>
+        <div class="chart-wrap tall"><canvas id="chart10"></canvas></div>
+        <dl class="chart-meta">
+          <dt>為何優於圓餅</dt><dd>人眼比較「長度」遠比比較「扇形角度」精確</dd>
+          <dt>可比較性</dt><dd>多組水平條可上下堆疊，比較跨時期或跨地區組成</dd>
+        </dl>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============== Ch.9 Do & Don't ============== -->
+  <section id="ch9" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">CH. 09</span>
+      <h2>Do &amp; Don't</h2>
+      <span class="chapter-sub">Best Practices</span>
+    </div>
+
+    <h3>原則一：Y 軸起點</h3>
+    <div class="do-dont">
+      <div class="dd-card do">
+        <div class="label">✓ DO</div>
+        <div class="body">
+          <h5>長條圖 Y 軸從零開始</h5>
+          <p>長條圖比較的是「長度」，截斷的 Y 軸會嚴重誤導比例感受。</p>
+        </div>
+        <div class="chart-mini"><canvas id="ddDo1"></canvas></div>
+      </div>
+      <div class="dd-card dont">
+        <div class="label">✗ DON'T</div>
+        <div class="body">
+          <h5>勿截斷 Y 軸製造誇張差異</h5>
+          <p>從 90 開始的長條圖會讓 95 看起來像 100 的一半，造成嚴重誤判。</p>
+        </div>
+        <div class="chart-mini"><canvas id="ddDont1"></canvas></div>
+      </div>
+    </div>
+
+    <h3>原則二：顏色焦點</h3>
+    <div class="do-dont">
+      <div class="dd-card do">
+        <div class="label">✓ DO</div>
+        <div class="body">
+          <h5>用顏色凸顯焦點</h5>
+          <p>僅讓重點對象使用主色，其餘以中性灰呈現。觀者一眼就知道該看哪。</p>
+        </div>
+        <div class="chart-mini"><canvas id="ddDo2"></canvas></div>
+      </div>
+      <div class="dd-card dont">
+        <div class="label">✗ DON'T</div>
+        <div class="body">
+          <h5>勿為每根長條配不同顏色</h5>
+          <p>當顏色沒有額外資訊意義時，多色反而成為視覺噪音，分散注意力。</p>
+        </div>
+        <div class="chart-mini"><canvas id="ddDont2"></canvas></div>
+      </div>
+    </div>
+
+    <h3>原則三：圖表簡潔</h3>
+    <div class="do-dont">
+      <div class="dd-card do">
+        <div class="label">✓ DO</div>
+        <div class="body">
+          <h5>移除多餘的圖表元素</h5>
+          <p>頂部與右側邊框、過密的網格線、3D 效果都應移除。讓資料本身發聲。</p>
+        </div>
+        <div class="chart-mini"><canvas id="ddDo3"></canvas></div>
+      </div>
+      <div class="dd-card dont">
+        <div class="label">✗ DON'T</div>
+        <div class="body">
+          <h5>勿堆疊裝飾性元素</h5>
+          <p>四面邊框、深色背景、密集網格、陰影、3D 效果——這些都是 chartjunk。</p>
+        </div>
+        <div class="chart-mini"><canvas id="ddDont3"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Ch.10 無障礙 ============== -->
+  <section id="ch10" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">CH. 10</span>
+      <h2>無障礙與包容性</h2>
+      <span class="chapter-sub">Accessibility</span>
+    </div>
+    <p class="lead-para">
+      公部門資料須服務所有民眾，包含視覺障礙、色覺障礙、認知差異使用者。所有產出均應符合 WCAG 2.1 AA 標準。
+    </p>
+
+    <h3>對比度檢核</h3>
+    <table class="contrast-table">
+      <thead><tr><th>樣本</th><th>背景</th><th>對比度</th><th>等級</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td><span class="sample" style="background:#FFFFFF; color:#739A6D;">Sage 500 文字</span></td><td>白色</td><td>3.20</td><td><span class="grade aal">AA LARGE</span></td><td>僅限大字級（18px+ 或 14px+ Bold）</td></tr>
+        <tr><td><span class="sample" style="background:#FFFFFF; color:#5D7F58;">Sage 600 文字</span></td><td>白色</td><td>4.52</td><td><span class="grade aa">AA</span></td><td>正文可用</td></tr>
+        <tr><td><span class="sample" style="background:#FFFFFF; color:#496345;">Sage 700 文字</span></td><td>白色</td><td>6.66</td><td><span class="grade aa">AA</span></td><td>正文／強調</td></tr>
+        <tr><td><span class="sample" style="background:#FFFFFF; color:#374C34;">Sage 800 文字</span></td><td>白色</td><td>9.7</td><td><span class="grade aaa">AAA</span></td><td>標題</td></tr>
+        <tr><td><span class="sample" style="background:#739A6D; color:#FFFFFF;">白字於主色</span></td><td>Sage 500</td><td>4.72</td><td><span class="grade aa">AA</span></td><td>按鈕、標籤</td></tr>
+      </tbody>
+    </table>
+
+    <h3>色覺友善原則</h3>
+    <p><strong>不單獨以顏色傳達訊息。</strong>同時使用：</p>
+    <p>• <strong>形狀／圖示</strong>：折線圖的資料點用不同形狀（圓、方、三角）。</p>
+    <p>• <strong>紋路</strong>：黑白列印時，可用斜線、點狀填充輔助區分。</p>
+    <p>• <strong>直接標籤</strong>：能直接標在資料旁的，不要放在圖例中。</p>
+
+    <p><strong>本指引的類別配色已通過色覺障礙模擬測試</strong>，在三種主要色覺類型（Protanopia 紅色盲、Deuteranopia 綠色盲、Tritanopia 藍色盲）下均可區分。</p>
+
+    <h3>其他無障礙原則</h3>
+    <p>• 所有圖表須提供<strong>替代文字（alt text）</strong>，描述關鍵發現而非僅描述外觀。</p>
+    <p>• 互動式圖表須支援<strong>鍵盤操作</strong>，並於 hover/focus 提供 tooltip。</p>
+    <p>• 提供<strong>資料表格</strong>作為圖表的替代呈現（可摺疊）。</p>
+  </section>
+
+  <!-- ============== Ch.11 技術實作 ============== -->
+  <section id="ch11" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">CH. 11</span>
+      <h2>技術實作參考</h2>
+      <span class="chapter-sub">Implementation</span>
+    </div>
+    <p class="lead-para">
+      本指引提供可直接複製的 CSS 變數與常見資料視覺化工具（Python Matplotlib／Chart.js）的色票設定。
+    </p>
+
+    <h3>Excel ／ Microsoft 365</h3>
+    <p>Excel 與 Word、PowerPoint 共用同一套色彩系統。建議透過<strong>自訂佈景主題色彩</strong>一次設定，所有 Office 應用都會自動套用。</p>
+
+    <h4>方法 A：自訂佈景主題色彩</h4>
+    <p>「頁面配置」→「色彩」→「自訂色彩」，依下表填入。設定完成後，所有圖表的預設配色都會自動使用本指引色彩。</p>
+
+    <table class="contrast-table">
+      <thead><tr><th>佈景主題位置</th><th>對應色彩</th><th>HEX</th><th>RGB</th></tr></thead>
+      <tbody>
+        <tr><td>輔色 1 (Accent 1)</td><td>Sage 主色</td><td><code>#739A6D</code></td><td>115, 154, 109</td></tr>
+        <tr><td>輔色 2 (Accent 2)</td><td>Slate Blue</td><td><code>#587A9D</code></td><td>88, 122, 157</td></tr>
+        <tr><td>輔色 3 (Accent 3)</td><td>Mustard</td><td><code>#C8A041</code></td><td>200, 160, 65</td></tr>
+        <tr><td>輔色 4 (Accent 4)</td><td>Teal</td><td><code>#49888D</code></td><td>73, 136, 141</td></tr>
+        <tr><td>輔色 5 (Accent 5)</td><td>Bronze</td><td><code>#916E46</code></td><td>145, 110, 70</td></tr>
+        <tr><td>輔色 6 (Accent 6)</td><td>Plum</td><td><code>#955F71</code></td><td>149, 95, 113</td></tr>
+        <tr><td>文字／背景 - 深色 1</td><td>Neutral 900</td><td><code>#181B18</code></td><td>24, 27, 24</td></tr>
+        <tr><td>文字／背景 - 淺色 1</td><td>White</td><td><code>#FFFFFF</code></td><td>255, 255, 255</td></tr>
+      </tbody>
+    </table>
+
+    <h4>方法 B：手動套用單色</h4>
+    <p>「儲存格格式」→「填滿」→「其他色彩」→「自訂」，輸入 RGB 值。或在「常用」工具列的色彩選單選「其他色彩」，可直接輸入十六進位值（Office 2016 以上）。</p>
+
+    <div class="callout">
+      <div class="tag">DOWNLOAD</div>
+      <p>完整色票 CSV（包含所有色彩的 HEX、RGB、用途說明）可下載匯入 Excel 作為參考表：本指引附帶 <code>epidemic-dataviz-palette.csv</code> 檔案。</p>
+    </div>
+
+    <h3>Power BI</h3>
+    <p>Power BI 採用「報表佈景主題」（Report Theme）以 JSON 格式設定。匯入主題檔後，所有視覺效果都會自動套用本指引色彩。</p>
+
+    <h4>匯入步驟</h4>
+    <p>① 在 Power BI Desktop 中，「檢視」→「佈景主題」→「瀏覽佈景主題」</p>
+    <p>② 選擇下載的 <code>epidemic-dataviz-theme.json</code> 檔案</p>
+    <p>③ 確認套用。所有現有視覺效果與新建圖表都將使用本指引配色</p>
+
+    <h4>主題檔內容預覽</h4>
+    <pre class="code">{
+  <span class="c-str">"name"</span>: <span class="c-str">"Epidemic Data Viz Theme"</span>,
+  <span class="c-str">"dataColors"</span>: [
+    <span class="c-str">"#739A6D"</span>, <span class="c-str">"#587A9D"</span>, <span class="c-str">"#C8A041"</span>,
+    <span class="c-str">"#49888D"</span>, <span class="c-str">"#916E46"</span>, <span class="c-str">"#955F71"</span>,
+    <span class="c-str">"#B5584A"</span>, <span class="c-str">"#B87B61"</span>
+  ],
+  <span class="c-str">"background"</span>:  <span class="c-str">"#FFFFFF"</span>,
+  <span class="c-str">"foreground"</span>:  <span class="c-str">"#181B18"</span>,
+  <span class="c-str">"tableAccent"</span>: <span class="c-str">"#739A6D"</span>,
+  <span class="c-str">"good"</span>:        <span class="c-str">"#54734F"</span>,  <span class="c-com">// KPI 正向</span>
+  <span class="c-str">"neutral"</span>:     <span class="c-str">"#A2ABA0"</span>,  <span class="c-com">// KPI 中性</span>
+  <span class="c-str">"bad"</span>:         <span class="c-str">"#BE373C"</span>,  <span class="c-com">// KPI 警示</span>
+  <span class="c-str">"maximum"</span>:     <span class="c-str">"#374C34"</span>,  <span class="c-com">// 漸層最大值</span>
+  <span class="c-str">"center"</span>:      <span class="c-str">"#F2F3F2"</span>,  <span class="c-com">// 漸層中點</span>
+  <span class="c-str">"minimum"</span>:     <span class="c-str">"#965440"</span>   <span class="c-com">// 漸層最小值</span>
+}</pre>
+
+    <h4>Power BI 使用建議</h4>
+    <p>• <strong>條件式格式化</strong>：在數值欄位使用 good/neutral/bad 三色，作為達標／注意／未達標的視覺指示</p>
+    <p>• <strong>漸層填色</strong>：地圖視覺與熱力圖使用 minimum → center → maximum 三色發散色階</p>
+    <p>• <strong>切片器與篩選器</strong>：採用 Neutral 系列，避免分散資料圖表的注意力</p>
+    <p>• <strong>KPI 視覺</strong>：目標達成率用 <code>good #54734F</code>，未達標用 <code>bad #BE373C</code>，搭配文字標籤而非僅靠顏色</p>
+
+    <h3>CSS 變數</h3>
+    <pre class="code"><span class="c-key">:root</span> {
+  <span class="c-com">/* 主色階 */</span>
+  <span class="c-key">--p-50</span>:  <span class="c-str">#F6F9F6</span>;
+  <span class="c-key">--p-100</span>: <span class="c-str">#E8EEE7</span>;
+  <span class="c-key">--p-200</span>: <span class="c-str">#D1DECF</span>;
+  <span class="c-key">--p-300</span>: <span class="c-str">#B4C9B1</span>;
+  <span class="c-key">--p-400</span>: <span class="c-str">#91B08C</span>;
+  <span class="c-key">--p-500</span>: <span class="c-str">#739A6D</span>;  <span class="c-com">/* PRIMARY */</span>
+  <span class="c-key">--p-600</span>: <span class="c-str">#5D7F58</span>;
+  <span class="c-key">--p-700</span>: <span class="c-str">#496345</span>;
+  <span class="c-key">--p-800</span>: <span class="c-str">#374C34</span>;
+  <span class="c-key">--p-900</span>: <span class="c-str">#253423</span>;
+
+  <span class="c-com">/* 類別配色（綠 → 藍 → 黃 → 中性色） */</span>
+  <span class="c-key">--cat-1</span>: <span class="c-str">#739A6D</span>;  <span class="c-com">/* Sage（主色） */</span>
+  <span class="c-key">--cat-2</span>: <span class="c-str">#587A9D</span>;  <span class="c-com">/* Slate Blue */</span>
+  <span class="c-key">--cat-3</span>: <span class="c-str">#C8A041</span>;  <span class="c-com">/* Mustard */</span>
+  <span class="c-key">--cat-4</span>: <span class="c-str">#49888D</span>;  <span class="c-com">/* Teal */</span>
+  <span class="c-key">--cat-5</span>: <span class="c-str">#916E46</span>;  <span class="c-com">/* Bronze */</span>
+  <span class="c-key">--cat-6</span>: <span class="c-str">#955F71</span>;  <span class="c-com">/* Plum */</span>
+
+  <span class="c-com">/* 強調色家族（紅／橙系，不可作類別色） */</span>
+  <span class="c-key">--alert</span>:      <span class="c-str">#BE373C</span>;  <span class="c-com">/* 最強警示 */</span>
+  <span class="c-key">--terracotta</span>: <span class="c-str">#B5584A</span>;  <span class="c-com">/* 次強警示 */</span>
+  <span class="c-key">--clay</span>:       <span class="c-str">#B87B61</span>;  <span class="c-com">/* 柔和強調 */</span>
+  <span class="c-key">--caution</span>:    <span class="c-str">#D2962D</span>;  <span class="c-com">/* 注意提醒 */</span>
+
+  <span class="c-com">/* 折線圖建議使用加深版本 */</span>
+  <span class="c-key">--line-primary</span>: <span class="c-str">#5D7F58</span>;
+  <span class="c-key">--line-mustard</span>: <span class="c-str">#A8821F</span>;
+
+  <span class="c-com">/* 語意色 */</span>
+  <span class="c-key">--success</span>: <span class="c-str">#54734F</span>;
+  <span class="c-key">--warning</span>: <span class="c-str">#D2962D</span>;
+  <span class="c-key">--danger</span>:  <span class="c-str">#BE373C</span>;
+  <span class="c-key">--info</span>:    <span class="c-str">#477A9E</span>;
+}</pre>
+
+    <h3>Python ／ Matplotlib</h3>
+    <pre class="code"><span class="c-com"># dataviz_palette.py</span>
+<span class="c-key">PRIMARY</span> = <span class="c-str">"#739A6D"</span>
+
+<span class="c-key">SCALE</span> = [
+    <span class="c-str">"#F6F9F6"</span>, <span class="c-str">"#E8EEE7"</span>, <span class="c-str">"#D1DECF"</span>, <span class="c-str">"#B4C9B1"</span>, <span class="c-str">"#91B08C"</span>,
+    <span class="c-str">"#739A6D"</span>, <span class="c-str">"#5D7F58"</span>, <span class="c-str">"#496345"</span>, <span class="c-str">"#374C34"</span>, <span class="c-str">"#253423"</span>,
+]
+
+<span class="c-key">CATEGORICAL</span> = [        <span class="c-com"># 綠 → 藍 → 黃 為主</span>
+    <span class="c-str">"#739A6D"</span>, <span class="c-str">"#587A9D"</span>, <span class="c-str">"#C8A041"</span>,
+    <span class="c-str">"#49888D"</span>, <span class="c-str">"#916E46"</span>, <span class="c-str">"#955F71"</span>,
+]
+
+<span class="c-key">ACCENT</span> = {                <span class="c-com"># 紅／橙系，僅用於強調</span>
+    <span class="c-str">"alert"</span>:      <span class="c-str">"#BE373C"</span>,  <span class="c-com"># 最強警示</span>
+    <span class="c-str">"terracotta"</span>: <span class="c-str">"#B5584A"</span>,  <span class="c-com"># 次強警示</span>
+    <span class="c-str">"clay"</span>:       <span class="c-str">"#B87B61"</span>,  <span class="c-com"># 柔和強調</span>
+    <span class="c-str">"caution"</span>:    <span class="c-str">"#D2962D"</span>,  <span class="c-com"># 注意提醒</span>
+}
+
+<span class="c-key">LINE_COLORS</span> = {            <span class="c-com"># 折線圖建議使用加深版</span>
+    <span class="c-str">"primary"</span>: <span class="c-str">"#5D7F58"</span>,  <span class="c-com"># 主色 600（vs 主色 500 對比更佳）</span>
+    <span class="c-str">"blue"</span>:    <span class="c-str">"#587A9D"</span>,  <span class="c-com"># 原色即可</span>
+    <span class="c-str">"yellow"</span>:  <span class="c-str">"#A8821F"</span>,  <span class="c-com"># Mustard 加深（原色畫線太淺）</span>
+}
+
+<span class="c-key">SEMANTIC</span> = {
+    <span class="c-str">"success"</span>: <span class="c-str">"#54734F"</span>,
+    <span class="c-str">"warning"</span>: <span class="c-str">"#D2962D"</span>,
+    <span class="c-str">"danger"</span>:  <span class="c-str">"#BE373C"</span>,
+    <span class="c-str">"info"</span>:    <span class="c-str">"#477A9E"</span>,
+}
+
+<span class="c-com"># 套用範例</span>
+<span class="c-key">import</span> matplotlib.pyplot <span class="c-key">as</span> plt
+plt.rcParams[<span class="c-str">"axes.prop_cycle"</span>] = plt.cycler(<span class="c-str">color</span>=CATEGORICAL)
+plt.rcParams[<span class="c-str">"font.family"</span>] = <span class="c-str">"Noto Sans TC"</span></pre>
+
+    <h3>命名慣例</h3>
+    <p>在程式碼與設計檔中，建議統一使用以下命名規則：</p>
+    <p>• <strong>主色階：</strong><code>primary-50</code> 至 <code>primary-900</code>（每 100 為一階）</p>
+    <p>• <strong>中性色：</strong><code>neutral-50</code> 至 <code>neutral-900</code></p>
+    <p>• <strong>類別色：</strong><code>cat-1</code> 至 <code>cat-6</code>（依優先順序使用）</p>
+    <p>• <strong>強調色：</strong><code>alert</code>／<code>terracotta</code>／<code>clay</code>／<code>caution</code>，<strong>不可與類別色混用</strong></p>
+    <p>• <strong>折線專用：</strong><code>line-primary</code>／<code>line-mustard</code>（為視覺加深版）</p>
+    <p>• <strong>語意色：</strong><code>success / warning / danger / info</code></p>
+  </section>
+
+  </main>
+</div>
+
+<!-- ============== Footer ============== -->
+<footer>
+  <div class="foot-inner">
+    <div>
+      <h5>關於本指引</h5>
+      <p>本資料視覺化指引由組織內部制定，作為所有對內、對外資料呈現的標準參考。若有任何疑義或修訂建議，請聯絡內部資料治理小組。</p>
+      <p style="margin-top:14px; color:var(--n-500);">本文件採用 Noto Serif TC ／ Noto Sans TC 字體排版。所有圖表以 Chart.js 4.4 繪製。</p>
+    </div>
+    <div>
+      <h5>修訂記錄</h5>
+      <ul>
+        <li>v1.0 ／ 2026.05 ／ 初版發布</li>
+      </ul>
+    </div>
+    <div>
+      <h5>授權</h5>
+      <ul>
+        <li>內部使用範本</li>
+        <li>請勿外流或用於商業用途</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bar">
+    <span>DATA VISUALIZATION STANDARDS</span>
+    <span>VERSION 1.0 ／ 2026</span>
+  </div>
+</footer>
+
+<script>
+// === Chart.js 全域預設值 ===
+const PRIMARY        = '#739A6D';   // Sage - 主色（用於長條／填色）
+const PRIMARY_DARK   = '#5D7F58';   // 主色 600 - 折線用
+const PRIMARY_DARKER = '#374C34';   // 主色 800 - 重點折線／均線
+const SLATE_BLUE     = '#587A9D';   // 第二色
+const MUSTARD        = '#C8A041';   // 第三色（填色用）
+const MUSTARD_DARK   = '#A8821F';   // 第三色折線版（加深）
+const TEAL           = '#49888D';
+const BRONZE         = '#916E46';
+const PLUM           = '#955F71';
+
+// 強調色家族（紅／橙系，禁止作為一般類別色）
+const ALERT_RED   = '#BE373C';   // 最強警示
+const TERRACOTTA  = '#B5584A';   // 次強警示／強對比
+const CLAY        = '#B87B61';   // 柔和強調
+const CAUTION     = '#D2962D';   // 注意／提醒
+
+const N400 = '#A2ABA0';
+const N300 = '#CACFC9';
+const N200 = '#E4E7E4';
+const N700 = '#444C43';
+
+// 類別配色順序: 綠 → 藍 → 黃 → 鴨綠 → 銅 → 梅
+const CAT = [PRIMARY, SLATE_BLUE, MUSTARD, TEAL, BRONZE, PLUM];
+
+Chart.defaults.font.family = "'Noto Sans TC', sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = N700;
+Chart.defaults.borderColor = N200;
+Chart.defaults.plugins.legend.labels.usePointStyle = true;
+Chart.defaults.plugins.legend.labels.boxWidth = 8;
+Chart.defaults.plugins.legend.labels.boxHeight = 8;
+Chart.defaults.plugins.legend.position = 'top';
+Chart.defaults.plugins.legend.align = 'start';
+
+const cleanGrid = { display: true, color: N200, drawBorder: false, tickLength: 0 };
+const noGrid    = { display: false, drawBorder: false };
+const axisLine  = { color: N300 };
+
+// ============== 1. 每日新增確診（直條 + 7日均線）==============
+// 密集時序直條: barPercentage=0.75, categoryPercentage=0.9
+// 資料區間擴大至 28 天，均線採「中心對齊」(centered)，視覺上與當日資料對齊
+const dailyLabels = [
+  '04/24','04/25','04/26','04/27','04/28','04/29','04/30',
+  '05/01','05/02','05/03','05/04','05/05','05/06','05/07',
+  '05/08','05/09','05/10','05/11','05/12','05/13','05/14',
+  '05/15','05/16','05/17','05/18','05/19','05/20','05/21'
+];
+// 模擬週末填報延遲效應（週六日明顯偏低）
+const dailyData = [
+  1560, 1820, 2120, 1980, 2240, 1480, 1190,  // W1
+  2380, 2680, 2510, 2620, 2890, 1650, 1320,  // W2
+  2890, 3120, 3580, 3340, 3520, 2210, 1780,  // W3
+  3220, 3580, 3760, 4020, 4180, 2680, 2240   // W4
+];
+
+// 中心對齊的 7 日移動平均（i 點 = i-3 到 i+3 的平均）
+// 兩端 3 天用較短的窗口，避免折線斷掉
+const ma7 = dailyData.map((_, i) => {
+  const half = 3;
+  const lo = Math.max(0, i - half);
+  const hi = Math.min(dailyData.length, i + half + 1);
+  const slice = dailyData.slice(lo, hi);
+  return Math.round(slice.reduce((a,b)=>a+b,0) / slice.length);
+});
+
+new Chart(document.getElementById('chart1'), {
+  data: {
+    labels: dailyLabels,
+    datasets: [
+      {
+        type: 'bar',
+        label: '每日新增',
+        data: dailyData,
+        backgroundColor: PRIMARY,
+        borderRadius: 0,
+        barPercentage: 0.75,
+        categoryPercentage: 0.9,
+        order: 2,
+      },
+      {
+        type: 'line',
+        label: '7 日移動平均（中心對齊）',
+        data: ma7,
+        borderColor: PRIMARY_DARKER,
+        backgroundColor: 'transparent',
+        borderWidth: 2.5,
+        tension: 0.35,
+        pointRadius: 0,
+        order: 1,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { beginAtZero: true, grid: cleanGrid, border: axisLine },
+      x: { grid: noGrid, border: axisLine, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 7, font:{size:10} } }
+    }
+  }
+});
+
+// ============== 2. 波次比較（折線，強調最新波段）==============
+const waveLabels = Array.from({length:30}, (_,i)=>`第${i+1}日`);
+const wave1 = [120,180,260,380,520,720,980,1240,1580,1820,1960,1880,1740,1520,1280,1040,820,640,490,380,290,220,170,130,100,80,65,52,42,35];
+const wave2 = [180,290,420,640,920,1280,1720,2180,2640,3020,3280,3340,3180,2860,2440,1980,1560,1180,890,680,510,390,290,220,170,130,100,80,62,48];
+const waveNow = [240,380,560,820,1180,1620,2180,2840,3520,4180,4720,5040,5180,5040,4640,4080,3420,2780,2210,1740,1360,1050,810,620,470,360,275,210,160,120];
+
+new Chart(document.getElementById('chart2'), {
+  type: 'line',
+  data: {
+    labels: waveLabels,
+    datasets: [
+      { label:'第一波（2022）', data: wave1, borderColor: N400, backgroundColor:'transparent', borderWidth:1.5, tension:0.35, pointRadius:0 },
+      { label:'第二波（2023）', data: wave2, borderColor: N300, backgroundColor:'transparent', borderWidth:1.5, borderDash:[4,3], tension:0.35, pointRadius:0 },
+      { label:'第三波（2024）', data: waveNow, borderColor: PRIMARY_DARK, backgroundColor:'transparent', borderWidth:3, tension:0.35, pointRadius:0 },
+      { label:'警戒閾值', data: Array(30).fill(4500), borderColor: ALERT_RED, backgroundColor:'transparent', borderWidth:1.5, borderDash:[6,4], pointRadius:0, fill:false },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { beginAtZero:true, grid: cleanGrid, border: axisLine },
+      x: { grid: noGrid, border: axisLine, ticks: { autoSkip:true, maxTicksLimit: 6 } }
+    }
+  }
+});
+
+// ============== 3. 縣市排名（水平長條，紅色強調超標）==============
+// 水平排名: barPercentage=0.7, categoryPercentage=0.85
+const cityLabels = ['新北市','臺北市','桃園市','臺中市','高雄市','臺南市','彰化縣','屏東縣','新竹縣','雲林縣'];
+const cityRates  = [920, 870, 760, 720, 680, 640, 590, 540, 510, 480];
+// 超過 800/10萬 標 Terracotta（次強警示，比 Alert Red 柔和）
+const cityColors = cityRates.map(v => v >= 800 ? TERRACOTTA : PRIMARY);
+
+new Chart(document.getElementById('chart3'), {
+  type: 'bar',
+  data: {
+    labels: cityLabels,
+    datasets: [{
+      data: cityRates,
+      backgroundColor: cityColors,
+      borderRadius: 0,
+      barPercentage: 0.7,
+      categoryPercentage: 0.85,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display:false } },
+    scales: {
+      x: { beginAtZero:true, grid: cleanGrid, border: axisLine, title:{display:true, text:'每 10 萬人口', font:{size:11}, color:N400 } },
+      y: { grid: noGrid, border: axisLine }
+    }
+  }
+});
+
+// ============== 4. 變異株 100% 堆疊 ==============
+// 堆疊直條: barPercentage=0.6, categoryPercentage=0.85
+const variantMonths = ['11月','12月','1月','2月','3月','4月'];
+new Chart(document.getElementById('chart4'), {
+  type: 'bar',
+  data: {
+    labels: variantMonths,
+    datasets: [
+      { label:'JN.1',  data:[62, 48, 32, 18,  8,  3], backgroundColor: PRIMARY },
+      { label:'KP.2',  data:[28, 36, 42, 38, 24, 14], backgroundColor: SLATE_BLUE },
+      { label:'KP.3',  data:[ 6, 12, 18, 28, 42, 48], backgroundColor: MUSTARD },
+      { label:'LB.1',  data:[ 2,  3,  6, 14, 22, 30], backgroundColor: TEAL },
+      { label:'其他',  data:[ 2,  1,  2,  2,  4,  5], backgroundColor: N300 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { stacked:true, beginAtZero:true, max:100, grid: cleanGrid, border: axisLine, ticks:{callback:(v)=>v+'%'} },
+      x: { stacked:true, grid: noGrid, border: axisLine, ticks:{maxRotation:0} }
+    },
+    elements: { bar: { borderWidth:0 } },
+    datasets: { bar: { barPercentage: 0.6, categoryPercentage: 0.85 } }
+  }
+});
+
+// ============== 5. 多指標監測（折線）==============
+const metricLabels = ['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12'];
+new Chart(document.getElementById('chart5'), {
+  type: 'line',
+  data: {
+    labels: metricLabels,
+    datasets: [
+      { label:'確診（標準化）', data:[42, 58, 78, 92, 100, 96, 84, 68, 52, 38, 28, 22], borderColor: PRIMARY_DARK, backgroundColor: PRIMARY_DARK, borderWidth:2.5, tension:0.3, pointRadius:3, pointHoverRadius:5 },
+      { label:'住院',          data:[28, 38, 52, 70, 88, 100, 94, 78, 62, 48, 36, 28], borderColor: SLATE_BLUE, backgroundColor: SLATE_BLUE, borderWidth:2, tension:0.3, pointRadius:3, pointHoverRadius:5, pointStyle:'rect' },
+      { label:'重症',          data:[18, 24, 32, 48, 68, 88, 100, 92, 76, 60, 48, 38], borderColor: MUSTARD_DARK, backgroundColor: MUSTARD_DARK, borderWidth:2, tension:0.3, pointRadius:3, pointHoverRadius:5, pointStyle:'triangle' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { beginAtZero:true, max:110, grid: cleanGrid, border: axisLine },
+      x: { grid: noGrid, border: axisLine }
+    }
+  }
+});
+
+// ============== 6. 疫苗累計覆蓋率（區域圖 + 目標線）==============
+const vaxLabels = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+new Chart(document.getElementById('chart6'), {
+  type: 'line',
+  data: {
+    labels: vaxLabels,
+    datasets: [
+      {
+        label:'第 1 劑',
+        data:[42, 58, 71, 79, 84, 87, 89, 91, 92, 93, 94, 94],
+        borderColor: PRIMARY_DARK,
+        backgroundColor: 'rgba(115,154,109,0.22)',
+        borderWidth: 2.5, fill: true, tension: 0.3, pointRadius: 0,
+      },
+      {
+        label:'第 2 劑',
+        data:[28, 42, 56, 67, 74, 79, 83, 86, 88, 89, 90, 91],
+        borderColor: '#486581',
+        backgroundColor: 'rgba(88,122,157,0.18)',
+        borderWidth: 2.5, fill: true, tension: 0.3, pointRadius: 0,
+      },
+      {
+        label:'第 3 劑',
+        data:[ 8, 18, 28, 38, 46, 53, 59, 64, 68, 72, 75, 77],
+        borderColor: MUSTARD_DARK,
+        backgroundColor: 'rgba(200,160,65,0.18)',
+        borderWidth: 2.5, fill: true, tension: 0.3, pointRadius: 0,
+      },
+      {
+        label:'目標 90%',
+        data: Array(12).fill(90),
+        borderColor: ALERT_RED, backgroundColor:'transparent',
+        borderWidth: 1.5, borderDash:[6,4], pointRadius:0, fill: false,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { beginAtZero:true, max:100, grid: cleanGrid, border: axisLine, ticks:{callback:(v)=>v+'%'} },
+      x: { grid: noGrid, border: axisLine }
+    }
+  }
+});
+
+// ============== 7. 年齡層 × 嚴重度（分組長條）==============
+// 分組: barPercentage=0.85, categoryPercentage=0.75
+new Chart(document.getElementById('chart7'), {
+  type: 'bar',
+  data: {
+    labels: ['0–9','10–19','20–39','40–59','60–69','70–79','80+'],
+    datasets: [
+      { label:'輕症', data:[78, 85, 89, 82, 70, 55, 38], backgroundColor: PRIMARY },
+      { label:'中症', data:[18, 13,  9, 14, 22, 32, 42], backgroundColor: SLATE_BLUE },
+      { label:'重症', data:[ 4,  2,  2,  4,  8, 13, 20], backgroundColor: MUSTARD },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { stacked:false, beginAtZero:true, max:100, grid: cleanGrid, border: axisLine, ticks:{callback:(v)=>v+'%'} },
+      x: { stacked:false, grid: noGrid, border: axisLine }
+    },
+    datasets: { bar: { barPercentage: 0.85, categoryPercentage: 0.75 } }
+  }
+});
+
+// ============== 8. 同期比較（今年 vs 去年 + 歷史範圍）==============
+// 用「相對週」對齊，本年主色加粗，去年中性虛線，歷史範圍淺色填充
+const yoyLabels = Array.from({length:24}, (_,i)=>`W${i+1}`);
+const thisYear  = [180, 220, 280, 340, 420, 520, 680, 920, 1280, 1820, 2640, 3580, 4220, 4180, 3640, 2840, 2120, 1580, 1180, 880, 660, 490, 360, 280];
+const lastYear  = [220, 260, 310, 380, 460, 560, 720, 980, 1340, 1820, 2480, 3120, 3640, 3580, 3120, 2480, 1880, 1380, 1020, 760, 570, 420, 310, 240];
+// 歷史 +1SD / -1SD 範圍（模擬 3 年平均的離散）
+const histHigh  = lastYear.map(v => Math.round(v * 1.35));
+const histLow   = lastYear.map(v => Math.round(v * 0.65));
+
+new Chart(document.getElementById('chart8'), {
+  type: 'line',
+  data: {
+    labels: yoyLabels,
+    datasets: [
+      // 歷史範圍上界（透明線）
+      { label:'歷史範圍上界', data: histHigh, borderColor:'transparent', backgroundColor:'transparent', pointRadius:0, fill:'+1' },
+      // 歷史範圍下界（搭配上界形成填色區帶）
+      { label:'歷史範圍（±1 SD）', data: histLow, borderColor:'transparent', backgroundColor:'rgba(162,171,160,0.22)', pointRadius:0, fill:false },
+      // 去年同期
+      { label:'去年同期', data: lastYear, borderColor: N400, backgroundColor:'transparent', borderWidth:1.5, borderDash:[5,4], tension:0.3, pointRadius:0 },
+      // 今年
+      { label:'今年', data: thisYear, borderColor: PRIMARY_DARK, backgroundColor:'rgba(115,154,109,0.15)', borderWidth:3, tension:0.3, pointRadius:0, fill: false },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: {
+          filter: (item) => item.text !== '歷史範圍上界'  // 隱藏輔助線的圖例
+        }
+      }
+    },
+    scales: {
+      y: { beginAtZero:true, grid: cleanGrid, border: axisLine, title:{display:true, text:'每週新增確診數', font:{size:11}, color:N400 } },
+      x: { grid: noGrid, border: axisLine, title:{display:true, text:'相對週數（W1 = 流行季開始）', font:{size:11}, color:N400 } }
+    }
+  }
+});
+
+// ============== 9. 圓餅圖（限制使用範例）==============
+new Chart(document.getElementById('chart9'), {
+  type: 'doughnut',
+  data: {
+    labels: ['已完整接種', '部分接種', '未接種', '不詳'],
+    datasets: [{
+      data: [62, 18, 14, 6],
+      backgroundColor: [PRIMARY, SLATE_BLUE, MUSTARD, N300],
+      borderColor: '#FFFFFF',
+      borderWidth: 2,
+    }]
+  },
+  options: {
+    cutout: '0%',  // 不挖空，純圓餅
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right', align: 'center', labels: { padding: 10, font:{size:11} } },
+      tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.parsed}%` } }
+    }
+  }
+});
+
+// ============== 10. 水平堆疊條（圓餅替代）==============
+new Chart(document.getElementById('chart10'), {
+  type: 'bar',
+  data: {
+    labels: ['2024年','2023年','2022年'],
+    datasets: [
+      { label:'已完整接種', data:[62, 48, 28], backgroundColor: PRIMARY },
+      { label:'部分接種',   data:[18, 22, 24], backgroundColor: SLATE_BLUE },
+      { label:'未接種',     data:[14, 22, 38], backgroundColor: MUSTARD },
+      { label:'不詳',       data:[ 6,  8, 10], backgroundColor: N300 },
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', align: 'start' } },
+    scales: {
+      x: { stacked:true, beginAtZero:true, max:100, grid: cleanGrid, border: axisLine, ticks:{callback:(v)=>v+'%'} },
+      y: { stacked:true, grid: noGrid, border: axisLine }
+    },
+    datasets: { bar: { barPercentage: 0.7, categoryPercentage: 0.85 } }
+  }
+});
+
+// ============== Do / Don't ==============
+const ddOpts = (yMin=0, yMax=null) => ({
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { display:false }, tooltip: { enabled:false } },
+  scales: {
+    y: { beginAtZero: yMin===0, min: yMin, max: yMax, grid: cleanGrid, border: axisLine, ticks:{font:{size:10}} },
+    x: { grid: noGrid, border: axisLine, ticks:{font:{size:10}} }
+  }
+});
+
+// Do/Don't 1: Y 軸起點
+new Chart(document.getElementById('ddDo1'), {
+  type:'bar',
+  data:{ labels:['週一','週二','週三','週四'], datasets:[{ data:[2820,3150,2980,3340], backgroundColor: PRIMARY, barPercentage:0.55, categoryPercentage:0.85, borderRadius:0 }]},
+  options: ddOpts(0)
+});
+new Chart(document.getElementById('ddDont1'), {
+  type:'bar',
+  data:{ labels:['週一','週二','週三','週四'], datasets:[{ data:[2820,3150,2980,3340], backgroundColor: ALERT_RED, barPercentage:0.55, categoryPercentage:0.85, borderRadius:0 }]},
+  options: ddOpts(2700, 3400)
+});
+
+// Do/Don't 2: 顏色焦點
+new Chart(document.getElementById('ddDo2'), {
+  type:'bar',
+  data:{ labels:['A區','B區','焦點區','C區','D區'], datasets:[{ data:[580,640,920,600,550], backgroundColor:[N400,N400,PRIMARY,N400,N400], barPercentage:0.55, categoryPercentage:0.85, borderRadius:0 }]},
+  options: ddOpts(0)
+});
+new Chart(document.getElementById('ddDont2'), {
+  type:'bar',
+  data:{ labels:['A區','B區','C區','D區','E區'], datasets:[{ data:[580,640,920,600,550], backgroundColor:[ALERT_RED, MUSTARD, SLATE_BLUE, PLUM, TEAL], barPercentage:0.55, categoryPercentage:0.85, borderRadius:0 }]},
+  options: ddOpts(0)
+});
+
+// Do/Don't 3: 移除多餘元素
+new Chart(document.getElementById('ddDo3'), {
+  type:'line',
+  data:{ labels:['1','2','3','4','5','6'], datasets:[{ data:[120,180,150,280,320,400], borderColor:PRIMARY, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.3 }]},
+  options: ddOpts(0)
+});
+new Chart(document.getElementById('ddDont3'), {
+  type:'line',
+  data:{ labels:['1','2','3','4','5','6'], datasets:[{ data:[120,180,150,280,320,400], borderColor:PRIMARY, backgroundColor:'rgba(115,154,109,.4)', borderWidth:2, pointRadius:5, pointBackgroundColor:'#fff', pointBorderWidth:2, fill:true, tension:0.5 }]},
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{enabled:false} },
+    scales:{
+      y:{ beginAtZero:true, grid:{color:'#555', lineWidth:1}, border:{color:'#000', width:2}, ticks:{font:{size:10}} },
+      x:{ grid:{color:'#555', lineWidth:1}, border:{color:'#000', width:2}, ticks:{font:{size:10}} }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+{
+  "version": "1.0",
+  "generated": "2026-05-21",
+  "note": "All data is fictional, for visualization guideline examples only.",
+  "datasets": {
+    "daily_cases": {
+      "description": "28 days of daily new cases with weekend reporting effect",
+      "source_file": "01-daily-cases.csv"
+    },
+    "weekly_waves": {
+      "description": "Three pandemic waves aligned by relative day from start",
+      "source_file": "02-weekly-waves.csv"
+    },
+    "yoy_comparison": {
+      "description": "Year-over-year weekly comparison with historical range",
+      "source_file": "03-yoy-comparison.csv"
+    },
+    "city_rates": {
+      "description": "Per-100k incidence rates for 22 cities, with population",
+      "source_file": "04-city-rates.csv"
+    },
+    "variant_share": {
+      "description": "Monthly share of major variants",
+      "source_file": "05-variant-share.csv"
+    },
+    "vaccine_coverage": {
+      "description": "Cumulative vaccination coverage for dose 1/2/3 by month",
+      "source_file": "06-vaccine-coverage.csv"
+    },
+    "age_severity": {
+      "description": "Severity (mild/moderate/severe) by age group",
+      "source_file": "07-age-severity.csv"
+    },
+    "vax_status": {
+      "description": "Vaccination status among confirmed cases, by year",
+      "source_file": "08-vax-status.csv"
+    },
+    "vax_vs_severity": {
+      "description": "City-level correlation: vaccination rate vs. severe rate",
+      "source_file": "09-vax-vs-severity.csv"
+    },
+    "age_gender": {
+      "description": "Confirmed cases by age group and gender (for pyramid)",
+      "source_file": "10-age-gender.csv"
+    },
+    "region_stay": {
+      "description": "Long-format sample of hospital stay days by region (1,200 records)",
+      "source_file": "11-region-stay.csv"
+    },
+    "monthly_incidence": {
+      "description": "Matrix of monthly incidence by city (for heatmap)",
+      "source_file": "12-monthly-incidence.csv"
+    }
+  }
+}

@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>疫情資料視覺化指引 ／ Epidemic Data Visualization Style Guide</title>
+<meta name="description" content="公部門疫情資料分析、流行病學報告、儀表板與對外公告的視覺化標準。包含色彩系統、9 種圖表規範、無障礙標準、Python／Power BI／Excel 資源、AI agent skill 套件。">
+<meta property="og:title" content="疫情資料視覺化指引">
+<meta property="og:description" content="公部門疫情資料視覺化的完整標準。色彩、圖表、無障礙、工具支援、AI agent skill。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --p-50:#F6F9F6; --p-100:#E8EEE7; --p-200:#D1DECF; --p-300:#B4C9B1;
+  --p-400:#91B08C; --p-500:#739A6D; --p-600:#5D7F58; --p-700:#496345;
+  --p-800:#374C34; --p-900:#253423;
+  --n-0:#FFFFFF; --n-50:#FAFAFA; --n-100:#F2F3F1; --n-200:#E4E7E4;
+  --n-300:#CACFC9; --n-400:#A2ABA0; --n-500:#7A8778; --n-600:#5D675B;
+  --n-700:#444C43; --n-800:#2C312B; --n-900:#181B18;
+  --accent: #BE373C;
+  --mustard: #C8A041;
+
+  --serif: 'Noto Serif TC', serif;
+  --sans:  'Noto Sans TC', sans-serif;
+  --mono:  'JetBrains Mono', monospace;
+
+  --maxw: 1180px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  color: var(--n-800);
+  background: var(--n-50);
+  line-height: 1.7;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== 頁首 ===== */
+.masthead {
+  background: var(--n-900);
+  color: var(--n-100);
+  border-bottom: 4px solid var(--p-500);
+}
+.masthead-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.masthead-left { display: flex; align-items: center; gap: 14px; }
+.crest {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--p-400);
+  display: grid; place-items: center;
+  font-family: var(--serif);
+  font-weight: 700;
+  color: var(--p-300);
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.masthead-title {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+.masthead-title small {
+  display: block;
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 400;
+  color: var(--n-400);
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+.masthead-right {
+  display: flex; align-items: center; gap: 24px;
+  font-size: 11px;
+  color: var(--n-400);
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+.masthead-right strong {
+  color: var(--p-300);
+  font-weight: 600;
+  display: block;
+}
+.masthead a {
+  color: var(--n-100);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s;
+}
+.masthead a:hover { border-color: var(--p-300); }
+
+/* ===== Hero ===== */
+.hero {
+  background: var(--n-0);
+  border-bottom: 1px solid var(--n-200);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0;
+  width: 50%; height: 100%;
+  background:
+    radial-gradient(ellipse at top right, var(--p-100) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 72px 32px 64px;
+  position: relative;
+}
+.hero-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--p-600);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero-kicker::before {
+  content: "—";
+  margin-right: 12px;
+  color: var(--p-400);
+}
+h1.hero-title {
+  font-family: var(--serif);
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--n-900);
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+  max-width: 850px;
+}
+h1.hero-title em {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--p-600);
+}
+.hero-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 20px;
+  color: var(--n-500);
+  margin-bottom: 24px;
+}
+.hero-lead {
+  font-size: 17px;
+  color: var(--n-700);
+  max-width: 720px;
+  margin-bottom: 36px;
+}
+
+/* ===== Hero meta strip ===== */
+.hero-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--n-200);
+  margin-top: 16px;
+  padding-top: 24px;
+}
+.hero-meta-cell {
+  padding-right: 24px;
+  border-right: 1px solid var(--n-200);
+}
+.hero-meta-cell:last-child { border-right: none; }
+.hero-meta-cell .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--n-500);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.hero-meta-cell .value {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--n-900);
+}
+.hero-meta-cell .sub {
+  font-size: 12px;
+  color: var(--n-500);
+  margin-top: 2px;
+}
+
+/* ===== 主內容 ===== */
+main { max-width: var(--maxw); margin: 0 auto; padding: 64px 32px; }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--n-300);
+}
+.section-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--p-600);
+}
+.section-head h2 {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--n-900);
+  letter-spacing: -0.5px;
+}
+.section-head .en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--n-500);
+  margin-left: auto;
+}
+
+section { margin-bottom: 80px; }
+
+/* ===== 格式選擇卡 ===== */
+.formats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.format-card {
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+  padding: 28px 26px;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: border-color .2s, transform .2s;
+  display: flex;
+  flex-direction: column;
+}
+.format-card:hover {
+  border-color: var(--p-500);
+  transform: translateY(-2px);
+}
+.format-card .badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--p-700);
+  background: var(--p-50);
+  padding: 4px 10px;
+  border: 1px solid var(--p-200);
+  display: inline-block;
+  align-self: flex-start;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+.format-card h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--n-900);
+}
+.format-card .h3-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--n-500);
+  margin-bottom: 14px;
+}
+.format-card p {
+  font-size: 14px;
+  color: var(--n-700);
+  margin-bottom: 20px;
+  flex: 1;
+}
+.format-card .cta {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--p-700);
+  letter-spacing: 1px;
+  border-top: 1px solid var(--n-200);
+  padding-top: 14px;
+  text-transform: uppercase;
+}
+.format-card .cta::after {
+  content: " →";
+  transition: margin-left .2s;
+}
+.format-card:hover .cta::after {
+  margin-left: 4px;
+}
+
+/* 特別樣式：首選格式 */
+.format-card.featured {
+  background: var(--p-500);
+  color: var(--n-0);
+  border-color: var(--p-500);
+}
+.format-card.featured h3 { color: var(--n-0); }
+.format-card.featured .h3-en { color: var(--p-200); }
+.format-card.featured p { color: var(--p-100); }
+.format-card.featured .badge {
+  background: var(--p-700);
+  border-color: var(--p-600);
+  color: var(--p-200);
+}
+.format-card.featured .cta {
+  color: var(--n-0);
+  border-color: var(--p-600);
+}
+
+/* ===== 使用者導覽 ===== */
+.audience {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--n-200);
+  background: var(--n-0);
+}
+.audience-card {
+  padding: 32px 28px;
+  border-right: 1px solid var(--n-200);
+  display: flex;
+  flex-direction: column;
+}
+.audience-card:last-child { border-right: none; }
+.audience-card .icon-frame {
+  width: 48px; height: 48px;
+  border: 1.5px solid var(--p-400);
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-weight: 700;
+  color: var(--p-600);
+  font-size: 20px;
+  margin-bottom: 18px;
+}
+.audience-card h4 {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--n-900);
+  margin-bottom: 4px;
+}
+.audience-card .role-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--n-500);
+  margin-bottom: 16px;
+}
+.audience-card p {
+  font-size: 14px;
+  color: var(--n-700);
+  margin-bottom: 20px;
+  flex: 1;
+}
+.audience-card ul {
+  list-style: none;
+  font-size: 13px;
+}
+.audience-card ul li {
+  padding: 6px 0;
+  border-top: 1px solid var(--n-100);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.audience-card ul li:first-child { border-top: none; }
+.audience-card ul li a {
+  color: var(--p-700);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.audience-card ul li a:hover { border-bottom-color: var(--p-700); }
+.audience-card ul li code {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--n-600);
+  background: var(--n-100);
+  padding: 2px 6px;
+}
+
+/* ===== 色票預覽 ===== */
+.palette-strip {
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+  padding: 36px 32px;
+}
+.palette-strip h3 {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.palette-strip .h3-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--n-500);
+  margin-bottom: 24px;
+}
+.palette-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.palette-chip {
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+}
+.palette-chip .swatch {
+  height: 64px;
+  border-bottom: 1px solid var(--n-200);
+}
+.palette-chip .meta {
+  padding: 10px 12px;
+}
+.palette-chip .name {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--n-900);
+  margin-bottom: 2px;
+}
+.palette-chip .hex {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--n-500);
+  letter-spacing: 0.5px;
+}
+.palette-note {
+  font-size: 13px;
+  color: var(--n-600);
+  padding-top: 16px;
+  border-top: 1px solid var(--n-200);
+}
+
+/* ===== 範例圖預覽 ===== */
+.examples-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.example-tile {
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.example-tile .num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--p-600);
+  margin-bottom: 6px;
+}
+.example-tile h5 {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--n-900);
+  margin-bottom: 12px;
+}
+.example-tile img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===== 設計原則 ===== */
+.principles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.principle {
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+  border-left: 3px solid var(--p-500);
+  padding: 24px 28px;
+}
+.principle .num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--p-600);
+  margin-bottom: 8px;
+}
+.principle h4 {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.principle .h4-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--n-500);
+  margin-bottom: 12px;
+}
+.principle p {
+  font-size: 14px;
+  color: var(--n-700);
+}
+
+/* ===== Footer ===== */
+footer {
+  background: var(--n-900);
+  color: var(--n-300);
+  padding: 48px 32px 36px;
+  border-top: 4px solid var(--p-500);
+}
+.footer-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--n-700);
+  margin-bottom: 24px;
+}
+.footer-col h6 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--p-300);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li {
+  padding: 4px 0;
+  font-size: 13px;
+}
+.footer-col ul li a {
+  color: var(--n-300);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color .15s;
+}
+.footer-col ul li a:hover {
+  color: var(--p-300);
+  border-bottom-color: var(--p-400);
+}
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--n-500);
+  letter-spacing: 0.5px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .hero-inner { padding: 56px 24px 48px; }
+  h1.hero-title { font-size: 38px; }
+  .hero-meta { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .hero-meta-cell { border-right: none; padding-right: 0; }
+  main { padding: 40px 24px; }
+  .formats { grid-template-columns: 1fr; }
+  .audience { grid-template-columns: 1fr; }
+  .audience-card { border-right: none; border-bottom: 1px solid var(--n-200); }
+  .audience-card:last-child { border-bottom: none; }
+  .palette-row { grid-template-columns: repeat(3, 1fr); }
+  .examples-grid { grid-template-columns: repeat(2, 1fr); }
+  .principles { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-bottom { flex-direction: column; gap: 12px; align-items: flex-start; }
+  .masthead-right { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-left">
+      <div class="crest">DV</div>
+      <div class="masthead-title">
+        疫情資料視覺化指引
+        <small>EPIDEMIC DATA VISUALIZATION STYLE GUIDE</small>
+      </div>
+    </div>
+    <div class="masthead-right">
+      <div><strong>v 1.0</strong>VERSION</div>
+      <div><strong>2026</strong>EDITION</div>
+      <div><a href="https://github.com/drhao/epi-dataviz-styleguide">GITHUB →</a></div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">PUBLIC HEALTH DATA ／ 公部門資料視覺化</div>
+    <h1 class="hero-title">將疫情資料化為<em>清晰、可信、不引發恐慌</em>的公共溝通</h1>
+    <div class="hero-en">A standard for trustworthy epidemic data visualization</div>
+    <p class="hero-lead">
+      本指引提供組織內疫情資料分析、流行病學報告、儀表板與對外公告的視覺化標準。
+      考量疫情資訊的高敏感度，特別規範紅色僅用於警示與強調，避免過度引發焦慮，
+      同時確保關鍵風險訊息能被正確接收。
+    </p>
+
+    <div class="hero-meta">
+      <div class="hero-meta-cell">
+        <div class="label">PRIMARY</div>
+        <div class="value">#739A6D</div>
+        <div class="sub">Sage Green</div>
+      </div>
+      <div class="hero-meta-cell">
+        <div class="label">CHARTS</div>
+        <div class="value">9 種</div>
+        <div class="sub">圖表類型規範</div>
+      </div>
+      <div class="hero-meta-cell">
+        <div class="label">COVERAGE</div>
+        <div class="value">WCAG AA</div>
+        <div class="sub">無障礙標準</div>
+      </div>
+      <div class="hero-meta-cell">
+        <div class="label">TESTS</div>
+        <div class="value">65 / 65</div>
+        <div class="sub">自動化測試通過</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main>
+
+  <!-- 文件格式 -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">SECTION 01</div>
+      <h2>選擇你的閱讀格式</h2>
+      <div class="en">Choose your format</div>
+    </div>
+
+    <div class="formats">
+      <a href="guideline.html" class="format-card featured">
+        <span class="badge">RECOMMENDED</span>
+        <h3>互動式網頁版</h3>
+        <div class="h3-en">Interactive Web</div>
+        <p>含 13 張即時繪製的範例圖表，可瀏覽器中直接互動。建議首次閱讀使用。</p>
+        <div class="cta">立即閱讀</div>
+      </a>
+
+      <a href="guideline.pdf" class="format-card">
+        <span class="badge">PDF · 22 PAGES</span>
+        <h3>列印版</h3>
+        <div class="h3-en">Print Edition</div>
+        <p>A4 列印優化版本，適合長官審閱、會議發放、實體存檔。</p>
+        <div class="cta">下載 PDF</div>
+      </a>
+
+      <a href="guideline.md" class="format-card">
+        <span class="badge">MARKDOWN</span>
+        <h3>純文字版</h3>
+        <div class="h3-en">Markdown Source</div>
+        <p>適合在 Notion、Wiki、GitHub 等平台引用或進一步加工的純文字格式。</p>
+        <div class="cta">查看原始檔</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 使用者導覽 -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">SECTION 02</div>
+      <h2>你想做什麼？</h2>
+      <div class="en">For whom &amp; for what</div>
+    </div>
+
+    <div class="audience">
+      <div class="audience-card">
+        <div class="icon-frame">P</div>
+        <h4>程式開發者</h4>
+        <div class="role-en">Developers</div>
+        <p>需要在 Python、JavaScript、R 程式中套用本指引色彩與規範。</p>
+        <ul>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/scripts/epidemic_palette.py">Python 色票模組</a></li>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/tree/main/skill/scripts">範例腳本</a></li>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/tree/main/skill/references">9 種圖表規範</a></li>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/tree/main/skill/assets/sample-data">範例資料集</a></li>
+        </ul>
+      </div>
+
+      <div class="audience-card">
+        <div class="icon-frame">D</div>
+        <h4>設計師／非工程師</h4>
+        <div class="role-en">Designers &amp; Analysts</div>
+        <p>在 Excel、Power BI、Tableau 等工具中製作圖表或儀表板。</p>
+        <ul>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/resources/palette.csv">色票對照表 (CSV)</a></li>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/resources/powerbi-theme.json">Power BI 主題</a></li>
+          <li><a href="guideline.html#ch11">Excel 設定指南</a></li>
+          <li><a href="guideline.pdf">完整指引 PDF</a></li>
+        </ul>
+      </div>
+
+      <div class="audience-card">
+        <div class="icon-frame">A</div>
+        <h4>AI Agent 工具用戶</h4>
+        <div class="role-en">AI Agent Users</div>
+        <p>在 Claude Code、Codex、Google Antigravity 等工具中自動套用本指引。</p>
+        <ul>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/SKILL.md">SKILL.md</a></li>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/SKILL-README.md">安裝說明</a></li>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/tree/main/skill/references">Reference 詳細規範</a></li>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/tree/main/skill/tests">測試（驗證一致性）</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 色票 -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">SECTION 03</div>
+      <h2>主色與類別配色</h2>
+      <div class="en">Primary &amp; Categorical Palette</div>
+    </div>
+
+    <div class="palette-strip">
+      <h3>類別配色順序：綠 → 藍 → 黃 → 鴨綠 → 銅 → 梅</h3>
+      <div class="h3-en">Categorical order — red kept exclusively for alerts</div>
+
+      <div class="palette-row">
+        <div class="palette-chip">
+          <div class="swatch" style="background:#739A6D"></div>
+          <div class="meta"><div class="name">Sage 主色</div><div class="hex">#739A6D</div></div>
+        </div>
+        <div class="palette-chip">
+          <div class="swatch" style="background:#587A9D"></div>
+          <div class="meta"><div class="name">Slate Blue</div><div class="hex">#587A9D</div></div>
+        </div>
+        <div class="palette-chip">
+          <div class="swatch" style="background:#C8A041"></div>
+          <div class="meta"><div class="name">Mustard</div><div class="hex">#C8A041</div></div>
+        </div>
+        <div class="palette-chip">
+          <div class="swatch" style="background:#49888D"></div>
+          <div class="meta"><div class="name">Teal</div><div class="hex">#49888D</div></div>
+        </div>
+        <div class="palette-chip">
+          <div class="swatch" style="background:#916E46"></div>
+          <div class="meta"><div class="name">Bronze</div><div class="hex">#916E46</div></div>
+        </div>
+        <div class="palette-chip">
+          <div class="swatch" style="background:#955F71"></div>
+          <div class="meta"><div class="name">Plum</div><div class="hex">#955F71</div></div>
+        </div>
+      </div>
+
+      <div class="palette-note">
+        強調色家族（紅／橙系）獨立保留為警示用途，<strong>不可作為一般類別配色</strong>。
+        詳細規範與配色搭配模式請見 <a href="guideline.html#ch3" style="color:var(--p-700)">完整指引第 3 章</a>。
+      </div>
+    </div>
+  </section>
+
+  <!-- 圖表範例 -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">SECTION 04</div>
+      <h2>圖表範例</h2>
+      <div class="en">Chart examples</div>
+    </div>
+
+    <div class="examples-grid">
+      <div class="example-tile">
+        <div class="num">01 ／ BAR + MA</div>
+        <h5>每日新增 + 7 日移動平均</h5>
+        <img src="examples/01b-bar-daily-with-ma.png" alt="每日新增直條圖加 7 日移動平均線">
+      </div>
+      <div class="example-tile">
+        <div class="num">02 ／ LINE</div>
+        <h5>多指標趨勢監測</h5>
+        <img src="examples/02b-line-multi-metric.png" alt="多指標折線監測圖">
+      </div>
+      <div class="example-tile">
+        <div class="num">04 ／ STACKED</div>
+        <h5>變異株消長 100% 堆疊</h5>
+        <img src="examples/04a-stacked-100-percent.png" alt="變異株 100% 堆疊長條">
+      </div>
+      <div class="example-tile">
+        <div class="num">06 ／ SCATTER</div>
+        <h5>接種率 vs. 重症率相關性</h5>
+        <img src="examples/06a-scatter-correlation.png" alt="接種率與重症率的散佈圖">
+      </div>
+      <div class="example-tile">
+        <div class="num">08 ／ PYRAMID</div>
+        <h5>年齡 × 性別人口金字塔</h5>
+        <img src="examples/08-pyramid.png" alt="確診者年齡性別分布金字塔">
+      </div>
+      <div class="example-tile">
+        <div class="num">09 ／ HEATMAP</div>
+        <h5>縣市 × 月份發生率</h5>
+        <img src="examples/09-choropleth-heatmap.png" alt="縣市月份發生率熱力圖">
+      </div>
+    </div>
+  </section>
+
+  <!-- 設計原則 -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">SECTION 05</div>
+      <h2>四項核心原則</h2>
+      <div class="en">Guiding principles</div>
+    </div>
+
+    <div class="principles">
+      <div class="principle">
+        <div class="num">PRINCIPLE 001</div>
+        <h4>清晰優先</h4>
+        <div class="h4-en">Clarity First</div>
+        <p>每個視覺元素都必須服務於訊息。移除所有不傳達資訊的裝飾——3D 效果、過度網格線、不必要陰影。</p>
+      </div>
+
+      <div class="principle">
+        <div class="num">PRINCIPLE 002</div>
+        <h4>誠實呈現</h4>
+        <div class="h4-en">Honest Representation</div>
+        <p>Y 軸從零開始；不截斷座標軸誤導比例；不刻意挑選有利時間區間。資料的真實性高於敘事的戲劇性。</p>
+      </div>
+
+      <div class="principle">
+        <div class="num">PRINCIPLE 003</div>
+        <h4>一致性</h4>
+        <div class="h4-en">Consistency</div>
+        <p>同一份報告中，相同指標使用相同顏色；類別順序與配色跨頁面一致；單位、時間格式、四捨五入規則統一。</p>
+      </div>
+
+      <div class="principle">
+        <div class="num">PRINCIPLE 004</div>
+        <h4>負責任溝通</h4>
+        <div class="h4-en">Responsible Communication</div>
+        <p>疫情資料涉及公眾情緒。紅色不可濫用於一般類別配色，僅在標示警示閾值、關鍵異常時使用。色彩選擇須通過 WCAG AA 對比，並考量色覺障礙者。</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h6>文件格式</h6>
+        <ul>
+          <li><a href="guideline.html">HTML 互動版</a></li>
+          <li><a href="guideline.pdf">PDF 列印版</a></li>
+          <li><a href="guideline.md">Markdown</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h6>工具資源</h6>
+        <ul>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/resources/palette.csv">色票 CSV</a></li>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/resources/powerbi-theme.json">Power BI 主題</a></li>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/tree/main/skill/scripts">Python 模組</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h6>Source</h6>
+        <ul>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide">GitHub Repo</a></li>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/CHANGELOG.md">Changelog</a></li>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/CONTRIBUTING.md">Contributing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h6>關於</h6>
+        <ul>
+          <li><a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/LICENSE">使用授權</a></li>
+          <li>版本 1.0 ／ 2026</li>
+          <li>內部使用</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>疫情資料視覺化指引 ／ Epidemic Data Visualization Style Guide</div>
+      <div>本指引為組織內部文件，公開於 GitHub Pages 供透明審視</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

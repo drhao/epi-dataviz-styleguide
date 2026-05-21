@@ -1,0 +1,48 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# === 虛擬環境 ===
+venv/
+.venv/
+env/
+.env
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === 開發過程暫存 ===
+*.tmp
+*.bak
+*.log
+
+# === 測試輸出（這些是動態生成的,不應 commit） ===
+# 註：skill/assets/examples/ 中的 PNG 是「預先生成的參考圖」,
+# 應該 commit 進 repo。執行 generate_examples.py 重新生成時
+# 會覆蓋這些檔案,這是預期行為。
+
+# === Jupyter ===
+.ipynb_checkpoints/
+*.ipynb
+
+# === macOS ===
+.AppleDouble
+.LSOverride
+
+# === 大型本地檔案（不誤上傳）===
+*.zip
+*.tar.gz

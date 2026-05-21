@@ -1,0 +1,42 @@
+{
+  "name": "Epidemic Data Viz Theme",
+  "dataColors": [
+    "#739A6D",
+    "#587A9D",
+    "#C8A041",
+    "#49888D",
+    "#916E46",
+    "#955F71",
+    "#B5584A",
+    "#B87B61"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#181B18",
+  "tableAccent": "#739A6D",
+  "good": "#54734F",
+  "neutral": "#A2ABA0",
+  "bad": "#BE373C",
+  "maximum": "#374C34",
+  "center": "#F2F3F2",
+  "minimum": "#965440",
+  "null": "#CACFC9",
+  "visualStyles": {
+    "*": {
+      "*": {
+        "*": [
+          {
+            "fontFamily": "Segoe UI",
+            "fontSize": 11
+          }
+        ],
+        "title": [
+          {
+            "fontFamily": "Segoe UI Semibold",
+            "fontSize": 14,
+            "fontColor": { "solid": { "color": "#181B18" } }
+          }
+        ]
+      }
+    }
+  }
+}
