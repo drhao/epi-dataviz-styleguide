@@ -187,6 +187,23 @@ CHECKS = [
         ),
     ),
     Check(
+        name="投影片版指引(內部,暫不對外發布)",
+        keywords=[
+            "guideline-slides", "build_slides_pdf",
+            "投影片版", "slide-format",
+        ],
+        expected_in=[
+            "skill/SKILL.md",
+            "dev-tools/README.md",
+            "CHANGELOG.md",
+        ],
+        description=(
+            "投影片版 PDF(摘要 14 張 + 完整 22 張)目前僅供內部迭代,"
+            "對外文件(README、docs/index.html、docs/guideline.html)不應宣傳。"
+            "若決定對外發布,把對應檔案加進 expected_in 並同步更新文件。"
+        ),
+    ),
+    Check(
         name="聯絡資訊（Dr. Hao）",
         keywords=["Dr. Hao", "dr.hao.tw@gmail.com"],
         expected_in=[

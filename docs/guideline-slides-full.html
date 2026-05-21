@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>疫情資料視覺化指引 — 完整版投影片</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_slides.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!--
+  自動生成的檔案 —— 請勿手動編輯。
+  source: docs/guideline-slides-summary.html + docs/_slides-extra.html
+  builder: dev-tools/build_slides_pdf.py
+-->
+</head>
+<body>
+
+<section class="slide cover">
+  <div class="cover-inner">
+    <span class="badge">Internal Preview · v1.0 完整版</span>
+    <h1>疫情資料視覺化指引</h1>
+    <div class="subtitle">EPIDEMIC DATA VISUALIZATION GUIDE</div>
+    <div class="tagline">30 分鐘完整版 · 22 張投影片</div>
+  </div>
+  <div class="meta">
+    <span>Dr. Hao · dr.hao.tw@gmail.com</span>
+    <span>drhao.github.io/epi-dataviz-styleguide</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>4 項核心原則</h2>
+    <span class="sub">Core Principles</span>
+    <span class="num">02 / 22</span>
+  </div>
+  <div class="principles">
+    <div class="card">
+      <div class="num">PRINCIPLE 01</div>
+      <h3>清晰優先</h3>
+      <p>每個視覺元素都必須服務於訊息。移除不傳達資訊的裝飾(陰影、3D、漸層、無意義的色彩)。</p>
+    </div>
+    <div class="card">
+      <div class="num">PRINCIPLE 02</div>
+      <h3>誠實呈現</h3>
+      <p>Y 軸從零開始、不截斷座標、不挑選有利時間區間。避免讓視覺扭曲事實規模。</p>
+    </div>
+    <div class="card">
+      <div class="num">PRINCIPLE 03</div>
+      <h3>一致性</h3>
+      <p>跨報表、跨儀表板使用同一套色票與規範。讀者能跨文件比較,而不需重新學一套配色。</p>
+    </div>
+    <div class="card">
+      <div class="num">PRINCIPLE 04</div>
+      <h3>負責任溝通</h3>
+      <p>紅色僅用於關鍵警示,避免在疫情情境中過度引發焦慮。傳達不確定性時使用區間而非單點。</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · summary</span>
+    <span>Page 02 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>主色階 Sage Green</h2>
+    <span class="sub">Primary Scale · #739A6D</span>
+    <span class="num">03 / 22</span>
+  </div>
+  <p class="lead" style="font-size:16px;margin-bottom:18px;">
+    主色 <code>#739A6D</code> 為組織色彩識別。HSL(112°, 18%, 52%) 鼠尾草綠 ── 中明度低彩度的自然色系,傳達穩重平和、可信賴的調性。
+  </p>
+  <div class="swatches scale-10" style="margin-bottom:24px;">
+    <div class="swatch light" style="background:#F6F9F6"><span class="hex">#F6F9F6</span><span class="label">50</span></div>
+    <div class="swatch light" style="background:#E8EEE7"><span class="hex">#E8EEE7</span><span class="label">100</span></div>
+    <div class="swatch light" style="background:#D1DECF"><span class="hex">#D1DECF</span><span class="label">200</span></div>
+    <div class="swatch light" style="background:#B4C9B1"><span class="hex">#B4C9B1</span><span class="label">300</span></div>
+    <div class="swatch" style="background:#91B08C"><span class="hex">#91B08C</span><span class="label">400</span></div>
+    <div class="swatch" style="background:#739A6D"><span class="hex">#739A6D</span><span class="label">500 · 主色</span></div>
+    <div class="swatch" style="background:#5D7F58"><span class="hex">#5D7F58</span><span class="label">600</span></div>
+    <div class="swatch" style="background:#496345"><span class="hex">#496345</span><span class="label">700</span></div>
+    <div class="swatch" style="background:#374C34"><span class="hex">#374C34</span><span class="label">800</span></div>
+    <div class="swatch" style="background:#253423"><span class="hex">#253423</span><span class="label">900</span></div>
+  </div>
+  <h4 style="font-family:var(--serif);font-size:16px;color:var(--n-900);margin-bottom:10px;">中性灰階(帶極微綠色調與主色協調)</h4>
+  <div class="swatches scale-10">
+    <div class="swatch light" style="background:#FAFAFA"><span class="hex">#FAFAFA</span></div>
+    <div class="swatch light" style="background:#F2F3F1"><span class="hex">#F2F3F1</span></div>
+    <div class="swatch light" style="background:#E4E7E4"><span class="hex">#E4E7E4</span></div>
+    <div class="swatch light" style="background:#CACFC9"><span class="hex">#CACFC9</span></div>
+    <div class="swatch" style="background:#A2ABA0"><span class="hex">#A2ABA0</span></div>
+    <div class="swatch" style="background:#7A8778"><span class="hex">#7A8778</span></div>
+    <div class="swatch" style="background:#5D675B"><span class="hex">#5D675B</span></div>
+    <div class="swatch" style="background:#444C43"><span class="hex">#444C43</span></div>
+    <div class="swatch" style="background:#2C312B"><span class="hex">#2C312B</span></div>
+    <div class="swatch" style="background:#181B18"><span class="hex">#181B18</span></div>
+  </div>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · summary</span>
+    <span>Page 03 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>類別配色</h2>
+    <span class="sub">Categorical · 依優先順序</span>
+    <span class="num">04 / 22</span>
+  </div>
+  <p class="lead" style="font-size:16px;margin-bottom:24px;">
+    跨類別比較時依本順序選色。優先用前 3-4 個,類別超過 6 個建議改用單色色階或重新分組。
+  </p>
+  <div class="swatches cat-6" style="flex:1;">
+    <div class="swatch boxed">
+      <div class="color" style="background:#739A6D"></div>
+      <div class="meta"><div class="name">01 Sage(主色)</div><div class="hex">#739A6D</div></div>
+    </div>
+    <div class="swatch boxed">
+      <div class="color" style="background:#587A9D"></div>
+      <div class="meta"><div class="name">02 Slate Blue</div><div class="hex">#587A9D</div></div>
+    </div>
+    <div class="swatch boxed">
+      <div class="color" style="background:#C8A041"></div>
+      <div class="meta"><div class="name">03 Mustard</div><div class="hex">#C8A041</div></div>
+    </div>
+    <div class="swatch boxed">
+      <div class="color" style="background:#49888D"></div>
+      <div class="meta"><div class="name">04 Teal</div><div class="hex">#49888D</div></div>
+    </div>
+    <div class="swatch boxed">
+      <div class="color" style="background:#916E46"></div>
+      <div class="meta"><div class="name">05 Bronze</div><div class="hex">#916E46</div></div>
+    </div>
+    <div class="swatch boxed">
+      <div class="color" style="background:#955F71"></div>
+      <div class="meta"><div class="name">06 Plum</div><div class="hex">#955F71</div></div>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--n-600);margin-top:18px;">
+    <span class="highlight">設計決策</span>:綠 → 藍 → 黃 開頭避免「紅綠對立」造成的色盲困擾,且在色覺障礙下可區分性最佳。
+  </p>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · summary</span>
+    <span>Page 04 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>強調色家族</h2>
+    <span class="sub">Accents · 警示專用</span>
+    <span class="num">05 / 22</span>
+  </div>
+  <p class="lead" style="font-size:16px;margin-bottom:24px;">
+    <span class="warn">紅色僅用於關鍵警示,不可作為一般類別配色</span>。
+    疫情情境中紅色具強烈情緒效應,過度使用會放大焦慮。
+  </p>
+  <div class="swatches accent-4" style="margin-bottom:32px;">
+    <div class="swatch boxed">
+      <div class="color" style="background:#BE373C"></div>
+      <div class="meta"><div class="name">Alert Red</div><div class="hex">#BE373C · 警示/異常</div></div>
+    </div>
+    <div class="swatch boxed">
+      <div class="color" style="background:#B5584A"></div>
+      <div class="meta"><div class="name">Terracotta</div><div class="hex">#B5584A · 暖紅</div></div>
+    </div>
+    <div class="swatch boxed">
+      <div class="color" style="background:#B87B61"></div>
+      <div class="meta"><div class="name">Clay</div><div class="hex">#B87B61 · 中性暖橘</div></div>
+    </div>
+    <div class="swatch boxed">
+      <div class="color" style="background:#D2962D"></div>
+      <div class="meta"><div class="name">Caution Amber</div><div class="hex">#D2962D · 注意</div></div>
+    </div>
+  </div>
+  <div class="rule-grid" style="flex:0;">
+    <div class="rule-card">
+      <span class="tag">DO</span>
+      <h4>用於警戒線、異常值標註</h4>
+      <p>例如:7 日死亡率突破閾值的折線、超額死亡的紅色橫線。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag">DO</span>
+      <h4>用於負面結果的對比</h4>
+      <p>例如:接種率 vs 重症率,重症的色塊用 Alert Red。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag warn">DON&apos;T</span>
+      <h4>不要作為「品牌色」用</h4>
+      <p>不要在多類別折線中拿紅色當其中一條一般序列;不要用紅色做標題裝飾。</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · summary</span>
+    <span>Page 05 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>配色模式 A / B</h2>
+    <span class="sub">焦點 · 類別</span>
+    <span class="num">06 / 22</span>
+  </div>
+  <div class="pattern-grid">
+    <div class="pattern-card">
+      <div class="head">
+        <span class="id">A</span>
+        <h4>焦點模式</h4>
+      </div>
+      <div class="colors">
+        <div style="background:#739A6D"></div>
+        <div style="background:#CACFC9"></div>
+        <div style="background:#CACFC9"></div>
+        <div style="background:#CACFC9"></div>
+      </div>
+      <p><strong>主色 + 中性灰</strong>。單一序列要凸顯時。例:本機關 vs 其他平均。</p>
+      <p style="font-size:12px;color:var(--n-500);">使用情境:每日確診直條圖、重點機關 vs 整體比較、單一指標趨勢。</p>
+    </div>
+    <div class="pattern-card">
+      <div class="head">
+        <span class="id">B</span>
+        <h4>類別模式</h4>
+      </div>
+      <div class="colors">
+        <div style="background:#739A6D"></div>
+        <div style="background:#587A9D"></div>
+        <div style="background:#C8A041"></div>
+        <div style="background:#49888D"></div>
+      </div>
+      <p><strong>類別配色前 3-4 色</strong>。多類別比較,類別之間沒有順序關係。</p>
+      <p style="font-size:12px;color:var(--n-500);">使用情境:變異株、年齡組(獨立)、機關別比較、多地區趨勢。</p>
+    </div>
+  </div>
+  <p style="font-size:14px;color:var(--n-700);margin-top:18px;">
+    選擇順序:訊息要 <span class="highlight">凸顯誰?</span> → Pattern A;訊息是 <span class="highlight">比較</span> → Pattern B。
+  </p>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · summary</span>
+    <span>Page 06 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>配色模式 D / E</h2>
+    <span class="sub">多序列 · 單色色階(重點)</span>
+    <span class="num">07 / 22</span>
+  </div>
+  <div class="pattern-grid">
+    <div class="pattern-card">
+      <div class="head">
+        <span class="id">D</span>
+        <h4>多序列(折線加深版)</h4>
+      </div>
+      <div class="colors">
+        <div style="background:#5D7F58"></div>
+        <div style="background:#587A9D"></div>
+        <div style="background:#A8821F"></div>
+        <div style="background:#356B70"></div>
+      </div>
+      <p><strong>LINE_COLORS 加深版</strong>。多條折線時,細線在白底對比要過 WCAG AA。</p>
+      <p style="font-size:12px;color:var(--n-500);">主色 500 對白底對比 3.20 過低,折線用 600(對比 4.52)以上。</p>
+    </div>
+    <div class="pattern-card">
+      <div class="head">
+        <span class="id e">E</span>
+        <h4>單色色階(序數資料)</h4>
+      </div>
+      <div class="colors">
+        <div style="background:#B4C9B1"></div>
+        <div style="background:#739A6D"></div>
+        <div style="background:#374C34"></div>
+      </div>
+      <p><strong>MONOCHROME 序列</strong>。顏色不傳達類別差異 ── 嚴重度、年齡層、波次、劑次。</p>
+      <p style="font-size:12px;color:var(--n-500);">堆疊時 <span class="highlight">最深色放底部</span>(重症為視覺基底)。</p>
+    </div>
+  </div>
+  <p style="font-size:14px;color:var(--n-700);margin-top:18px;">
+    Pattern E 的判準:<span class="highlight">資料本身有順序嗎?</span>(輕/中/重、第 1/2/3 季)→ 用單色;順序無意義 → 回到 Pattern B。
+  </p>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · summary</span>
+    <span>Page 07 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>鐵則</h2>
+    <span class="sub">Non-Negotiable Rules</span>
+    <span class="num">08 / 22</span>
+  </div>
+  <div class="rule-grid">
+    <div class="rule-card">
+      <span class="tag">RULE 01</span>
+      <h4>Y 軸從零開始</h4>
+      <p>不截斷座標軸誤導比例。即使「差異很小」,也用視覺技巧(放大值區、Δ 標註)而非截軸。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag warn">RULE 02</span>
+      <h4>紅色僅用於警示</h4>
+      <p>紅色家族(#BE373C 等)<span class="warn">不可作為一般類別配色</span>。一般類別比較走 Pattern B。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag">RULE 03</span>
+      <h4>移動平均「中心對齊」</h4>
+      <p>7 日 MA 用 <code>i-3 到 i+3</code> 而非業界常見的 trailing。中心對齊與直條視覺對齊更直觀。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag">RULE 04</span>
+      <h4>單色堆疊深色在底</h4>
+      <p>單色色階堆疊時最深色放底部,作為視覺基底。例:嚴重度堆疊,重症在最下方。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag">RULE 05</span>
+      <h4>WCAG AA 對比</h4>
+      <p>文字 ≥ 4.5:1,圖形 ≥ 3:1。色覺障礙下仍可區分(綠藍黃在三種色盲類型下都有效)。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag">RULE 06</span>
+      <h4>圓餅圖條件使用</h4>
+      <p>類別 ≤ 5 且傳達占比才用,否則改用直條圖排序。不要疊「全部 + 主要 + 其他」三層圓餅。</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · summary</span>
+    <span>Page 08 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>圖表選用矩陣</h2>
+    <span class="sub">9 種圖表 × 使用情境</span>
+    <span class="num">09 / 22</span>
+  </div>
+  <table class="matrix" style="flex:1;">
+    <thead>
+      <tr>
+        <th>圖表類型</th>
+        <th>適合</th>
+        <th>不適合</th>
+        <th>建議配色</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>直條圖</td>
+        <td>類別比較、時序短期(< 60 日)</td>
+        <td>連續變數、序列過長</td>
+        <td>Pattern A 或 B</td>
+      </tr>
+      <tr>
+        <td>折線圖</td>
+        <td>時序趨勢、多波比較</td>
+        <td>少於 5 個時間點</td>
+        <td>Pattern D(加深版)</td>
+      </tr>
+      <tr>
+        <td>區域圖</td>
+        <td>累積、強調量體</td>
+        <td>類別 > 4(視覺擁擠)</td>
+        <td>Pattern A 或 E</td>
+      </tr>
+      <tr>
+        <td>堆疊圖</td>
+        <td>占比變化、組成比較</td>
+        <td>需精確讀值</td>
+        <td>Pattern B 或 <span class="ok">E(序數)</span></td>
+      </tr>
+      <tr>
+        <td>圓餅圖</td>
+        <td>類別 ≤ 5 的占比</td>
+        <td>多類別、跨時比較</td>
+        <td>Pattern B</td>
+      </tr>
+      <tr>
+        <td>散佈圖</td>
+        <td>相關性、雙連續變數</td>
+        <td>序數/類別</td>
+        <td>Pattern A</td>
+      </tr>
+      <tr>
+        <td>直方/盒鬚</td>
+        <td>分布、離群</td>
+        <td>類別比較</td>
+        <td>Pattern A</td>
+      </tr>
+      <tr>
+        <td>人口金字塔</td>
+        <td>年齡 × 性別結構</td>
+        <td>非雙向資料</td>
+        <td>2 色對照</td>
+      </tr>
+      <tr>
+        <td>面量地圖</td>
+        <td>地理空間分布</td>
+        <td>類別資料</td>
+        <td>SEQUENTIAL 色階</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · summary</span>
+    <span>Page 09 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>範例 · 每日確診 + 7 日移動平均</h2>
+    <span class="sub">Pattern A · 中心對齊 MA</span>
+    <span class="num">10 / 22</span>
+  </div>
+  <div class="chart-card">
+    <div class="chart-head">
+      <h4>每日新增確診(28 天)</h4>
+      <span class="meta">直條 #739A6D · 均線 #374C34</span>
+    </div>
+    <div class="chart-wrap"><canvas id="ch-bar"></canvas></div>
+    <p class="chart-note">
+      週末填報效應造成單日抖動,以 <span class="highlight">7 日中心對齊均線</span>(i-3 到 i+3)呈現潛在趨勢。Y 軸從零開始,不截斷。
+    </p>
+  </div>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · summary</span>
+    <span>Page 10 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>範例 · 三波同期比較</h2>
+    <span class="sub">Pattern D · 折線加深版</span>
+    <span class="num">11 / 22</span>
+  </div>
+  <div class="chart-card">
+    <div class="chart-head">
+      <h4>三波疫情同期比較(以相對天數對齊)</h4>
+      <span class="meta">LINE_COLORS · primary / blue / yellow</span>
+    </div>
+    <div class="chart-wrap"><canvas id="ch-line"></canvas></div>
+    <p class="chart-note">
+      3 條折線使用 <span class="highlight">LINE_COLORS 加深版</span>(#5D7F58 / #587A9D / #A8821F),確保細線對白底 WCAG AA 對比 ≥ 4.5:1。
+    </p>
+  </div>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · summary</span>
+    <span>Page 11 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>範例 · 堆疊圖兩種模式</h2>
+    <span class="sub">Pattern B vs Pattern E</span>
+    <span class="num">12 / 22</span>
+  </div>
+  <div class="chart-duo">
+    <div class="chart-card">
+      <div class="chart-head">
+        <h4>變異株消長(Pattern B)</h4>
+        <span class="meta">類別配色</span>
+      </div>
+      <div class="chart-wrap"><canvas id="ch-stack-b"></canvas></div>
+      <p class="chart-note">5 個變異株彼此獨立,類別配色。</p>
+    </div>
+    <div class="chart-card">
+      <div class="chart-head">
+        <h4>年齡 × 嚴重度(Pattern E)</h4>
+        <span class="meta">單色色階 · 重症在底</span>
+      </div>
+      <div class="chart-wrap"><canvas id="ch-stack-e"></canvas></div>
+      <p class="chart-note">嚴重度為序數,單色色階,最深色置底。</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · summary</span>
+    <span>Page 12 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>無障礙標準</h2>
+    <span class="sub">WCAG AA · 色覺障礙</span>
+    <span class="num">13 / 22</span>
+  </div>
+  <div class="two-col">
+    <div>
+      <h4>WCAG AA 對比門檻</h4>
+      <ul class="bullets" style="margin-bottom:18px;">
+        <li><strong>文字</strong>:背景對文字 ≥ <code>4.5:1</code></li>
+        <li><strong>圖形元素</strong>(線條、邊框、icon):≥ <code>3:1</code></li>
+        <li><strong>大塊填色</strong>(色塊堆疊):≥ <code>2.4:1</code></li>
+      </ul>
+      <p style="font-size:13px;color:var(--n-600);">主色 500(<code>#739A6D</code>)對白底僅 3.20 不過 4.5,所以折線使用 600(<code>#5D7F58</code>,對比 4.52)。</p>
+    </div>
+    <div>
+      <h4>色覺障礙友善</h4>
+      <ul class="bullets" style="margin-bottom:18px;">
+        <li>類別配色經 3 種色盲類型(Protanopia / Deuteranopia / Tritanopia)模擬驗證</li>
+        <li>綠 → 藍 → 黃 開頭避開「紅綠對立」</li>
+        <li>關鍵差異<strong>不單靠顏色</strong>傳達:加圖示、加標籤、加紋理</li>
+      </ul>
+      <p style="font-size:13px;color:var(--n-600);">本指引 72 個自動化測試含三種色盲模擬,色票調整時自動驗證。</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · summary</span>
+    <span>Page 13 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>序列 / 發散色階</h2>
+    <span class="sub">Sequential · Diverging</span>
+    <span class="num">14 / 22</span>
+  </div>
+  <h4 style="font-family:var(--serif);font-size:17px;color:var(--n-900);margin-bottom:8px;">序列色階(單向:低 → 高)</h4>
+  <p style="font-size:13px;color:var(--n-600);margin-bottom:10px;">用於面量地圖、熱力圖、單向強度。7 級,從淺到深。</p>
+  <div class="swatches" style="grid-template-columns:repeat(7,1fr);gap:0;margin-bottom:28px;">
+    <div class="swatch light" style="background:#F1F5F0"><span class="hex">#F1F5F0</span></div>
+    <div class="swatch light" style="background:#D4E0D2"><span class="hex">#D4E0D2</span></div>
+    <div class="swatch light" style="background:#AEC5AB"><span class="hex">#AEC5AB</span></div>
+    <div class="swatch" style="background:#8BAC86"><span class="hex">#8BAC86</span></div>
+    <div class="swatch" style="background:#6A9164"><span class="hex">#6A9164</span></div>
+    <div class="swatch" style="background:#506D4B"><span class="hex">#506D4B</span></div>
+    <div class="swatch" style="background:#354832"><span class="hex">#354832</span></div>
+  </div>
+  <h4 style="font-family:var(--serif);font-size:17px;color:var(--n-900);margin-bottom:8px;">發散色階(雙向:負 ← 中 → 正)</h4>
+  <p style="font-size:13px;color:var(--n-600);margin-bottom:10px;">用於變化率、超額死亡、相對基準的偏差。<span class="highlight">中性過渡色 #F2F3F2 非純白</span>,避免「沒資料」與「值為零」混淆。</p>
+  <div class="swatches" style="grid-template-columns:repeat(7,1fr);gap:0;">
+    <div class="swatch" style="background:#A0535F"><span class="hex">#A0535F</span><span class="label">−3</span></div>
+    <div class="swatch" style="background:#C28290"><span class="hex">#C28290</span><span class="label">−2</span></div>
+    <div class="swatch light" style="background:#E5BFC6"><span class="hex">#E5BFC6</span><span class="label">−1</span></div>
+    <div class="swatch light" style="background:#F2F3F2"><span class="hex">#F2F3F2</span><span class="label">0</span></div>
+    <div class="swatch light" style="background:#BFD2BC"><span class="hex">#BFD2BC</span><span class="label">+1</span></div>
+    <div class="swatch" style="background:#8BAC86"><span class="hex">#8BAC86</span><span class="label">+2</span></div>
+    <div class="swatch" style="background:#506D4B"><span class="hex">#506D4B</span><span class="label">+3</span></div>
+  </div>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · full</span>
+    <span>Page 14 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>單色組合 MONOCHROME</h2>
+    <span class="sub">Pattern E 的完整 6 組</span>
+    <span class="num">15 / 22</span>
+  </div>
+  <p class="lead" style="font-size:15px;margin-bottom:18px;">
+    用於顏色不傳達類別差異的情境 ── 序數、時序、層次比較。比類別配色更克制,讀者注意力放在資料形狀。
+  </p>
+  <div style="display:grid;grid-template-columns:auto 1fr;gap:14px 20px;align-items:center;font-size:13px;flex:1;">
+
+    <div style="font-family:var(--mono);font-size:12px;color:var(--p-700);letter-spacing:1px;">focus_2</div>
+    <div style="display:flex;gap:0;height:36px;">
+      <div style="flex:1;background:#496345;"></div>
+      <div style="flex:1;background:#CACFC9;"></div>
+    </div>
+
+    <div style="font-family:var(--mono);font-size:12px;color:var(--p-700);letter-spacing:1px;">scale_3</div>
+    <div style="display:flex;gap:0;height:36px;">
+      <div style="flex:1;background:#B4C9B1;"></div>
+      <div style="flex:1;background:#739A6D;"></div>
+      <div style="flex:1;background:#374C34;"></div>
+    </div>
+
+    <div style="font-family:var(--mono);font-size:12px;color:var(--p-700);letter-spacing:1px;">scale_4</div>
+    <div style="display:flex;gap:0;height:36px;">
+      <div style="flex:1;background:#D1DECF;"></div>
+      <div style="flex:1;background:#91B08C;"></div>
+      <div style="flex:1;background:#5D7F58;"></div>
+      <div style="flex:1;background:#374C34;"></div>
+    </div>
+
+    <div style="font-family:var(--mono);font-size:12px;color:var(--p-700);letter-spacing:1px;">scale_5</div>
+    <div style="display:flex;gap:0;height:36px;">
+      <div style="flex:1;background:#D1DECF;"></div>
+      <div style="flex:1;background:#B4C9B1;"></div>
+      <div style="flex:1;background:#91B08C;"></div>
+      <div style="flex:1;background:#5D7F58;"></div>
+      <div style="flex:1;background:#374C34;"></div>
+    </div>
+
+    <div style="font-family:var(--mono);font-size:12px;color:var(--p-700);letter-spacing:1px;">scale_6</div>
+    <div style="display:flex;gap:0;height:36px;">
+      <div style="flex:1;background:#E8EEE7;"></div>
+      <div style="flex:1;background:#D1DECF;"></div>
+      <div style="flex:1;background:#B4C9B1;"></div>
+      <div style="flex:1;background:#91B08C;"></div>
+      <div style="flex:1;background:#5D7F58;"></div>
+      <div style="flex:1;background:#374C34;"></div>
+    </div>
+
+    <div style="font-family:var(--mono);font-size:12px;color:var(--p-700);letter-spacing:1px;">scale_7</div>
+    <div style="display:flex;gap:0;height:36px;">
+      <div style="flex:1;background:#E8EEE7;"></div>
+      <div style="flex:1;background:#D1DECF;"></div>
+      <div style="flex:1;background:#B4C9B1;"></div>
+      <div style="flex:1;background:#91B08C;"></div>
+      <div style="flex:1;background:#739A6D;"></div>
+      <div style="flex:1;background:#5D7F58;"></div>
+      <div style="flex:1;background:#374C34;"></div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--n-500);margin-top:14px;">
+    使用情境:focus_2 = 本機關 vs 平均;scale_3 = 輕/中/重症;scale_4 = 第 1-4 季;scale_5 = 5 個年齡層;scale_6 = 完整年齡帶或月份;scale_7 = 一週、7 個分組。
+  </p>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · full</span>
+    <span>Page 15 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>配色模式 C</h2>
+    <span class="sub">品質強度 · Quality / Intensity</span>
+    <span class="num">16 / 22</span>
+  </div>
+  <div class="pattern-grid" style="grid-template-columns:1fr;flex:0;">
+    <div class="pattern-card">
+      <div class="head">
+        <span class="id">C</span>
+        <h4>主色 + 兩端(加深 / 加淺)</h4>
+      </div>
+      <div class="colors">
+        <div style="background:#374C34"></div>
+        <div style="background:#739A6D"></div>
+        <div style="background:#B4C9B1"></div>
+      </div>
+      <p>用於「過去 / 現在 / 未來」、「上 / 中 / 下」這種既有順序又圍繞主色概念的情境。三色都源自主色階,維持品牌一致性。</p>
+    </div>
+  </div>
+  <h4 style="font-family:var(--serif);font-size:16px;color:var(--n-900);margin:20px 0 10px;">使用情境</h4>
+  <ul class="bullets">
+    <li>本機關(主色 500) vs 鄰近機關(淺色 300) vs 全國平均(深色 700)</li>
+    <li>本年實際值 / 同期平均 / 高峰閾值</li>
+    <li>三段時間區間的對照(初期 / 中期 / 末期)</li>
+  </ul>
+  <p style="font-size:13px;color:var(--n-600);margin-top:16px;">
+    <span class="highlight">Pattern C vs Pattern E 的差別</span>:C 是「圍繞主色」的三色組(有焦點概念);E 是「序數層次」的色階(無焦點,深淺只代表程度)。
+  </p>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · full</span>
+    <span>Page 16 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>移動平均的「中心對齊」</h2>
+    <span class="sub">Centered MA · 為什麼不用 trailing</span>
+    <span class="num">17 / 22</span>
+  </div>
+  <div class="two-col">
+    <div>
+      <h4>中心對齊(本指引採用)</h4>
+      <pre style="font-family:var(--mono);font-size:12px;background:var(--n-100);padding:14px;line-height:1.7;border-left:3px solid var(--p-500);color:var(--n-800);overflow:auto;">ma[i] = mean(cases[i-3 : i+4])
+# 即 i-3, i-2, i-1, i, i+1, i+2, i+3
+# 共 7 天,當前點居中</pre>
+      <p style="font-size:13px;color:var(--n-700);margin-top:10px;">
+        ✓ 與直條視覺對齊更直觀<br>
+        ✓ 平滑曲線居中通過資料點<br>
+        ✗ 邊界處理:前 3 天 + 後 3 天無 MA 值
+      </p>
+    </div>
+    <div>
+      <h4>Trailing(業界常見,本指引不採用)</h4>
+      <pre style="font-family:var(--mono);font-size:12px;background:var(--n-100);padding:14px;line-height:1.7;border-left:3px solid var(--n-400);color:var(--n-800);overflow:auto;">ma[i] = mean(cases[i-6 : i+1])
+# 即過去 7 天(含當日)
+# 適合「即時監測」場景</pre>
+      <p style="font-size:13px;color:var(--n-700);margin-top:10px;">
+        ✗ 曲線整體往右偏移 3 天<br>
+        ✗ 視覺上與當日直條錯位<br>
+        ✓ 沒有「未來資料」問題(適合即時報表)
+      </p>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--n-600);margin-top:18px;">
+    本指引選 centered 因為主要場景是<strong>事後檢視 7-14 天區間的趨勢報表</strong>,不是即時監測。若你的場景是即時 dashboard,可考慮 trailing,但要在文案中明確標示。
+  </p>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · full</span>
+    <span>Page 17 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>圓餅圖條件使用</h2>
+    <span class="sub">什麼時候不該用</span>
+    <span class="num">18 / 22</span>
+  </div>
+  <div class="rule-grid">
+    <div class="rule-card">
+      <span class="tag">DO</span>
+      <h4>類別 ≤ 5 且傳達占比</h4>
+      <p>例:5 個變異株的當月占比、3 個年齡組的就診比例。讀者一眼能感受「誰最大」即可,不需精確值。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag warn">DON&apos;T</span>
+      <h4>多類別(> 5)</h4>
+      <p>例:22 縣市的占比 ── 圓餅看不清楚,改用<strong>排序橫條圖</strong>(由大到小)。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag warn">DON&apos;T</span>
+      <h4>跨期比較</h4>
+      <p>不要把 2025 與 2026 兩個圓餅並排比較 ── 改用<strong>100% 堆疊長條</strong>(每月一條,層次比例疊起來)。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag warn">DON&apos;T</span>
+      <h4>3D 圓餅 / 爆炸圓餅</h4>
+      <p>3D 視角讓比例失真,爆炸效果分散注意力。本指引一律平面 2D。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag warn">DON&apos;T</span>
+      <h4>三層「全部+主要+其他」</h4>
+      <p>套疊三層圓餅嘗試「下鑽」是錯誤思路。改用<strong>桑基圖</strong>或<strong>樹狀圖</strong>。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag">DO</span>
+      <h4>替代方案優先考慮</h4>
+      <p>大多數情境<strong>排序橫條圖比圓餅更好讀</strong>,因為人類比較長度比比較角度準確。</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · full</span>
+    <span>Page 18 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>日期軸格式化</h2>
+    <span class="sub">Date Axis Formatting</span>
+    <span class="num">19 / 22</span>
+  </div>
+  <table class="matrix" style="margin-bottom:18px;">
+    <thead>
+      <tr><th>資料區間</th><th>標籤格式</th><th>密度建議</th><th>函式</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>短期 ≤ 30 天</td>
+        <td><code>MM/DD</code> + 週末灰底</td>
+        <td>每 2-3 天一個標籤</td>
+        <td><code>format_date_axis_daily()</code></td>
+      </tr>
+      <tr>
+        <td>中期 1-3 月</td>
+        <td><code>Week NN</code> 或 <code>MM/DD</code></td>
+        <td>每 1-2 週一個標籤</td>
+        <td><code>format_date_axis_weekly()</code></td>
+      </tr>
+      <tr>
+        <td>長期 > 3 月</td>
+        <td><code>YYYY-MM</code></td>
+        <td>每月 1 個標籤</td>
+        <td><code>format_date_axis_monthly()</code></td>
+      </tr>
+      <tr>
+        <td>跨年</td>
+        <td><code>YYYY</code> 首次出現,後續 <code>MM</code></td>
+        <td>每月或每季</td>
+        <td><code>format_date_axis_monthly()</code></td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:14px;color:var(--n-700);margin-bottom:8px;"><strong>共通規則</strong>:</p>
+  <ul class="bullets" style="font-size:14px;">
+    <li>避免標籤重疊 ── 寬度不夠就<strong>旋轉 30°</strong>或<strong>抽稀</strong>,不要縮字</li>
+    <li>跨月時月份標籤可加邊框或加粗,協助讀者定位</li>
+    <li>週末(週六、日)用淡灰底色標示,協助識讀<strong>填報週期效應</strong></li>
+  </ul>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · full</span>
+    <span>Page 19 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>工具支援</h2>
+    <span class="sub">Python · Power BI · Excel · Chart.js</span>
+    <span class="num">20 / 22</span>
+  </div>
+  <div class="two-col" style="grid-template-columns:1fr 1fr;gap:24px;">
+    <div>
+      <h4>Python (matplotlib)</h4>
+      <pre style="font-family:var(--mono);font-size:11px;background:var(--n-100);padding:12px;line-height:1.6;border-left:3px solid var(--p-500);color:var(--n-800);overflow:auto;">from epidemic_palette import (
+    PRIMARY, CATEGORICAL,
+    MONOCHROME, apply_style,
+    centered_ma, hide_y_axis,
+)
+apply_style()  # 一鍵套用</pre>
+      <p style="font-size:12px;color:var(--n-600);margin-top:8px;">內建 4 個常用工具函式 + 8 個色票常數,直接 import 即可。</p>
+
+      <h4 style="margin-top:18px;">Chart.js (JavaScript)</h4>
+      <pre style="font-family:var(--mono);font-size:11px;background:var(--n-100);padding:12px;line-height:1.6;border-left:3px solid var(--p-500);color:var(--n-800);overflow:auto;">datasets: [{
+  backgroundColor: '#739A6D',
+  borderColor: '#374C34',
+  borderRadius: 2,
+}],
+scales: { y: { beginAtZero: true } }</pre>
+    </div>
+    <div>
+      <h4>Power BI</h4>
+      <p style="font-size:13px;color:var(--n-700);margin-bottom:8px;">
+        匯入 <code>resources/powerbi-theme.json</code>:
+      </p>
+      <ol class="bullets" style="font-size:13px;">
+        <li>檢視 → 佈景主題 → 瀏覽佈景主題</li>
+        <li>選擇 JSON 檔</li>
+        <li>整份報告自動套用本指引色彩</li>
+      </ol>
+
+      <h4 style="margin-top:18px;">Excel / Microsoft 365</h4>
+      <p style="font-size:13px;color:var(--n-700);margin-bottom:8px;">
+        頁面配置 → 色彩 → 自訂色彩,填入 Accent 1-6:
+      </p>
+      <table style="font-family:var(--mono);font-size:11px;color:var(--n-700);border-collapse:collapse;">
+        <tr><td style="padding:2px 8px;">Accent 1</td><td style="background:#739A6D;width:30px;"></td><td style="padding:2px 8px;">#739A6D</td></tr>
+        <tr><td style="padding:2px 8px;">Accent 2</td><td style="background:#587A9D;"></td><td style="padding:2px 8px;">#587A9D</td></tr>
+        <tr><td style="padding:2px 8px;">Accent 3</td><td style="background:#C8A041;"></td><td style="padding:2px 8px;">#C8A041</td></tr>
+        <tr><td style="padding:2px 8px;">Accent 4</td><td style="background:#49888D;"></td><td style="padding:2px 8px;">#49888D</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · full</span>
+    <span>Page 20 / 22</span>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="slide-title-bar">
+    <h2>AI Agent 整合</h2>
+    <span class="sub">Claude Code · Codex · Antigravity</span>
+    <span class="num">21 / 22</span>
+  </div>
+  <p class="lead" style="font-size:18px;margin-bottom:18px;">
+    把 <code>skill/</code> 整個資料夾放進 AI agent 的 skills 目錄,當開發者問「畫每日確診直條圖」、「做變異株比例圖」時,AI 會自動讀規範並套用。
+  </p>
+  <div class="rule-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="rule-card">
+      <span class="tag">STEP 01</span>
+      <h4>觸發偵測</h4>
+      <p>SKILL.md 的 push-style description 含關鍵字(case counts, vaccination, variants, hospitalization...),AI 自動知道何時該用本 skill。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag">STEP 02</span>
+      <h4>規範查閱</h4>
+      <p>AI 讀取 <code>references/01-09.md</code> 對應的圖表詳細規範:適用情境、規則、程式碼範例、常見錯誤。</p>
+    </div>
+    <div class="rule-card">
+      <span class="tag">STEP 03</span>
+      <h4>程式碼產出</h4>
+      <p>AI 用 <code>epidemic_palette.py</code> 的常數,輸出符合規範的 Python / Chart.js / R 程式碼。Y 軸從零、色票對齊、無障礙符合。</p>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--n-600);margin-top:18px;">
+    詳細安裝步驟見 <code>skill/SKILL-README.md</code>。本 skill 也可被 Claude.ai / ChatGPT / Gemini 等網頁 AI 用作 prompt 模板(見 <code>docs/prompt-examples.md</code>)。
+  </p>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · full</span>
+    <span>Page 21 / 22</span>
+  </div>
+</section>
+
+<section class="slide closing">
+  <div class="slide-title-bar">
+    <h2>完整指引</h2>
+    <span class="sub">References &amp; Contact</span>
+    <span class="num">22 / 22</span>
+  </div>
+  <div class="closing-grid">
+    <div>
+      <h3>本指引的 single source of truth</h3>
+      <ul class="bullets">
+        <li><code>skill/SKILL.md</code> — AI agent 的規範權威源</li>
+        <li><code>skill/references/*.md</code> — 10 種圖表詳細規範(01-bar 到 10-monochrome)</li>
+        <li><code>skill/scripts/epidemic_palette.py</code> — 色票常數 + apply_style</li>
+        <li><code>docs/guideline.html</code> — 互動式完整指引(22 頁 PDF)</li>
+        <li><code>resources/palette.csv</code> · <code>resources/powerbi-theme.json</code> — 工具匯入</li>
+      </ul>
+      <h3 style="margin-top:18px;">內部開發工具</h3>
+      <ul class="bullets" style="font-size:13px;">
+        <li><code>dev-tools/check_drift.py</code> — 跨檔案一致性檢查(10 項概念覆蓋)</li>
+        <li><code>skill/tests/test_palette.py</code> — 72 個自動化測試(色票 + WCAG + 色覺障礙 + 範例資料)</li>
+      </ul>
+      <h3 style="margin-top:18px;">線上版</h3>
+      <span class="url">https://drhao.github.io/epi-dataviz-styleguide/</span>
+    </div>
+    <div>
+      <h3>聯絡</h3>
+      <p><strong>Dr. Hao</strong><br>dr.hao.tw@gmail.com</p>
+      <p style="margin-top:14px;font-size:13px;color:var(--n-400);">本指引為組織內部使用文件,公開於 repo 僅供透明審視。</p>
+      <p style="margin-top:24px;font-size:12px;color:var(--n-500);letter-spacing:1px;">v1.0 · 2026.05<br>72 tests passing<br>10/10 drift checks</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="label">epi-dataviz-styleguide · full</span>
+    <span>Page 22 / 22</span>
+  </div>
+</section>
+
+<script>
+const ZERO_LINE = {
+  scales: { y: { beginAtZero: true, grid: { color: '#E4E7E4' }, ticks: { color: '#5D675B', font: { size: 11 } } },
+            x: { grid: { display: false }, ticks: { color: '#5D675B', font: { size: 11 } } } },
+  plugins: { legend: { position: 'bottom', labels: { color: '#444C43', font: { size: 11 }, boxWidth: 12 } } },
+  responsive: true, maintainAspectRatio: false,
+  animation: false,
+};
+
+// === Slide 10:直條 + MA ===
+(function(){
+  const dates = ['4/24','4/25','4/26','4/27','4/28','4/29','4/30','5/1','5/2','5/3','5/4','5/5','5/6','5/7','5/8','5/9','5/10','5/11','5/12','5/13','5/14','5/15','5/16','5/17','5/18','5/19','5/20','5/21'];
+  const cases = [1402,1108,1090,1706,1771,1988,1920,2102,1602,1488,2540,2748,3010,2950,2840,2310,2080,3120,3300,3490,3520,3380,2780,2271,3976,3960,4213,4021];
+  const ma7 = cases.map((_, i) => {
+    if (i < 3 || i > cases.length - 4) return null;
+    const w = cases.slice(i-3, i+4);
+    return Math.round(w.reduce((a,b)=>a+b,0) / 7);
+  });
+  new Chart(document.getElementById('ch-bar'), {
+    type: 'bar',
+    data: { labels: dates, datasets: [
+      { label: '每日新增', data: cases, backgroundColor: '#739A6D', borderColor: '#739A6D', borderRadius: 2, barPercentage: 0.78, categoryPercentage: 0.78 },
+      { label: '7 日中心對齊均線', data: ma7, type: 'line', borderColor: '#374C34', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.35, pointRadius: 0 }
+    ]},
+    options: ZERO_LINE,
+  });
+})();
+
+// === Slide 11:三波折線 ===
+(function(){
+  const days = Array.from({length: 30}, (_, i) => i+1);
+  const w22 = [120,180,260,380,520,690,860,1020,1180,1320,1420,1480,1490,1450,1380,1280,1160,1020,890,760,640,540,440,360,290,230,180,140,110,90];
+  const w23 = [180,290,420,640,920,1280,1690,2080,2440,2770,3010,3160,3220,3180,3060,2870,2620,2330,2010,1690,1390,1130,910,720,560,430,330,250,190,140];
+  const w24 = [240,380,560,820,1180,1620,2160,2660,3140,3540,3840,4030,4090,4030,3850,3580,3230,2830,2400,1970,1580,1240,950,720,540,400,300,220,160,110];
+  new Chart(document.getElementById('ch-line'), {
+    type: 'line',
+    data: { labels: days, datasets: [
+      { label: 'Wave 2022', data: w22, borderColor: '#5D7F58', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.35, pointRadius: 0 },
+      { label: 'Wave 2023', data: w23, borderColor: '#587A9D', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.35, pointRadius: 0 },
+      { label: 'Wave 2024', data: w24, borderColor: '#A8821F', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.35, pointRadius: 0 }
+    ]},
+    options: { ...ZERO_LINE, scales: { ...ZERO_LINE.scales, x: { ...ZERO_LINE.scales.x, title: { display: true, text: '相對天數', color: '#5D675B', font: { size: 11 } } } } },
+  });
+})();
+
+// === Slide 12 左:類別堆疊(變異株) ===
+(function(){
+  const months = ['2025-11','2025-12','2026-01','2026-02','2026-03','2026-04'];
+  new Chart(document.getElementById('ch-stack-b'), {
+    type: 'bar',
+    data: { labels: months, datasets: [
+      { label: 'JN.1',  data: [62,48,32,18,10,5],  backgroundColor: '#739A6D' },
+      { label: 'KP.2',  data: [28,36,42,38,30,22], backgroundColor: '#587A9D' },
+      { label: 'KP.3',  data: [6,12,18,28,38,45],  backgroundColor: '#C8A041' },
+      { label: 'LB.1',  data: [2,3,6,14,20,26],    backgroundColor: '#49888D' },
+      { label: 'other', data: [2,1,2,2,2,2],       backgroundColor: '#916E46' }
+    ]},
+    options: { ...ZERO_LINE,
+      scales: { y: { stacked: true, max: 100, beginAtZero: true, grid: { color: '#E4E7E4' }, ticks: { color: '#5D675B', font: { size: 10 } } },
+                x: { stacked: true, grid: { display: false }, ticks: { color: '#5D675B', font: { size: 10 } } } },
+      plugins: { legend: { position: 'bottom', labels: { color: '#444C43', font: { size: 10 }, boxWidth: 10 } } },
+    },
+  });
+})();
+
+// === Slide 12 右:單色堆疊(嚴重度) ===
+(function(){
+  const ages = ['0-9','10-19','20-39','40-59','60-69','70-79','80+'];
+  new Chart(document.getElementById('ch-stack-e'), {
+    type: 'bar',
+    data: { labels: ages, datasets: [
+      // 順序 = 堆疊順序(底→頂):severe(深)→ moderate → mild(淺)
+      { label: '重症',   data: [4,2,2,4,8,13,20],    backgroundColor: '#374C34' },
+      { label: '中症',   data: [18,13,9,14,22,32,42], backgroundColor: '#739A6D' },
+      { label: '輕症',   data: [78,85,89,82,70,55,38], backgroundColor: '#B4C9B1' }
+    ]},
+    options: { ...ZERO_LINE,
+      scales: { y: { stacked: true, max: 100, beginAtZero: true, grid: { color: '#E4E7E4' }, ticks: { color: '#5D675B', font: { size: 10 } } },
+                x: { stacked: true, grid: { display: false }, ticks: { color: '#5D675B', font: { size: 10 } } } },
+      plugins: { legend: { position: 'bottom', labels: { color: '#444C43', font: { size: 10 }, boxWidth: 10 } } },
+    },
+  });
+})();
+</script>
+
+</body>
+</html>

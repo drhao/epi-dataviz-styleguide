@@ -501,6 +501,8 @@ Resource files in the skill:
 - `epidemic-dataviz-theme.json` — Power BI theme file
 - `resources/office-templates/*.xlsx` — pre-built Excel chart templates (5 patterns: bar, line, stacked, mono-stacked, pie)
 - `resources/office-templates/epidemic-report-template.pptx` — PowerPoint report template (6 slides, embedded PNGs)
+- `docs/guideline-slides-summary.html` / `.pdf` — slide-format guide, summary version (14 slides, 5-min skim)
+- `docs/guideline-slides-full.html` / `.pdf` — slide-format guide, full version (22 slides, 30-min walkthrough)
 - `dataviz-guideline.html` — interactive visual reference (full document)
 - `dataviz-guideline.pdf` — printable full document
 
