@@ -211,8 +211,8 @@ def build_line_three_waves() -> None:
     add_chart_meta(
         ws_chart,
         "三波疫情同期比較",
-        "Pattern B:類別配色（綠 / 藍 / 黃,LINE_COLORS 加深版）",
-        "折線使用加深版色彩以滿足 WCAG AA(細線對比 ≥ 3:1)。3 條序列順序代表優先級。",
+        "Pattern B:類別配色,最新波次用主色作為焦點",
+        "最新一波(2024)用主色 #5D7F58 作為焦點,歷史波次依時間遞遠遞弱(2023 藍 / 2022 黃)。LINE_COLORS 加深版確保 WCAG AA(細線對比 ≥ 3:1)。",
     )
 
     chart = LineChart()
@@ -227,7 +227,8 @@ def build_line_three_waves() -> None:
     chart.add_data(data_ref, titles_from_data=True)
     chart.set_categories(cats_ref)
 
-    line_palette = [LINE_COLORS["primary"], LINE_COLORS["blue"], LINE_COLORS["yellow"]]
+    # 資料順序為 wave_2022 / 2023 / 2024,顏色反序讓最新一波(2024)用主色
+    line_palette = [LINE_COLORS["yellow"], LINE_COLORS["blue"], LINE_COLORS["primary"]]
     for s, color in zip(chart.series, line_palette):
         style_series_line(s, color, width_pt=2.5)
 
@@ -491,10 +492,10 @@ def build_pptx_template() -> None:
             "caption": "每日填報受週末效應影響,以 7 日中心對齊均線呈現潛在趨勢。Y 軸從零開始。",
         },
         {
-            "title": "三波疫情同期比較",
-            "subtitle": "Pattern B:類別配色,折線使用加深版確保 WCAG AA",
+            "title": "今年 vs 去年同期(含歷史範圍)",
+            "subtitle": "Pattern A:主色焦點 + 中性灰歷史範圍帶",
             "png": "02c-line-year-over-year.png",
-            "caption": "以相對天數對齊不同波次起點。3 條折線使用 LINE_COLORS 加深版色彩。",
+            "caption": "今年用主色 #5D7F58 作為焦點,去年同期用中性灰虛線,歷史範圍(±1 SD)用灰色填充帶,讀者能立即看出當前是否偏離常態。",
         },
         {
             "title": "變異株消長",
