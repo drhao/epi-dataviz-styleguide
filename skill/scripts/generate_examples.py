@@ -500,26 +500,38 @@ def monochrome_examples():
     print("[10] Monochrome usage...")
 
     # A. 單色堆疊長條：年齡 × 嚴重度（嚴重度有自然順序,用色階）
+    # 堆疊順序：重症(最深)在底,中症在中,輕症(最淺)在頂
+    # 設計邏輯：深色作視覺基底,「重症高度」一眼看出年齡風險梯度
     fig, ax = plt.subplots(figsize=(9, 4.5))
     ages = ["0-9", "10-19", "20-39", "40-59", "60-69", "70-79", "80+"]
     mild = [78, 85, 89, 82, 70, 55, 38]
     mod  = [18, 13,  9, 14, 22, 32, 42]
     sev  = [ 4,  2,  2,  4,  8, 13, 20]
 
-    colors_3 = MONOCHROME["scale_3"]
-    ax.bar(ages, mild, color=colors_3[0], width=0.6, label="輕症",
-           edgecolor="white", linewidth=0.5)
-    ax.bar(ages, mod, bottom=mild, color=colors_3[1], width=0.6, label="中症",
-           edgecolor="white", linewidth=0.5)
-    bot3 = [a+b for a, b in zip(mild, mod)]
-    ax.bar(ages, sev, bottom=bot3, color=colors_3[2], width=0.6, label="重症",
-           edgecolor="white", linewidth=0.5)
+    colors_3 = MONOCHROME["scale_3"]   # [最淺, 中, 最深]
+    # 重症為底(最深色 colors_3[2])
+    ax.bar(ages, sev, color=colors_3[2], width=0.6, label="重症")
+    # 中症在中
+    ax.bar(ages, mod, bottom=sev, color=colors_3[1], width=0.6, label="中症")
+    # 輕症在頂(最淺色 colors_3[0])
+    bot_mild = [a+b for a, b in zip(sev, mod)]
+    ax.bar(ages, mild, bottom=bot_mild, color=colors_3[0], width=0.6,
+           label="輕症")
     ax.set_xlabel("年齡層")
     ax.set_ylabel("比例（%）")
-    ax.set_ylim(0, 100)
-    ax.set_title("年齡層 × 嚴重度（單色堆疊;嚴重度為序數,色階反映程度）",
+    ax.set_ylim(0, 105)
+    ax.set_title("年齡層 × 嚴重度（單色堆疊;重症在底,色階反映程度）",
                  loc="left")
-    ax.legend(loc="upper left", ncol=3)
+    # 在最後一根長條右側直接標籤類別,取代圖例
+    last_x = len(ages) - 1
+    # 「重症」標籤位於該層中間,白底上的深色標籤
+    ax.text(last_x + 0.45, sev[-1]/2, "重症",
+            va="center", fontsize=10, color=NEUTRAL["700"], fontweight="bold")
+    ax.text(last_x + 0.45, sev[-1] + mod[-1]/2, "中症",
+            va="center", fontsize=10, color=NEUTRAL["700"])
+    ax.text(last_x + 0.45, sev[-1] + mod[-1] + mild[-1]/2, "輕症",
+            va="center", fontsize=10, color=NEUTRAL["700"])
+    ax.set_xlim(-0.5, len(ages) - 0.2)  # 留空間給標籤
     save(fig, "10a-mono-stacked-severity")
 
     # B. 單色多折線：歷次波次比較（焦點為當前波,最深色）

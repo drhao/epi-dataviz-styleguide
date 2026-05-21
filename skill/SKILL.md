@@ -132,30 +132,40 @@ All categories equal weight. Use cat-1 through cat-N in order.
 ### Pattern D — Categorical + Accent
 Most categories normal + one needs warning. Use cat colors + Alert Red / Terracotta for the warning subset.
 
-### Pattern E — Monochrome Scale (ordinal data)
-Series have a **natural order** (severity, age groups, time periods, doses). Use the primary-color scale instead of categorical hues. The order MUST go light→dark = weak→strong / past→present.
+### Pattern E — Monochrome Scale (few categories or ordinal)
+Use the primary-color scale instead of categorical hues. Two main triggers:
+
+1. **Series have a natural order** (severity, age, time periods, doses) — color depth = magnitude
+2. **2–3 categories where you want subdued visuals** — fewer hues = more focus on data shape
+
+For ordinal data, light→dark MUST correspond to weak→strong / past→present.
 
 ```python
 from epidemic_palette import MONOCHROME
-MONOCHROME["focus_2"]    # focus + reference
-MONOCHROME["scale_3"]    # 3 ordered series (mild/moderate/severe)
+MONOCHROME["focus_2"]    # focus + reference (2 series)
+MONOCHROME["scale_3"]    # 3 series (ordered or just minimalist)
 MONOCHROME["scale_4"]    # 4 ordered series (waves over time)
 MONOCHROME["scale_5"]    # 5 series
-MONOCHROME["scale_6"]    # 6 ordered series
+MONOCHROME["scale_6"]    # 6 series (with deliberate luminance gaps)
 MONOCHROME["scale_7"]    # full week / 7 age bins
 ```
 
-**Critical test**: ask "do these series have a natural order?"
-- YES → Pattern E (monochrome)
-- NO → Pattern C (categorical)
+**Decision tree**:
+1. Are categories ordinal (severity/age/time/doses)? → Pattern E
+2. Are there 2–3 categories and you want subdued visuals? → Pattern E
+3. Are there 6+ categories with no natural order? → Pattern C (categorical)
+4. Do categories need to feel "opposed/independent"? → Pattern C
 
 Examples:
-- Severity (mild/moderate/severe) → Pattern E
-- Variants (JN.1/KP.2/KP.3) → Pattern C (no order between strains)
-- Doses (1st/2nd/3rd) → Pattern E
+- Severity (mild/moderate/severe) → Pattern E (ordinal)
+- Doses (1st/2nd/3rd) → Pattern E (ordinal)
+- Waves over time → Pattern E (current deepest, thickest)
+- Male vs Female (2 categories) → Pattern E (few + subdued)
+- Variants (JN.1/KP.2/KP.3) → Pattern C (treated as distinct strains)
+- 6 departments → Pattern C (parallel, no order)
 - Cities → Pattern C, or Pattern A focusing one
-- Waves over time → Pattern E (current wave deepest+thickest)
-- Departments → Pattern C
+
+**When stacking with Pattern E**: place the **darkest color at the base**. Deep colors anchor the chart visually, and the "intensity baseline" makes cross-category comparison (e.g., severity gradient across ages) immediate.
 
 **When in doubt, default to Pattern A.** It's the safest choice and works for most epidemic charts.
 

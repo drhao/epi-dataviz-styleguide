@@ -45,6 +45,7 @@
 ```
 epi-dataviz-styleguide/
 ├── README.md              ← 你現在看到的這份
+├── AGENTS.md              ← 給 AI agent 的歡迎信
 ├── LICENSE                ← 使用條款
 ├── CHANGELOG.md           ← 版本記錄
 ├── CONTRIBUTING.md        ← 修改指引的標準流程
@@ -59,12 +60,18 @@ epi-dataviz-styleguide/
 ├── skill/                 ← AI agent skill 套件
 │   ├── SKILL.md
 │   ├── SKILL-README.md
-│   ├── references/        ← 9 種圖表的詳細規範
+│   ├── references/        ← 10 種圖表的詳細規範
 │   ├── scripts/           ← Python 色票模組 + 範例腳本
-│   ├── tests/             ← 65 個自動化測試
+│   ├── tests/             ← 72 個自動化測試
 │   └── assets/
-│       ├── examples/      ← 預生成 19 張範例 PNG + 4 張 quickstart
+│       ├── examples/      ← 預生成範例 PNG
 │       └── sample-data/   ← 12 個範例 CSV 資料集
+│
+├── dev-tools/             ← 維護者用的開發工具
+│   ├── README.md
+│   ├── build_pdf.py       ← 從 HTML 重生 PDF
+│   ├── check_drift.py     ← 跨檔案一致性檢查
+│   └── chart.umd.js       ← Chart.js 本地副本
 │
 └── resources/             ← 工具直接匯入用
     ├── palette.csv

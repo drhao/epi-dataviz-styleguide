@@ -972,7 +972,8 @@ footer {
       <div class="h3-en">Monochrome scale for ordinal data</div>
 
       <p style="font-size:14px; color:var(--n-600); margin-bottom:20px;">
-        當序列彼此<strong style="color:var(--p-700)">有自然順序</strong>（嚴重度、年齡、劑次、波次），
+        當序列<strong style="color:var(--p-700)">有自然順序</strong>(嚴重度、年齡、劑次、波次),
+        或只有 <strong style="color:var(--p-700)">2-3 組類別且想克制視覺</strong>,
         用主色階取代類別配色,讓讀者聚焦在<strong style="color:var(--p-700)">資料形狀</strong>而非色塊區分。
       </p>
 
@@ -1008,9 +1009,10 @@ footer {
       </div>
 
       <div class="palette-note" style="margin-top:18px">
-        <strong>判斷標準</strong>:「這幾個序列有沒有自然順序?」
-        嚴重度、波次、劑次、年齡層 → 用單色色階(淺→深 = 弱→強);
-        縣市、變異株、部門 → 用類別配色。
+        <strong>使用時機</strong>:
+        ① 序列有自然順序(嚴重度、波次、劑次、年齡層) → 淺→深 = 弱→強;
+        ② 只有 2-3 組類別且想克制視覺 → 用同色階分明度區分;
+        ③ 類別 ≥ 6 或需要強烈對比 → 改用類別配色。
         詳見 <a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/10-monochrome-usage.md" style="color:var(--p-700)">單色使用情境</a>。
       </div>
     </div>

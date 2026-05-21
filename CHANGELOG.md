@@ -25,6 +25,12 @@
 - 4 項核心原則（清晰優先、誠實呈現、一致性、負責任溝通）
 - 9 種圖表類型詳細規範：直條／折線／區域／堆疊／圓餅／散佈／直方盒鬚／人口金字塔／面量，**加 1 種橫向規範：單色使用情境**
 - 4 種配色搭配模式（Pattern A/B/C/D），**新增 Pattern E（單色色階）**
+- HTML/PDF 圖表範例新增 2 張單色 Chart.js 範例（chart11 單色堆疊、chart12 單色折線）
+- 新增 `AGENTS.md` — 給 AI agent 的歡迎信,讓 Claude Code 等工具能快速進入狀況
+- 新增 `dev-tools/` — 維護者用的開發工具
+  - `build_pdf.py`：從 HTML 重新生成 PDF（支援相對路徑與兩步驟流程）
+  - `check_drift.py`：跨檔案一致性檢查（自動化 Level 3 階段四的 grep 流程）
+  - `chart.umd.js`：Chart.js 4.4.0 本地副本（PDF 渲染用）
 - 直條圖比例規範（barPercentage × categoryPercentage）
 - 折線可讀性 5 項技巧
 - 7 日移動平均的「中心對齊」標準

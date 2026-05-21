@@ -56,34 +56,105 @@ python3 quickstart_with_sample_data.py
 
 絕對不要為了讓測試通過而調整測試門檻。**測試是承諾的化身**，調門檻等於降低指引品質。
 
+**色票變動 = 跨文件變動**：色彩 HEX 值出現在 `docs/guideline.html` 的色卡、`docs/guideline.md` 的色票表格、`docs/index.html` 的 Pages 色票區。完成色票本身的修改後，請接續執行「場景 B Level 3」階段二、階段三的 checklist，把新色票同步到所有展示文件。
+
 ### 場景 B：修改規範文字
 
-當需要新增準則、調整建議、修正錯字時。
+當需要新增準則、調整建議、修正錯字時。**規範文字散落在多個檔案中,務必使用以下 checklist 確保不漏改。**
+
+#### 規範變動 Checklist
+
+根據變動的「影響範圍」選擇 checklist 等級——**重大規範變動必須跑完整版**，避免文件層級之間漂移。
+
+##### Level 1：錯字／格式調整（影響範圍 = 單一檔案）
+
+僅修正錯字、標點、Markdown 格式問題,不涉及語意變更：
+
+- [ ] 修改該檔案
+- [ ] commit & push
+
+##### Level 2：補充說明、範例調整（影響範圍 = 1-2 個檔案）
+
+新增程式碼範例、補充某條規則的細節說明,但不改變核心觀念：
+
+- [ ] 修改主要檔案（通常是 `skill/references/XX.md`）
+- [ ] 若該規則也出現在 `docs/guideline.md`,同步更新
+- [ ] 用 `grep -r "關鍵字" .` 確認沒漏改
+- [ ] commit & push
+
+##### Level 3：規範新增或語意變更（影響範圍 = 全部 6 層文件）
+
+**這是最常見也最容易出錯的層級**——新增模式、修改原則、調整判斷標準等。**請完整跑完以下流程，不要跳步驟。**
+
+###### 階段一：規範核心修改
+
+- [ ] **`skill/scripts/epidemic_palette.py`**（若涉及色票、輔助函式）
+  - 新增/修改 dict、常數、function
+  - 跑 `python tests/test_palette.py` 確認 65+ 測試全過
+- [ ] **`skill/references/XX-name.md`**（圖表類型詳細規範）
+  - 規則描述、適用情境、不適用情境、常見錯誤、程式碼範例
+- [ ] **`skill/SKILL.md`**（AI agent 第一手依據）
+  - Combination Patterns 章節
+  - Reference Files 表格
+  - Decision tree 描述
+
+###### 階段二：人類閱讀文件同步
+
+- [ ] **`docs/guideline.md`**（Markdown 全文版）
+  - 同步階段一的概念到對應章節
+  - 「選擇順序」決策樹更新（若有新模式）
+- [ ] **`docs/guideline.html`**（互動視覺版）
+  - 段落內容（與 .md 一致）
+  - 視覺色卡（若新增配色組合）
+  - DECISION TREE callout 更新
+  - Python 程式碼範例區更新
+  - 命名慣例列表更新
+- [ ] **`docs/guideline.pdf`**（列印版）
+  - 重新生成：`python dev-tools/build_pdf.py`（從 repo 根目錄執行,會自動覆寫 `docs/guideline.pdf`）
+  - 視覺驗證：模式段落出現、無多餘空白頁、聯絡資訊在最後一頁
+
+###### 階段三：對外展示與資產
+
+- [ ] **`docs/index.html`**（GitHub Pages 首頁）
+  - 若涉及色彩展示,更新色票區
+  - 若涉及新類型範例,更新 SECTION 04 範例圖網格
+  - 若涉及 prompt 相關,更新 SECTION 03 範例
+- [ ] **範例 PNG**（若新增圖表類型或情境）
+  - `python skill/scripts/generate_examples.py` 重新生成
+  - 視覺驗證 1-3 張代表性圖
+  - 若首頁要用,複製到 `docs/examples/`
+
+###### 階段四：測試與紀錄
+
+- [ ] **`skill/tests/test_palette.py`**
+  - 新增 dict/常數 → 補對應的 `TestXxx` class
+  - 跑全部測試確認 100% 通過
+- [ ] **`CHANGELOG.md`**
+  - 加入「Unreleased」段落（若還沒發版）或新增版本號
+  - 列出本次新增、修改、移除的項目
+- [ ] **跨文件一致性檢查**
+  - `grep -r "新關鍵字" .` 確認所有應出現的檔案都更新了
+  - `grep -r "舊用詞" .` 確認沒有被取代的舊用詞殘留
+
+#### 避免規範漂移的最重要原則
+
+> **同一條規則出現在多個檔案時，務必全部更新。「重大變動才同步 HTML/PDF」是錯誤觀念——任何規範變動都該同步。**
+
+不確定哪些檔案有提及某個概念？用 grep 全文搜尋：
 
 ```bash
-# 文字規範的「真實來源」：
-# 1. skill/SKILL.md（AI agent 第一手依據）
-# 2. skill/references/*.md（特定圖表類型詳細規範）
-# 3. docs/guideline.md（人類閱讀的全文版）
-# 4. docs/guideline.html（互動視覺版）
-# 5. docs/guideline.pdf（列印版）
+# 找所有提及某個關鍵字的檔案
+grep -rln "barPercentage" .
+grep -rln "中心對齊" .
+grep -rln "MONOCHROME\|單色" .
 
-# 建議的修改順序：
-# A. 先改 skill/SKILL.md 或 skill/references/XX.md
-# B. 同步調整 docs/guideline.md
-# C. 重大變動才動 HTML 與 PDF（HTML 是 PDF 的源檔）
-```
-
-**避免規範漂移**：同一條規則出現在多個檔案時，務必全部更新。若不確定哪些檔案有提及，用 `grep` 全文搜尋：
-
-```bash
-grep -r "barPercentage" .
-grep -r "中心對齊" .
+# 排除測試輸出和範例圖,只看文件
+grep -rln "關鍵字" . --include="*.md" --include="*.html"
 ```
 
 ### 場景 C：新增圖表類型
 
-當有新的疫情圖表需要納入指引時。
+當有新的疫情圖表需要納入指引時。**這是場景 B Level 3 的最高強度版本——除了規範文字，還涉及新範例圖、新測試、新資料集。**
 
 ```bash
 # 1. 在 skill/references/ 新增 NN-chart-type.md
@@ -100,20 +171,34 @@ grep -r "中心對齊" .
 # 6. 更新 CHANGELOG.md
 ```
 
+**完整流程**：執行上述 6 步後，**請接續跑「場景 B Level 3」的所有 checklist**，因為新增圖表類型本質上是「規範新增 + 程式碼 + 範例 + 測試」的綜合變動。
+
 ## 重新生成文件版本
 
 當 `docs/guideline.html` 已修改，需要重新生成 PDF：
 
 ```bash
-# 需要安裝 playwright + chromium（首次設定）
+# 首次使用需安裝依賴
 pip install playwright
 playwright install chromium
 
-# 執行轉換腳本（在開發環境中保留）
-python3 convert_to_pdf.py
+# 從 repo 根目錄執行,會自動覆寫 docs/guideline.pdf
+python3 dev-tools/build_pdf.py
 ```
 
-PDF 轉換邏輯與列印優化 CSS 保存在開發文件中，並非 repo 一部分（避免增加 repo 體積與相依套件）。
+詳細說明見 [`dev-tools/README.md`](./dev-tools/README.md)。
+
+## 跨檔案一致性檢查
+
+完成 Level 3 變動後,跑自動化檢查確認沒漏改：
+
+```bash
+python3 dev-tools/check_drift.py
+```
+
+工具會掃描關鍵概念（如「Pattern E」、「主色 #739A6D」、「中心對齊」等）在各文件層級的覆蓋情況,並警告過時用詞殘留。
+
+新增規範時,記得在 `dev-tools/check_drift.py` 的 `CHECKS` 列表加入對應檢查項目,這樣未來的變動就會自動驗證。
 
 ### 更新 GitHub Pages 站台
 
@@ -141,14 +226,31 @@ repo 已配置 `docs/index.html` 作為 GitHub Pages 入口頁。Pages 從 `main
 
 ## 提交檢查清單
 
-每次變動上版前確認：
+每次 commit 上版前確認：
 
-- [ ] `python3 skill/tests/test_palette.py` 全部通過
-- [ ] 若改色票：CSV 與 PowerBI JSON 已同步更新
-- [ ] 若改規範文字：SKILL.md、references、docs 三處一致
-- [ ] 若新增圖表類型：範例 PNG 已重新生成
-- [ ] 若是發布版本：`CHANGELOG.md` 已更新版本號與變動清單
+**必跑：**
+
+- [ ] `python3 skill/tests/test_palette.py` 全部通過（目前 72 個測試）
+- [ ] `grep -rn "TODO\|FIXME\|XXX" .` 沒有殘留未完成標記
 - [ ] 文字內容仍符合「4 項核心原則」
+
+**依變動類型補跑：**
+
+- [ ] 若改色票：CSV 與 PowerBI JSON 已同步、`resources/` 目錄已 `cp` 對應檔
+- [ ] 若改規範文字：場景 B Level 3 的所有 checklist 已跑完（**特別是 HTML/PDF 是否同步**）
+- [ ] 若新增/修改圖表：範例 PNG 已重新生成,必要時複製到 `docs/examples/`
+- [ ] 若涉及 SKILL.md：跨參考表格、決策樹、Reference Files 表格三處一致
+- [ ] 若是發布版本：`CHANGELOG.md` 已更新版本號與變動清單
+
+**最後跨檔案一致性檢查：**
+
+```bash
+# 找新增關鍵字,確認所有應出現的檔案都更新了
+grep -rln "你新增的關鍵字" . --include="*.md" --include="*.html" --include="*.py"
+
+# 確認沒有舊用詞殘留(若有取代)
+grep -rln "被取代的舊用詞" .
+```
 
 ## 命名與風格慣例
 
