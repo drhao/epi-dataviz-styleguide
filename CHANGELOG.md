@@ -113,6 +113,7 @@
 
 ### Changed · 變更
 
+- **`apply_style()` 改為 CJK 字型自動 fallback**:`epidemic_palette.py` 內新增 `_build_font_list()`,從候選清單(Noto Sans TC / PingFang TC / Microsoft JhengHei / WenQuanYi Micro Hei 等)動態偵測本機可用字型,不再寫死 `Noto Sans CJK JP`。macOS / Windows / Linux 使用者不需強制安裝特定字型,本機已有的任一 CJK 字型即可用
 - **移動平均規範:centered → trailing(BREAKING)**
   - 規範改為 trailing 7 日(本日含前 6 日,即 `i-6` 到 `i`),對齊 WHO/CDC/JHU 等公開儀表板的通用慣例
   - 不再採 centered(`i-3` 到 `i+3`)── 雖然視覺對齊較直觀,但讀者解讀心智負擔較高,且即時 dashboard 場景無未來資料可用

@@ -104,6 +104,39 @@ DIVERGING = [
 ]
 
 
+def _build_font_list(use_chinese):
+    """偵測本機可用的 CJK 字型,構建按優先順序排列的字型 list。
+
+    matplotlib 拿到 list 後會依序試;這裡先過濾本機可用字型,
+    避免渲染時拋出 "Font family not found" warnings。
+
+    若本機完全沒任何 CJK 字型,中文字會以方塊顯示。建議安裝:
+      - macOS:  brew install --cask font-noto-sans-cjk
+      - Linux:  sudo apt-get install fonts-noto-cjk
+      - Windows: https://fonts.google.com/noto/specimen/Noto+Sans+TC
+    """
+    if not use_chinese:
+        return ["DejaVu Sans"]
+
+    candidates = [
+        "Noto Sans TC",        # 開源,跨平台(推薦安裝)
+        "Noto Sans CJK TC",
+        "Noto Sans CJK JP",
+        "Source Han Sans TC",  # Adobe 思源黑體
+        "PingFang TC",         # macOS 內建
+        "Heiti TC",            # macOS 內建
+        "Microsoft JhengHei",  # Windows 繁中內建
+        "Microsoft YaHei",     # Windows 簡中內建
+        "WenQuanYi Micro Hei", # Linux 開源常見
+        "Noto Sans SC",        # 簡中 fallback
+        "SimHei",               # Windows 簡中經典
+    ]
+    available = {f.name for f in font_manager.fontManager.ttflist}
+    matched = [c for c in candidates if c in available]
+    # 結尾加非 CJK fallback,確保拉丁字符 / 數字 / 標點仍能正常渲染
+    return matched + ["DejaVu Sans"]
+
+
 def apply_style(use_chinese=True):
     """套用本指引的 matplotlib 全域樣式"""
     plt.rcParams.update({
@@ -125,10 +158,12 @@ def apply_style(use_chinese=True):
         "grid.linewidth": 0.6,
         "grid.linestyle": "-",
 
-        # 字體
-        "font.family":   "Noto Sans CJK JP" if use_chinese else "DejaVu Sans",
-        "font.size":     11,
-        "axes.titlesize":  14,
+        # 字體:CJK 自動 fallback。macOS/Windows/Linux 都能用,
+        # 不需要強制使用者安裝特定字型(雖然推薦 Noto Sans TC)
+        "font.family":      "sans-serif",
+        "font.sans-serif":  _build_font_list(use_chinese),
+        "font.size":        11,
+        "axes.titlesize":   14,
         "axes.titleweight": "semibold",
         "axes.titlepad":  14,
         "axes.labelsize": 11,
