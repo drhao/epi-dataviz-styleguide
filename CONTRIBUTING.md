@@ -128,7 +128,7 @@ repo 已配置 `docs/index.html` 作為 GitHub Pages 入口頁。Pages 從 `main
 - `.nojekyll` — 告訴 GitHub Pages 不要用 Jekyll 處理（保留所有檔案原樣 serve）
 
 **修改 `index.html` 時的注意事項**：
-- 引用 GitHub 內部資源時，連結用絕對 URL（`https://github.com/YOUR_ORG/...`）
+- 引用 GitHub 內部資源時，連結用絕對 URL（`https://github.com/drhao/...`）
 - 引用 Pages 內部資源時，連結用相對路徑（`guideline.html`、`examples/xxx.png`）
 - 修改後本地驗證：用 `python3 -m http.server` 在 `docs/` 啟動本地伺服器，瀏覽器訪問 `localhost:8000` 確認連結都正確
 - push 後等 GitHub Pages 重新部署（約 1–2 分鐘）
@@ -187,4 +187,4 @@ refactor: 將色覺障礙模擬抽出為共用工具
 
 ## 提問
 
-修訂相關疑問請聯絡內部資料治理小組。
+修訂相關疑問請洽 Dr. Hao（[dr.hao.tw@gmail.com](mailto:dr.hao.tw@gmail.com)）。

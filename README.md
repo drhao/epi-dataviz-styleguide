@@ -112,6 +112,26 @@ plt.savefig('test.png')
 
 詳細安裝步驟見 [`skill/SKILL-README.md`](./skill/SKILL-README.md)。
 
+### 我要請 AI 幫我畫圖（含 prompt 範例）
+
+不論你是用裝了 skill 的 AI 工具，還是 ChatGPT / Claude.ai / Gemini 等網頁 AI，都有對應的現成 prompt 模板，**直接複製貼上、填空換成你的資料即可**。
+
+完整內容見 📖 [`docs/prompt-examples.md`](./docs/prompt-examples.md)（GitHub 會直接渲染 Markdown）。
+
+**最常用的網頁 AI 簡短版**（複製到 ChatGPT 等對話框）：
+
+```
+請依以下規範用 Python matplotlib 畫圖:
+- 主色 #739A6D(Sage Green),類別配色:#587A9D, #C8A041, #49888D
+- 紅色僅警示用,不作一般類別色
+- Y 軸從零開始,移除頂部右側邊框
+- 中文字體支援
+- 折線寬 2.5px,長條 width=0.6
+
+資料:[貼上你的資料]
+我要:[簡述需求]
+```
+
 ## 重新生成資源
 
 所有圖表與資料都可從原始碼重現：
@@ -175,17 +195,9 @@ pytest test_palette.py -v
 3. **Source** 選擇「Deploy from a branch」
 4. **Branch** 選擇 `main`，路徑選擇 `/docs`
 5. 點 Save，等待約 1–2 分鐘
-6. Pages URL 會顯示在頁面頂端，通常是：
-   - `https://drhao.github.io/epi-dataviz-styleguide/` （組織 repo）
-   - `https://YOUR_USERNAME.github.io/epi-dataviz-styleguide/` （個人 repo）
+6. Pages URL：`https://drhao.github.io/epi-dataviz-styleguide/`
 
 之後每次 push 到 `main` 的 `docs/` 內容變動，會自動重新部署。
-
-**更新 Pages 連結**：本 README 與 `docs/index.html` 中的 `drhao` 請替換為實際的 organization 或 username。可用 sed 一次替換：
-
-```bash
-sed -i 's|drhao|實際組織名|g' README.md docs/index.html CHANGELOG.md
-```
 
 ## 授權
 
@@ -193,4 +205,4 @@ sed -i 's|drhao|實際組織名|g' README.md docs/index.html CHANGELOG.md
 
 ## 聯絡
 
-關於本指引的疑問、修訂建議：請聯絡內部資料治理小組。
+關於本指引的疑問、修訂建議：請洽 Dr. Hao（[dr.hao.tw@gmail.com](mailto:dr.hao.tw@gmail.com)）。

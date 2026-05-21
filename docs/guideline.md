@@ -511,3 +511,7 @@ theme_epi <- function() {
 - `epidemic-dataviz-palette.csv` — 完整色票對照表
 - `epidemic-dataviz-theme.json` — Power BI 主題檔
 - `SKILL.md` — AI agent 工具用 skill 定義檔
+
+## 聯絡
+
+關於本指引的疑義或修訂建議，請洽 Dr. Hao（[dr.hao.tw@gmail.com](mailto:dr.hao.tw@gmail.com)）。

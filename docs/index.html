@@ -573,6 +573,120 @@ footer {
   letter-spacing: 0.5px;
 }
 
+/* ===== Prompt 範例區塊 ===== */
+.prompts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.prompt-card {
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.prompt-card-head {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--n-200);
+  background: var(--n-50);
+}
+.prompt-card-head .scenario {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--p-600);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.prompt-card-head h3 {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--n-900);
+  margin-bottom: 4px;
+}
+.prompt-card-head .role-en {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--n-500);
+  margin-bottom: 10px;
+}
+.prompt-card-head p {
+  font-size: 13px;
+  color: var(--n-700);
+  margin: 0;
+  line-height: 1.55;
+}
+.prompt-card pre {
+  background: var(--n-900);
+  color: var(--p-200);
+  padding: 20px 22px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.6;
+  overflow-x: auto;
+  flex: 1;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.prompt-card pre .placeholder {
+  color: var(--mustard);
+  font-style: italic;
+}
+.prompt-card pre .key {
+  color: var(--p-300);
+  font-weight: 600;
+}
+.prompt-card-foot {
+  padding: 14px 22px;
+  border-top: 1px solid var(--n-200);
+  background: var(--n-50);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.copy-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--p-700);
+  background: transparent;
+  border: 1px solid var(--p-300);
+  padding: 6px 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all .2s;
+}
+.copy-btn:hover {
+  background: var(--p-500);
+  color: var(--n-0);
+  border-color: var(--p-500);
+}
+.copy-btn.copied {
+  background: var(--p-600);
+  color: var(--n-0);
+  border-color: var(--p-600);
+}
+.prompt-card-foot .target {
+  font-size: 11px;
+  color: var(--n-600);
+  letter-spacing: 0.5px;
+}
+.prompt-note {
+  background: var(--p-50);
+  border: 1px solid var(--p-200);
+  border-left: 3px solid var(--p-500);
+  padding: 16px 20px;
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--n-700);
+}
+.prompt-note strong { color: var(--p-700); }
+.prompt-note a { color: var(--p-700); border-bottom: 1px solid var(--p-300); text-decoration: none; }
+
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   .hero-inner { padding: 56px 24px 48px; }
@@ -587,6 +701,7 @@ footer {
   .palette-row { grid-template-columns: repeat(3, 1fr); }
   .examples-grid { grid-template-columns: repeat(2, 1fr); }
   .principles { grid-template-columns: 1fr; }
+  .prompts { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-bottom { flex-direction: column; gap: 12px; align-items: flex-start; }
   .masthead-right { display: none; }
@@ -735,10 +850,81 @@ footer {
     </div>
   </section>
 
-  <!-- 色票 -->
+  <!-- 請 AI 生成圖表 -->
   <section>
     <div class="section-head">
       <div class="section-num">SECTION 03</div>
+      <h2>請 AI 幫你畫圖</h2>
+      <div class="en">Prompt your AI</div>
+    </div>
+
+    <div class="prompts">
+      <!-- 情境 A：裝了 skill 的 AI -->
+      <div class="prompt-card">
+        <div class="prompt-card-head">
+          <div class="scenario">SCENARIO A · 1 of 2</div>
+          <h3>給已安裝 skill 的 AI</h3>
+          <div class="role-en">For Claude Code / Codex / Antigravity</div>
+          <p>你的 AI 工具已安裝本 repo 的 skill。Prompt 可以很簡短,AI 會自動讀取規範。</p>
+        </div>
+<pre id="prompt-a">我有 <span class="placeholder">[資料來源／附檔]</span>,內容是 <span class="placeholder">[簡短說明]</span>。
+
+請依本組織的「<span class="key">疫情資料視覺化指引</span>」幫我畫一張
+<span class="placeholder">[圖表類型]</span>,重點是凸顯 <span class="placeholder">[訊息]</span>。
+
+技術需求:
+- 程式語言:Python(matplotlib)
+- 輸出:高解析度 PNG
+- 中文字體</pre>
+        <div class="prompt-card-foot">
+          <div class="target">Target: 已安裝 skill 的 AI</div>
+          <button class="copy-btn" data-target="prompt-a">Copy</button>
+        </div>
+      </div>
+
+      <!-- 情境 B：網頁 AI -->
+      <div class="prompt-card">
+        <div class="prompt-card-head">
+          <div class="scenario">SCENARIO B · 2 of 2</div>
+          <h3>給網頁 AI</h3>
+          <div class="role-en">For ChatGPT / Claude.ai / Gemini</div>
+          <p>網頁 AI 不會自動讀取規範,prompt 需要內嵌關鍵色彩與規則。</p>
+        </div>
+<pre id="prompt-b">請依以下規範用 Python matplotlib 畫圖:
+
+<span class="key">【色彩】</span>
+- 主色 Sage Green: #739A6D
+- 類別配色: #587A9D, #C8A041, #49888D
+- 紅色僅警示用,不作一般類別色
+- 折線用主色加深版 #5D7F58(主色 500 對比不足)
+
+<span class="key">【規範】</span>
+- Y 軸從零開始(不可截斷)
+- 移除頂部右側邊框
+- 預設僅水平格線
+- 折線寬 2.5px,長條 width=0.6
+- 中文字體 Noto Sans CJK
+
+<span class="key">【需求】</span>
+資料: <span class="placeholder">[貼上你的資料]</span>
+我要: <span class="placeholder">[簡述需求]</span></pre>
+        <div class="prompt-card-foot">
+          <div class="target">Target: 任意網頁 AI 對話框</div>
+          <button class="copy-btn" data-target="prompt-b">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prompt-note">
+      📖 <strong>更多場景</strong>(每日新增、波次比較、變異株消長、縣市排名、人口金字塔、散佈圖) 與進階自訂 prompt 技巧,
+      請見 <a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/docs/prompt-examples.md">完整 prompt 範例文件</a>。
+    </div>
+  </section>
+
+  <!-- 色票 -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">SECTION 04</div>
       <h2>主色與類別配色</h2>
       <div class="en">Primary &amp; Categorical Palette</div>
     </div>
@@ -784,7 +970,7 @@ footer {
   <!-- 圖表範例 -->
   <section>
     <div class="section-head">
-      <div class="section-num">SECTION 04</div>
+      <div class="section-num">SECTION 05</div>
       <h2>圖表範例</h2>
       <div class="en">Chart examples</div>
     </div>
@@ -826,7 +1012,7 @@ footer {
   <!-- 設計原則 -->
   <section>
     <div class="section-head">
-      <div class="section-num">SECTION 05</div>
+      <div class="section-num">SECTION 06</div>
       <h2>四項核心原則</h2>
       <div class="en">Guiding principles</div>
     </div>
@@ -897,6 +1083,7 @@ footer {
           <li><a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/LICENSE">使用授權</a></li>
           <li>版本 1.0 ／ 2026</li>
           <li>內部使用</li>
+          <li><a href="mailto:dr.hao.tw@gmail.com">聯絡：Dr. Hao</a></li>
         </ul>
       </div>
     </div>
@@ -906,6 +1093,38 @@ footer {
     </div>
   </div>
 </footer>
+
+<script>
+// Copy prompt 按鈕
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const targetId = btn.getAttribute('data-target');
+    const pre = document.getElementById(targetId);
+    // 取得純文字(去掉 span 標籤但保留內容)
+    const text = pre.innerText;
+    try {
+      await navigator.clipboard.writeText(text);
+      const original = btn.textContent;
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = original;
+        btn.classList.remove('copied');
+      }, 2000);
+    } catch (err) {
+      // fallback for older browsers
+      const range = document.createRange();
+      range.selectNode(pre);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+      btn.textContent = '✓ Selected';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+    }
+  });
+});
+</script>
 
 </body>
 </html>
