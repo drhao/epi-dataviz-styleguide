@@ -74,7 +74,7 @@
 - 縣市 × 月份矩陣
 
 #### 自動化測試
-- 65 個 pytest 案例，雙模式運作（pytest 或直接 python 執行）
+- 72 個 pytest 案例，雙模式運作（pytest 或直接 python 執行）
 - 8 個測試類別：HEX 格式、色彩完整性、色階順序、WCAG 對比度、色覺障礙、移動平均、樣式套用、跨檔案一致性、範例資料完整性
 - 三層 WCAG 對比門檻：文字 4.5、圖形 3.0、填色 2.4
 - 三種色覺障礙模擬（Protanopia、Deuteranopia、Tritanopia）

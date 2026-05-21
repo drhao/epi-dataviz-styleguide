@@ -90,7 +90,7 @@ python3 quickstart_with_sample_data.py
 
 - [ ] **`skill/scripts/epidemic_palette.py`**（若涉及色票、輔助函式）
   - 新增/修改 dict、常數、function
-  - 跑 `python tests/test_palette.py` 確認 65+ 測試全過
+  - 跑 `python tests/test_palette.py` 確認 72 個測試全過
 - [ ] **`skill/references/XX-name.md`**（圖表類型詳細規範）
   - 規則描述、適用情境、不適用情境、常見錯誤、程式碼範例
 - [ ] **`skill/SKILL.md`**（AI agent 第一手依據）

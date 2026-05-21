@@ -492,7 +492,7 @@ Resource files in the skill:
 - `scripts/generate_examples.py` — runnable script that produces all reference example PNGs
 - `scripts/generate_sample_data.py` — produces the 12 sample CSV datasets
 - `scripts/quickstart_with_sample_data.py` — runnable demo: reads sample-data, applies guideline
-- `tests/test_palette.py` — 65 automated tests (palette correctness + sample-data integrity)
+- `tests/test_palette.py` — 72 automated tests (palette correctness + sample-data integrity)
 - `assets/examples/*.png` — pre-generated reference images (19 canonical examples)
 - `assets/examples/quickstart/*.png` — examples produced by reading sample-data
 - `assets/sample-data/*.csv` — 12 realistic-but-fictional datasets covering all chart types

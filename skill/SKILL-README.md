@@ -25,7 +25,7 @@ epidemic-dataviz/
 │   ├── generate_sample_data.py       ← 產生 12 個範例 CSV 資料集
 │   └── quickstart_with_sample_data.py ← 示範：讀資料 + 套用指引
 │
-├── tests/                            ← 自動化測試（65 案例）
+├── tests/                            ← 自動化測試（72 案例）
 │   ├── test_palette.py
 │   ├── color_utils.py
 │   └── README.md
