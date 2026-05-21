@@ -23,7 +23,7 @@ This skill encodes the organization's standards for visualizing epidemic and pub
 When asked to create a chart, follow this order:
 
 1. **Identify the question type** (comparison, trend, composition, distribution, ranking, etc.) → choose chart type from §3
-2. **Pick a combination pattern** based on whether there's a focus object → §2
+2. **Pick a combination pattern** based on whether there's a focus object AND whether series are ordinal → §2
 3. **Apply colors in the prescribed priority order** (green → blue → yellow → neutral) → §1
 4. **Apply proportions and styling** specific to that chart type → §4
 5. **Verify accessibility** (contrast, color blindness, direct labels) → §6
@@ -131,6 +131,31 @@ All categories equal weight. Use cat-1 through cat-N in order.
 
 ### Pattern D — Categorical + Accent
 Most categories normal + one needs warning. Use cat colors + Alert Red / Terracotta for the warning subset.
+
+### Pattern E — Monochrome Scale (ordinal data)
+Series have a **natural order** (severity, age groups, time periods, doses). Use the primary-color scale instead of categorical hues. The order MUST go light→dark = weak→strong / past→present.
+
+```python
+from epidemic_palette import MONOCHROME
+MONOCHROME["focus_2"]    # focus + reference
+MONOCHROME["scale_3"]    # 3 ordered series (mild/moderate/severe)
+MONOCHROME["scale_4"]    # 4 ordered series (waves over time)
+MONOCHROME["scale_5"]    # 5 series
+MONOCHROME["scale_6"]    # 6 ordered series
+MONOCHROME["scale_7"]    # full week / 7 age bins
+```
+
+**Critical test**: ask "do these series have a natural order?"
+- YES → Pattern E (monochrome)
+- NO → Pattern C (categorical)
+
+Examples:
+- Severity (mild/moderate/severe) → Pattern E
+- Variants (JN.1/KP.2/KP.3) → Pattern C (no order between strains)
+- Doses (1st/2nd/3rd) → Pattern E
+- Cities → Pattern C, or Pattern A focusing one
+- Waves over time → Pattern E (current wave deepest+thickest)
+- Departments → Pattern C
 
 **When in doubt, default to Pattern A.** It's the safest choice and works for most epidemic charts.
 
@@ -448,6 +473,7 @@ When working with a specific chart type, **read the corresponding reference file
 | Histogram / boxplot | `references/07-histogram-boxplot.md` | age distribution, hospital stay distribution |
 | Population pyramid | `references/08-pyramid-chart.md` | age × gender comparison |
 | Choropleth / heatmap | `references/09-choropleth-map.md` | geographic spread, time × region matrices |
+| **Monochrome usage** | `references/10-monochrome-usage.md` | **ordinal data (severity, age, doses, waves) — when categories have natural order** |
 
 Each reference includes: when to use / when NOT to use; specific styling rules; key per-chart pitfalls; concise Python code examples; and named PNG examples in `assets/examples/`.
 

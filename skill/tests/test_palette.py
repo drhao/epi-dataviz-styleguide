@@ -506,6 +506,83 @@ class TestCrossFileConsistency:
         assert theme["bad"] == ep.SEMANTIC["danger"]
 
 
+class TestMonochrome:
+    """單色使用組合（MONOCHROME）的正確性"""
+
+    EXPECTED_KEYS = {"focus_2", "scale_3", "scale_4",
+                     "scale_5", "scale_6", "scale_7"}
+
+    def test_monochrome_has_required_keys(self):
+        """MONOCHROME 應包含所有預期的組合鍵"""
+        actual_keys = set(ep.MONOCHROME.keys())
+        missing = self.EXPECTED_KEYS - actual_keys
+        assert not missing, f"MONOCHROME 缺少組合: {missing}"
+
+    def test_monochrome_lengths_match_keys(self):
+        """每個組合的色彩數量應與名稱數字一致（scale_3 = 3 色等）"""
+        for key, colors in ep.MONOCHROME.items():
+            # 從 key 解出預期長度
+            if key == "focus_2":
+                expected = 2
+            elif key.startswith("scale_"):
+                expected = int(key.split("_")[1])
+            else:
+                continue
+            assert len(colors) == expected, \
+                f"MONOCHROME[{key}] 應有 {expected} 色,實際 {len(colors)}"
+
+    def test_monochrome_all_valid_hex(self):
+        """所有單色組合的 HEX 都應合法"""
+        for key, colors in ep.MONOCHROME.items():
+            for hx in colors:
+                assert is_valid_hex(hx), f"MONOCHROME[{key}] 含非法 HEX: {hx}"
+
+    def test_scale_palettes_monotonically_darken(self):
+        """所有 scale_N 必須單調由淺至深（核心規範:色階方向有意義）"""
+        from color_utils import relative_luminance, hex_to_rgb
+        for key, colors in ep.MONOCHROME.items():
+            if not key.startswith("scale_"):
+                continue
+            lums = [relative_luminance(hex_to_rgb(c)) for c in colors]
+            for i in range(len(lums) - 1):
+                assert lums[i] > lums[i+1], (
+                    f"MONOCHROME[{key}] 非單調變深: "
+                    f"index {i} ({colors[i]}, lum={lums[i]:.3f}) ≤ "
+                    f"index {i+1} ({colors[i+1]}, lum={lums[i+1]:.3f})"
+                )
+
+    def test_focus_2_has_clear_contrast(self):
+        """focus_2 兩色之間必須有清楚對比（焦點 + 對照需可區分）"""
+        c1, c2 = ep.MONOCHROME["focus_2"]
+        r = contrast_ratio(c1, c2)
+        assert r >= 2.0, \
+            f"focus_2 兩色對比 {r:.2f} 不足（焦點與對照需可區分）"
+
+    def test_adjacent_scale_steps_distinguishable(self):
+        """相鄰色階間需有足夠對比（避免淺色互相黏在一起）"""
+        from color_utils import relative_luminance, hex_to_rgb
+        for key in ["scale_3", "scale_4", "scale_5", "scale_6", "scale_7"]:
+            colors = ep.MONOCHROME[key]
+            lums = [relative_luminance(hex_to_rgb(c)) for c in colors]
+            for i in range(len(lums) - 1):
+                lum_diff = lums[i] - lums[i+1]
+                # 相鄰色階亮度差至少 0.04（經驗值,確保人眼能分辨）
+                assert lum_diff >= 0.04, (
+                    f"MONOCHROME[{key}] 相鄰色階 index {i} 與 {i+1} "
+                    f"亮度差 {lum_diff:.3f} < 0.04（人眼難以分辨）"
+                )
+
+    def test_scale_endpoints_strong_contrast(self):
+        """每個 scale 的首末兩色對比必須足夠強"""
+        for key in ["scale_3", "scale_4", "scale_5", "scale_6", "scale_7"]:
+            colors = ep.MONOCHROME[key]
+            r = contrast_ratio(colors[0], colors[-1])
+            assert r >= 4.0, (
+                f"MONOCHROME[{key}] 首末對比 {r:.2f} < 4.0"
+                f"（色階首末應清楚區分）"
+            )
+
+
 class TestSampleData:
     """sample-data 資料集完整性"""
 
@@ -651,7 +728,8 @@ def _run_without_pytest():
     test_classes = [
         TestHexFormat, TestCompleteness, TestOrdering,
         TestContrast, TestColorBlindness, TestCenteredMA,
-        TestApplyStyle, TestCrossFileConsistency, TestSampleData,
+        TestApplyStyle, TestCrossFileConsistency,
+        TestMonochrome, TestSampleData,
     ]
     total = passed = failed = skipped = 0
     failures = []

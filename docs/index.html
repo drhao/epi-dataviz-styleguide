@@ -965,6 +965,55 @@ footer {
         詳細規範與配色搭配模式請見 <a href="guideline.html#ch3" style="color:var(--p-700)">完整指引第 3 章</a>。
       </div>
     </div>
+
+    <!-- 單色情境 -->
+    <div class="palette-strip" style="margin-top:24px">
+      <h3>序數資料用單色色階</h3>
+      <div class="h3-en">Monochrome scale for ordinal data</div>
+
+      <p style="font-size:14px; color:var(--n-600); margin-bottom:20px;">
+        當序列彼此<strong style="color:var(--p-700)">有自然順序</strong>（嚴重度、年齡、劑次、波次），
+        用主色階取代類別配色,讓讀者聚焦在<strong style="color:var(--p-700)">資料形狀</strong>而非色塊區分。
+      </p>
+
+      <div class="palette-row" style="grid-template-columns: repeat(7, 1fr); gap: 0;">
+        <div class="palette-chip" style="border-right:none">
+          <div class="swatch" style="background:#E8EEE7; height:48px"></div>
+          <div class="meta" style="padding:6px 8px"><div class="hex">100</div></div>
+        </div>
+        <div class="palette-chip" style="border-right:none">
+          <div class="swatch" style="background:#D1DECF; height:48px"></div>
+          <div class="meta" style="padding:6px 8px"><div class="hex">200</div></div>
+        </div>
+        <div class="palette-chip" style="border-right:none">
+          <div class="swatch" style="background:#B4C9B1; height:48px"></div>
+          <div class="meta" style="padding:6px 8px"><div class="hex">300</div></div>
+        </div>
+        <div class="palette-chip" style="border-right:none">
+          <div class="swatch" style="background:#91B08C; height:48px"></div>
+          <div class="meta" style="padding:6px 8px"><div class="hex">400</div></div>
+        </div>
+        <div class="palette-chip" style="border-right:none">
+          <div class="swatch" style="background:#739A6D; height:48px"></div>
+          <div class="meta" style="padding:6px 8px"><div class="hex">500</div></div>
+        </div>
+        <div class="palette-chip" style="border-right:none">
+          <div class="swatch" style="background:#5D7F58; height:48px"></div>
+          <div class="meta" style="padding:6px 8px"><div class="hex">600</div></div>
+        </div>
+        <div class="palette-chip">
+          <div class="swatch" style="background:#374C34; height:48px"></div>
+          <div class="meta" style="padding:6px 8px"><div class="hex">800</div></div>
+        </div>
+      </div>
+
+      <div class="palette-note" style="margin-top:18px">
+        <strong>判斷標準</strong>:「這幾個序列有沒有自然順序?」
+        嚴重度、波次、劑次、年齡層 → 用單色色階(淺→深 = 弱→強);
+        縣市、變異株、部門 → 用類別配色。
+        詳見 <a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/10-monochrome-usage.md" style="color:var(--p-700)">單色使用情境</a>。
+      </div>
+    </div>
   </section>
 
   <!-- 圖表範例 -->
@@ -1005,6 +1054,16 @@ footer {
         <div class="num">09 ／ HEATMAP</div>
         <h5>縣市 × 月份發生率</h5>
         <img src="examples/09-choropleth-heatmap.png" alt="縣市月份發生率熱力圖">
+      </div>
+      <div class="example-tile">
+        <div class="num">10A ／ MONO STACKED</div>
+        <h5>年齡 × 嚴重度（單色色階）</h5>
+        <img src="examples/10a-mono-stacked-severity.png" alt="單色堆疊長條圖,嚴重度為序數">
+      </div>
+      <div class="example-tile">
+        <div class="num">10B ／ MONO LINE</div>
+        <h5>歷次波次比較（當前波最深）</h5>
+        <img src="examples/10b-mono-line-waves.png" alt="單色折線,當前波最深最粗">
       </div>
     </div>
   </section>

@@ -16,7 +16,7 @@ from matplotlib.patches import Patch
 
 from epidemic_palette import (
     PRIMARY, PRIMARY_DARK, PRIMARY_DARKER, PRIMARY_LIGHT,
-    CATEGORICAL, LINE_COLORS, ACCENT, NEUTRAL, SEMANTIC,
+    CATEGORICAL, MONOCHROME, LINE_COLORS, ACCENT, NEUTRAL, SEMANTIC,
     SEQUENTIAL, DIVERGING,
     apply_style, centered_ma, hide_y_axis,
     format_date_axis_daily, format_date_axis_weekly, format_date_axis_monthly,
@@ -495,6 +495,94 @@ def choropleth_examples():
     save(fig, "09-choropleth-heatmap")
 
 
+# ============== 10. 單色使用 ==============
+def monochrome_examples():
+    print("[10] Monochrome usage...")
+
+    # A. 單色堆疊長條：年齡 × 嚴重度（嚴重度有自然順序,用色階）
+    fig, ax = plt.subplots(figsize=(9, 4.5))
+    ages = ["0-9", "10-19", "20-39", "40-59", "60-69", "70-79", "80+"]
+    mild = [78, 85, 89, 82, 70, 55, 38]
+    mod  = [18, 13,  9, 14, 22, 32, 42]
+    sev  = [ 4,  2,  2,  4,  8, 13, 20]
+
+    colors_3 = MONOCHROME["scale_3"]
+    ax.bar(ages, mild, color=colors_3[0], width=0.6, label="輕症",
+           edgecolor="white", linewidth=0.5)
+    ax.bar(ages, mod, bottom=mild, color=colors_3[1], width=0.6, label="中症",
+           edgecolor="white", linewidth=0.5)
+    bot3 = [a+b for a, b in zip(mild, mod)]
+    ax.bar(ages, sev, bottom=bot3, color=colors_3[2], width=0.6, label="重症",
+           edgecolor="white", linewidth=0.5)
+    ax.set_xlabel("年齡層")
+    ax.set_ylabel("比例（%）")
+    ax.set_ylim(0, 100)
+    ax.set_title("年齡層 × 嚴重度（單色堆疊;嚴重度為序數,色階反映程度）",
+                 loc="left")
+    ax.legend(loc="upper left", ncol=3)
+    save(fig, "10a-mono-stacked-severity")
+
+    # B. 單色多折線：歷次波次比較（焦點為當前波,最深色）
+    fig, ax = plt.subplots(figsize=(9, 4.5))
+    days = np.arange(1, 31)
+    np.random.seed(0)
+    waves = {
+        "2021 (第一波)": [120,180,260,380,520,720,980,1240,1580,1820,
+                       1960,1880,1740,1520,1280,1040,820,640,490,380,
+                       290,220,170,130,100,80,65,52,42,35],
+        "2022 (第二波)": [180,290,420,640,920,1280,1720,2180,2640,3020,
+                       3280,3340,3180,2860,2440,1980,1560,1180,890,680,
+                       510,390,290,220,170,130,100,80,62,48],
+        "2023 (第三波)": [200,310,460,700,1020,1420,1900,2400,2920,3340,
+                       3640,3700,3520,3160,2680,2180,1720,1300,980,750,
+                       560,430,320,240,180,140,108,82,62,48],
+        "2024 (本波)":   [240,380,560,820,1180,1620,2180,2840,3520,4180,
+                       4720,5040,5180,5040,4640,4080,3420,2780,2210,1740,
+                       1360,1050,810,620,470,360,275,210,160,120],
+    }
+    # 4 序列遞進色階,最後一條(當前)最深
+    mono4 = MONOCHROME["scale_4"]
+    for (label, vals), c in zip(waves.items(), mono4):
+        is_current = "本波" in label
+        ax.plot(days, vals, color=c,
+                linewidth=3 if is_current else 1.8,
+                label=label,
+                marker="o" if is_current else None,
+                markersize=4 if is_current else 0,
+                markevery=5)
+    ax.set_xlabel("該波相對日")
+    ax.set_ylabel("每日新增")
+    ax.set_title("歷次波次比較（單色折線;當前波最深最粗）", loc="left")
+    ax.legend(loc="upper right")
+    save(fig, "10b-mono-line-waves")
+
+    # C. 單色堆疊區域：疫苗 1/2/3 劑（同主題,劑次有自然順序）
+    from datetime import date
+    fig, ax = plt.subplots(figsize=(8.5, 4.5))
+    months_date = [date(2025, m, 1) for m in range(1, 13)]
+    dose1 = [42, 58, 71, 79, 84, 87, 89, 91, 92, 93, 94, 94]
+    dose2 = [28, 42, 56, 67, 74, 79, 83, 86, 88, 89, 90, 91]
+    dose3 = [ 8, 18, 28, 38, 46, 53, 59, 64, 68, 72, 75, 77]
+
+    mono3 = MONOCHROME["scale_3"]
+    # 由淺到深疊（最大量在下、最少量在上）
+    ax.fill_between(months_date, 0, dose3, color=mono3[2], alpha=0.85,
+                    label="第 3 劑")
+    ax.fill_between(months_date, dose3, dose2, color=mono3[1], alpha=0.85,
+                    label="第 2 劑 (僅算到此)")
+    ax.fill_between(months_date, dose2, dose1, color=mono3[0], alpha=0.85,
+                    label="第 1 劑 (僅算到此)")
+    ax.plot(months_date, dose1, color=PRIMARY_DARKER, linewidth=1.5)
+    ax.axhline(90, color=ACCENT["alert"], linewidth=1.5,
+               linestyle="--", label="目標 90%")
+    ax.set_ylabel("覆蓋率（%）")
+    ax.set_ylim(0, 100)
+    ax.set_title("疫苗 1/2/3 劑覆蓋率（單色堆疊區域;劑次為序數）", loc="left")
+    format_date_axis_monthly(ax)
+    ax.legend(loc="lower right", ncol=2)
+    save(fig, "10c-mono-area-doses")
+
+
 # ============== 主執行 ==============
 def main():
     print(f"輸出目錄: {OUT_DIR}\n")
@@ -507,6 +595,7 @@ def main():
     histogram_boxplot_examples()
     pyramid_chart_examples()
     choropleth_examples()
+    monochrome_examples()
     print(f"\n✓ 全部完成。輸出於：{OUT_DIR}")
 
 
