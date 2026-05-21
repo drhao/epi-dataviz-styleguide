@@ -237,7 +237,7 @@ section { margin-bottom: 80px; }
 /* ===== 格式選擇卡 ===== */
 .formats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
 }
 .format-card {
@@ -796,6 +796,22 @@ footer {
         <div class="h3-en">Markdown Source</div>
         <p>適合在 Notion、Wiki、GitHub 等平台引用或進一步加工的純文字格式。</p>
         <div class="cta">查看原始檔</div>
+      </a>
+
+      <a href="guideline-slides-summary.pdf" class="format-card">
+        <span class="badge">PDF · 14 SLIDES</span>
+        <h3>投影片摘要版</h3>
+        <div class="h3-en">Slides · Summary</div>
+        <p>5 分鐘速覽 14 張投影片:4 原則、配色模式、6 條鐵則、圖表選用矩陣。適合會議簡報、長官 brief。</p>
+        <div class="cta">下載簡報</div>
+      </a>
+
+      <a href="guideline-slides-full.pdf" class="format-card">
+        <span class="badge">PDF · 22 SLIDES</span>
+        <h3>投影片完整版</h3>
+        <div class="h3-en">Slides · Full</div>
+        <p>30 分鐘完整版 22 張投影片,含序列/發散色階、MONOCHROME 6 組、trailing MA 邊界處理、工具支援等補充章節。適合內部培訓。</p>
+        <div class="cta">下載培訓版</div>
       </a>
     </div>
   </section>

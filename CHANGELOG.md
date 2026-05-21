@@ -94,7 +94,7 @@
 
 ### Added · 新增
 
-- **投影片版指引(內部預覽,暫不對外發布)** — `docs/guideline-slides-*.{html,pdf}`
+- **投影片版指引(對外發布)** — `docs/guideline-slides-*.{html,pdf}`
   - 摘要版 14 張(5 分鐘速覽):4 原則、主色階、類別配色、強調色、Pattern A/B/D/E、6 條鐵則、圖表選用矩陣、4 張 Chart.js 即時範例(直條 + MA、折線、堆疊雙模式)、無障礙、收尾
   - 完整版 22 張(30 分鐘版本):摘要 12 張核心 + 8 張補充(序列/發散色階、MONOCHROME 完整、Pattern C、trailing MA 邊界處理、圓餅條件使用、日期軸格式化、工具支援、AI agent 整合)
   - 1280×720 16:9 landscape PDF,沿用 guideline.html 的設計語言
@@ -113,6 +113,7 @@
 
 ### Changed · 變更
 
+- **投影片版指引從內部預覽改為對外發布**:`README.md`「我要做會議簡報 / 培訓」段、use case 表、結構樹皆加入入口連結;`docs/index.html` SECTION 01 加入兩張投影片 format card(摘要 14 張 / 完整 22 張),grid 改 `auto-fit` 支援 5 卡 wrap;`check_drift.py` 的 CHECK 從「內部」改為「對外」,`expected_in` 加入 README 與 docs/index.html
 - **`apply_style()` 改為 CJK 字型自動 fallback**:`epidemic_palette.py` 內新增 `_build_font_list()`,從候選清單(Noto Sans TC / PingFang TC / Microsoft JhengHei / WenQuanYi Micro Hei 等)動態偵測本機可用字型,不再寫死 `Noto Sans CJK JP`。macOS / Windows / Linux 使用者不需強制安裝特定字型,本機已有的任一 CJK 字型即可用
 - **移動平均規範:centered → trailing(BREAKING)**
   - 規範改為 trailing 7 日(本日含前 6 日,即 `i-6` 到 `i`),對齊 WHO/CDC/JHU 等公開儀表板的通用慣例
