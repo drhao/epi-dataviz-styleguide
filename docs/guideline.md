@@ -474,6 +474,8 @@ theme_epi <- function() {
 | Accent 5 | Bronze | `#916E46` | 145, 110, 70 |
 | Accent 6 | Plum | `#955F71` | 149, 95, 113 |
 
+**預生成樣板**:`resources/office-templates/` 提供 5 個 Excel 樣板(直條 + 7 日 MA、折線、類別堆疊、單色堆疊、圓餅)與 1 個 PowerPoint 簡報樣板。下載即用,不需 Python 環境。色票若調整,維護者重跑 `dev-tools/build_office_templates.py` 即可同步。
+
 ### 12.5 Power BI
 
 「檢視」→「佈景主題」→「瀏覽佈景主題」，匯入 `epidemic-dataviz-theme.json`：

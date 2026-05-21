@@ -499,6 +499,8 @@ Resource files in the skill:
 - `assets/sample-data/README.md` — data dictionary explaining every column
 - `epidemic-dataviz-palette.csv` — full color table for Excel users
 - `epidemic-dataviz-theme.json` — Power BI theme file
+- `resources/office-templates/*.xlsx` — pre-built Excel chart templates (5 patterns: bar, line, stacked, mono-stacked, pie)
+- `resources/office-templates/epidemic-report-template.pptx` — PowerPoint report template (6 slides, embedded PNGs)
 - `dataviz-guideline.html` — interactive visual reference (full document)
 - `dataviz-guideline.pdf` — printable full document
 

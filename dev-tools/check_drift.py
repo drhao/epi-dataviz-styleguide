@@ -173,6 +173,19 @@ CHECKS = [
         description="WCAG 無障礙標準必須在規範與測試中都覆蓋",
     ),
     Check(
+        name="Office 樣板(office-templates)",
+        keywords=["office-templates", "office_templates", "build_office_templates"],
+        expected_in=[
+            "README.md",
+            "skill/SKILL.md",
+            "docs/guideline.html",
+            "docs/index.html",
+            "dev-tools/README.md",
+            "CHANGELOG.md",
+        ],
+        description="Excel/PPT 預生成樣板的入口提及必須在使用者面向文件都有,維護者面向(dev-tools/README)也要有",
+    ),
+    Check(
         name="聯絡資訊（Dr. Hao）",
         keywords=["Dr. Hao", "dr.hao.tw@gmail.com"],
         expected_in=[

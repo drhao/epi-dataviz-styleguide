@@ -117,7 +117,7 @@ python3 dev-tools/build_pdf.py
 
 - ❌ 不要為了讓測試通過而調整測試門檻
 - ❌ 不要修改主色 `#739A6D`
-- ❌ 不要引入新的外部相依（保持 matplotlib + numpy 即可）
+- ❌ 不要引入新的 runtime 相依：`skill/scripts/` 與 `skill/tests/` 維持 matplotlib + numpy。`dev-tools/` 可視需要使用工具型依賴（已有 playwright；office 樣板用 openpyxl + python-pptx），但要在 `dev-tools/README.md` 標示為 dev-only 安裝
 - ❌ 不要把真實個資放進 `skill/assets/sample-data/`（所有範例資料必須虛構）
 - ❌ 不要在公開 commit message 中提及敏感資訊（repo 公開可見）
 - ❌ 不要直接修改 `docs/guideline.pdf`——它從 HTML 自動生成,改 HTML 後跑 `build_pdf.py`

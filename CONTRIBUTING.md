@@ -283,7 +283,7 @@ refactor: 將色覺障礙模擬抽出為共用工具
 
 - ❌ **不要繞過測試**：測試失敗時不能直接刪除測試或調低門檻
 - ❌ **不要修改主色 `#739A6D`**：這是組織色彩識別的核心，須經高階決議
-- ❌ **不要引入新的外部相依**：本 repo 刻意保持極簡，僅依賴 matplotlib + numpy
+- ❌ **不要引入新的 runtime 相依**：`skill/scripts/` 與 `skill/tests/` 維持 matplotlib + numpy。`dev-tools/` 可視需要使用工具型依賴（playwright 用於 PDF、openpyxl + python-pptx 用於 Office 樣板），但須在 `dev-tools/README.md` 標示為 dev-only 安裝
 - ❌ **不要把真實個資放進 sample-data**：所有範例資料必須是虛構的
 - ❌ **不要在公開 commit message 中提及內部敏感資訊**：本 repo 公開可見
 

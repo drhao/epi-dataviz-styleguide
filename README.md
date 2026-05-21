@@ -23,7 +23,7 @@
 - **無障礙標準**：WCAG AA 對比度、色覺障礙友善
 - **多格式交付**：HTML 互動版、PDF 列印版、Markdown 全文版
 - **AI Agent Skill**：可直接放入 Claude Code、Codex、Google Antigravity 的 SKILL.md
-- **工具支援**：Python 色票模組、Power BI 主題檔、Excel 對照表
+- **工具支援**：Python 色票模組、Power BI 主題檔、Excel 對照表、**Excel／PowerPoint 預生成樣板**
 - **範例資料集**：12 個虛構但合理的疫情 CSV 資料，可實際練習
 
 ## 使用情境
@@ -34,7 +34,8 @@
 | 想列印或存檔給長官審閱        | [`docs/guideline.pdf`](./docs/guideline.pdf) |
 | 想在 Notion / Wiki 引用       | [`docs/guideline.md`](./docs/guideline.md) |
 | 寫 Python / R 程式畫圖        | [`skill/scripts/epidemic_palette.py`](./skill/scripts/) |
-| Excel 使用者                   | [`resources/palette.csv`](./resources/palette.csv) |
+| Excel 使用者                   | [`resources/office-templates/`](./resources/office-templates/)(預生成樣板)或 [`resources/palette.csv`](./resources/palette.csv) |
+| PowerPoint 簡報製作            | [`resources/office-templates/epidemic-report-template.pptx`](./resources/office-templates/epidemic-report-template.pptx) |
 | Power BI 開發者               | [`resources/powerbi-theme.json`](./resources/powerbi-theme.json) |
 | 用 Claude Code / Codex 開發  | [`skill/`](./skill/) 整個資料夾 |
 | 想看某個圖表類型的詳細規範    | [`skill/references/`](./skill/references/) 9 個 .md 檔 |
@@ -69,13 +70,21 @@ epi-dataviz-styleguide/
 │
 ├── dev-tools/             ← 維護者用的開發工具
 │   ├── README.md
-│   ├── build_pdf.py       ← 從 HTML 重生 PDF
-│   ├── check_drift.py     ← 跨檔案一致性檢查
-│   └── chart.umd.js       ← Chart.js 本地副本
+│   ├── build_pdf.py              ← 從 HTML 重生 PDF
+│   ├── build_office_templates.py ← 從 sample-data 重生 Excel/PPT 樣板
+│   ├── check_drift.py            ← 跨檔案一致性檢查
+│   └── chart.umd.js              ← Chart.js 本地副本
 │
 └── resources/             ← 工具直接匯入用
     ├── palette.csv
-    └── powerbi-theme.json
+    ├── powerbi-theme.json
+    └── office-templates/  ← Excel/PPT 預生成樣板(下載即用)
+        ├── 01-bar-daily-cases.xlsx       ← Pattern A
+        ├── 02-line-three-waves.xlsx      ← Pattern B
+        ├── 03-stacked-variants.xlsx      ← Pattern B
+        ├── 04-stacked-monochrome.xlsx    ← Pattern E(重症在底)
+        ├── 05-pie-age-distribution.xlsx
+        └── epidemic-report-template.pptx
 ```
 
 ## 5 分鐘快速上手
@@ -110,8 +119,16 @@ plt.savefig('test.png')
 
 ### 我要用 Excel
 
+**最快**:直接下載 [`resources/office-templates/`](./resources/office-templates/) 中對應圖表的 .xlsx,切到「資料」分頁改成你的資料,圖表自動連動更新。5 個樣板涵蓋直條 + 移動平均、折線、類別堆疊、單色堆疊、圓餅。
+
+**或者自訂佈景主題**(從零開始畫):
+
 1. 開啟 [`resources/palette.csv`](./resources/palette.csv) 作為色票對照表
-2. 在 Excel → 頁面配置 → 色彩 → 自訂色彩，依 CSV 中 RGB 值填入 Accent 1–6
+2. 在 Excel → 頁面配置 → 色彩 → 自訂色彩,依 CSV 中 RGB 值填入 Accent 1–6
+
+### 我要做 PowerPoint 簡報
+
+下載 [`resources/office-templates/epidemic-report-template.pptx`](./resources/office-templates/epidemic-report-template.pptx),6 張投影片(封面 + 4 張嵌入範例圖 + 色票/原則摘要)。把嵌入的 PNG 換成你自己的圖表即可。
 
 ### 我要讓 AI 自動遵守指引
 
