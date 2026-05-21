@@ -21,7 +21,7 @@
 - **色彩系統**：以 `#739A6D` 為主色的完整色票，涵蓋類別配色、強調色、序列／發散色階
 - **9 種圖表類型規範**：每種圖式的適用情境、設計準則、常見錯誤
 - **無障礙標準**：WCAG AA 對比度、色覺障礙友善
-- **多格式交付**：HTML 互動版、PDF 列印版、Markdown 全文版
+- **多格式交付**：HTML 互動版、PDF 列印版、Markdown 全文版、**投影片版 PDF**(摘要 14 張 / 完整 22 張)
 - **AI Agent Skill**：可直接放入 Claude Code、Codex、Google Antigravity 的 SKILL.md
 - **工具支援**：Python 色票模組、Power BI 主題檔、Excel 對照表
 - **範例資料集**：12 個虛構但合理的疫情 CSV 資料，可實際練習
@@ -32,6 +32,8 @@
 |------|----------|
 | 想閱讀完整指引（一般使用者）  | 🌐 [線上指引](https://drhao.github.io/epi-dataviz-styleguide/)（GitHub Pages）|
 | 想列印或存檔給長官審閱        | [`docs/guideline.pdf`](./docs/guideline.pdf) |
+| 想在會議簡報、5 分鐘介紹      | [`docs/guideline-slides-summary.pdf`](./docs/guideline-slides-summary.pdf)(14 張) |
+| 想做內部培訓(30 分鐘版)     | [`docs/guideline-slides-full.pdf`](./docs/guideline-slides-full.pdf)(22 張) |
 | 想在 Notion / Wiki 引用       | [`docs/guideline.md`](./docs/guideline.md) |
 | 寫 Python / R 程式畫圖        | [`skill/scripts/epidemic_palette.py`](./skill/scripts/) |
 | Excel 使用者                   | [`resources/palette.csv`](./resources/palette.csv) |
@@ -55,6 +57,8 @@ epi-dataviz-styleguide/
 │   ├── guideline.html     ← 完整互動式指引
 │   ├── guideline.pdf      ← 列印版
 │   ├── guideline.md       ← Markdown 全文
+│   ├── guideline-slides-summary.{html,pdf}  ← 投影片摘要版(14 張,5 分鐘)
+│   ├── guideline-slides-full.{html,pdf}     ← 投影片完整版(22 張,30 分鐘)
 │   └── examples/          ← 首頁引用的範例圖
 │
 ├── skill/                 ← AI agent skill 套件
@@ -85,6 +89,11 @@ epi-dataviz-styleguide/
 **最快的方式**：直接訪問 GitHub Pages 站台 → https://drhao.github.io/epi-dataviz-styleguide/
 
 或在本地：點開 [`docs/guideline.html`](./docs/guideline.html)（含互動範例圖表），或 [`docs/guideline.pdf`](./docs/guideline.pdf)（22 頁列印版）。
+
+### 我要做會議簡報 / 培訓
+
+- **5 分鐘速覽**:[`docs/guideline-slides-summary.pdf`](./docs/guideline-slides-summary.pdf)(14 張投影片)── 4 原則、配色模式、鐵則、圖表選用矩陣
+- **30 分鐘培訓**:[`docs/guideline-slides-full.pdf`](./docs/guideline-slides-full.pdf)(22 張投影片)── 摘要核心 + 序列/發散色階、MONOCHROME 完整、trailing MA 邊界處理、工具支援、AI agent 整合
 
 ### 我要在 Python 程式中套用色彩
 

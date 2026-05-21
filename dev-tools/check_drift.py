@@ -187,20 +187,23 @@ CHECKS = [
         ),
     ),
     Check(
-        name="投影片版指引(內部,暫不對外發布)",
+        name="投影片版指引",
         keywords=[
             "guideline-slides", "build_slides_pdf",
-            "投影片版", "slide-format",
+            "投影片版", "投影片摘要", "投影片完整",
+            "slide-format", "slides-summary", "slides-full",
         ],
         expected_in=[
+            "README.md",
             "skill/SKILL.md",
+            "docs/index.html",
             "dev-tools/README.md",
             "CHANGELOG.md",
         ],
         description=(
-            "投影片版 PDF(摘要 14 張 + 完整 22 張)目前僅供內部迭代,"
-            "對外文件(README、docs/index.html、docs/guideline.html)不應宣傳。"
-            "若決定對外發布,把對應檔案加進 expected_in 並同步更新文件。"
+            "投影片版 PDF(摘要 14 張 + 完整 22 張)為對外發布交付物,"
+            "使用者面向文件(README、docs/index.html)與內部維護文件"
+            "(SKILL.md、dev-tools/README.md、CHANGELOG.md)都應提及。"
         ),
     ),
     Check(
