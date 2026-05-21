@@ -93,6 +93,15 @@
 
 ### Added · 新增
 
+- **投影片版指引(內部預覽,暫不對外發布)** — `docs/guideline-slides-*.{html,pdf}`
+  - 摘要版 14 張(5 分鐘速覽):4 原則、主色階、類別配色、強調色、Pattern A/B/D/E、6 條鐵則、圖表選用矩陣、4 張 Chart.js 即時範例(直條 + MA、折線、堆疊雙模式)、無障礙、收尾
+  - 完整版 22 張(30 分鐘版本):摘要 12 張核心 + 8 張補充(序列/發散色階、MONOCHROME 完整、Pattern C、中心對齊 MA 技術、圓餅條件使用、日期軸格式化、工具支援、AI agent 整合)
+  - 1280×720 16:9 landscape PDF,沿用 guideline.html 的設計語言
+  - 由新工具 `dev-tools/build_slides_pdf.py` 從 `guideline-slides-summary.html` + `_slides-extra.html` 合併產生完整版
+- 新增 `dev-tools/build_slides_pdf.py`:用 Chart.js 內嵌 + playwright landscape 渲染
+- 新增 `docs/_slides.css`:投影片共用樣式(主色標題列、色卡、圖表卡、頁尾)
+- `dev-tools/check_drift.py` 新增「投影片版指引」CHECK(含對外發布注意事項)
+
 - **Excel/PowerPoint 預生成樣板** — `resources/office-templates/`
   - 5 個 Excel 樣板:直條 + 7 日中心對齊 MA(Pattern A)、折線 3 條(Pattern B)、類別堆疊(Pattern B)、**單色堆疊 重症在底(Pattern E)**、圓餅 5 組
   - 1 個 PowerPoint 簡報樣板:6 頁(封面 + 4 張嵌入既有 PNG + 色票/原則摘要)

@@ -8,8 +8,9 @@
 |------|------|---------|
 | `build_pdf.py` | 從 `docs/guideline.html` 重新生成 `docs/guideline.pdf` | 改了 HTML 之後 |
 | `build_office_templates.py` | 從 `skill/assets/sample-data/` 生成 Excel/PPT 樣板 | 色票或範例資料調整後 |
+| `build_slides_pdf.py` | 合併摘要 + 補充 slides,渲染兩個投影片 PDF(內部預覽) | 投影片內容調整後 |
 | `check_drift.py` | 跨檔案一致性檢查 | 重大規範變動後（Level 3） |
-| `chart.umd.js` | Chart.js 4.4.0 函式庫副本 | `build_pdf.py` 內部使用 |
+| `chart.umd.js` | Chart.js 4.4.0 函式庫副本 | `build_pdf.py` / `build_slides_pdf.py` 共用 |
 
 **Dev-only 依賴**(僅維護者執行 `dev-tools/` 內腳本時需要,**不影響 `skill/` runtime**):
 
@@ -85,6 +86,53 @@ python dev-tools/build_office_templates.py
 - 修改 `skill/assets/examples/` 中 PPT 嵌入的 PNG
 
 腳本會把規範權威(`epidemic_palette.py`)的色票直接套用到 Excel/PPT,確保樣板永遠與規範一致。
+
+## build_slides_pdf.py
+
+把指引內容做成 16:9 投影片版 PDF。**目前為內部預覽,不對外推廣**。
+
+**首次使用需安裝依賴(dev-only):**
+
+```bash
+pip install playwright
+playwright install chromium
+```
+
+**執行:**
+
+```bash
+# 從 repo 根目錄。完整流程(產生 HTML + 渲染 PDF)
+python dev-tools/build_slides_pdf.py
+
+# 若 chromium 裝不下,只產生 HTML(可在本機瀏覽器手動列印 PDF)
+python dev-tools/build_slides_pdf.py --html-only
+```
+
+**輸入(handwritten source):**
+
+| 檔案 | 角色 |
+|------|------|
+| `docs/guideline-slides-summary.html` | 摘要版 14 張 slide(standalone,可直接打開瀏覽器預覽) |
+| `docs/_slides-extra.html` | 完整版額外 10 張 slide(封面 + 8 補充 + 收尾) |
+| `docs/_slides.css` | 共用樣式(主色標題列、色卡、圖表卡、頁尾) |
+
+**輸出(generated artifact,不要手動編輯):**
+
+| 檔案 | 內容 |
+|------|------|
+| `docs/guideline-slides-full.html` | 完整版 22 張(摘要 12 張核心 + 補充 8 張 + 完整封面/收尾) |
+| `docs/guideline-slides-summary.pdf` | 摘要版 PDF(1280×720) |
+| `docs/guideline-slides-full.pdf` | 完整版 PDF(1280×720) |
+
+**合併規則**(寫在 `FULL_MANIFEST`):
+- 完整版 = `extra[0]` 封面 + `summary[1:13]` 摘要 2-13 + `extra[1:9]` 補充 8 張 + `extra[9]` 完整收尾
+- 頁碼由腳本自動填入,source HTML 內可寫死「NN / 14」或留 `__P__ / __T__` placeholder
+
+**修改投影片內容**:
+- 改摘要 slide 內文 → 直接編輯 `guideline-slides-summary.html`
+- 改補充 slide 內文 → 直接編輯 `_slides-extra.html`
+- 改完樣式 → 編輯 `_slides.css`
+- 完成後重跑 `build_slides_pdf.py` 重生 HTML 與 PDF
 
 ## check_drift.py
 
