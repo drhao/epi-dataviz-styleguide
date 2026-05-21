@@ -1717,18 +1717,6 @@ footer ul{list-style:none;}
       <p>完整色票 CSV（包含所有色彩的 HEX、RGB、用途說明）可下載匯入 Excel 作為參考表：本指引附帶 <code>epidemic-dataviz-palette.csv</code> 檔案。</p>
     </div>
 
-    <h4>方法 C：使用預生成樣板</h4>
-    <p>若不想從零開始畫圖，可直接下載 <code>resources/office-templates/</code> 下的 Excel/PPT 樣板，**改資料即可**：</p>
-    <ul>
-      <li><code>01-bar-daily-cases.xlsx</code> — 直條 + 7 日中心對齊移動平均（Pattern A）</li>
-      <li><code>02-line-three-waves.xlsx</code> — 折線 3 條，類別配色（Pattern B）</li>
-      <li><code>03-stacked-variants.xlsx</code> — 100% 堆疊，類別配色（Pattern B）</li>
-      <li><code>04-stacked-monochrome.xlsx</code> — 100% 堆疊，<strong>單色色階（Pattern E，重症在底）</strong></li>
-      <li><code>05-pie-age-distribution.xlsx</code> — 圓餅（已聚合為 5 組以符合圖式規範）</li>
-      <li><code>epidemic-report-template.pptx</code> — 6 頁簡報樣板（嵌入既有範例 PNG）</li>
-    </ul>
-    <p>樣板由 <code>dev-tools/build_office_templates.py</code> 從本指引的色票常數與範例資料自動生成，色票若更新，重跑腳本即可保持一致。</p>
-
     <h3>Power BI</h3>
     <p>Power BI 採用「報表佈景主題」（Report Theme）以 JSON 格式設定。匯入主題檔後，所有視覺效果都會自動套用本指引色彩。</p>
 
