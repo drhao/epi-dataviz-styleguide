@@ -18,7 +18,7 @@ from epidemic_palette import (
     PRIMARY, PRIMARY_DARK, PRIMARY_DARKER, PRIMARY_LIGHT,
     CATEGORICAL, MONOCHROME, LINE_COLORS, ACCENT, NEUTRAL, SEMANTIC,
     SEQUENTIAL, DIVERGING,
-    apply_style, centered_ma, hide_y_axis,
+    apply_style, trailing_ma, hide_y_axis,
     format_date_axis_daily, format_date_axis_weekly, format_date_axis_monthly,
 )
 
@@ -64,10 +64,10 @@ def bar_chart_examples():
     base = 1500 + np.arange(28) * 100
     weekend_dip = np.array([0.6 if d.weekday() >= 5 else 1.0 for d in dates])
     daily = (base * weekend_dip + np.random.randint(-200, 200, 28)).astype(int)
-    ma = centered_ma(list(daily), 7)
+    ma = trailing_ma(list(daily), 7)
 
     ax.bar(dates, daily, color=PRIMARY, width=0.75, label="每日新增")
-    ax.plot(dates, ma, color=PRIMARY_DARKER, linewidth=2.5, label="7 日移動平均")
+    ax.plot(dates, ma, color=PRIMARY_DARKER, linewidth=2.5, label="7 日移動平均(trailing)")
     ax.set_ylabel("新增確診數")
     ax.set_title("每日新增確診（直條 + 7 日移動平均）", loc="left")
     # 套用日期格式：每 4 天標一個 MM/DD

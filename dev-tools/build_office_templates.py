@@ -128,25 +128,25 @@ def common_chart_style(chart) -> None:
 # ============== 01 直條圖(Pattern A)==============
 
 def build_bar_daily_cases() -> None:
-    """28 天每日新增 + 7 日中心對齊 MA"""
+    """28 天每日新增 + 7 日 trailing MA(本日含前 6 日)"""
     wb = Workbook()
     raw = read_csv("01-daily-cases.csv")
 
-    # 資料 sheet:加入第 4 欄 ma_7(中心對齊:前 3 + 當日 + 後 3)
+    # 資料 sheet:加入第 4 欄 ma_7(trailing:本日含前 6 日)
+    # 前 6 天用自適應窗口(從第 1 天累積到當天),避免斷線
     ws_data = wb.active
     ws_data.title = "資料"
     header = raw[0] + ["ma_7"]
     rows = [header]
     n = len(raw) - 1
     for i, row in enumerate(raw[1:], start=1):
-        # 中心對齊 7 日 MA:第 4 天到第 (n-3) 天才有值
-        if 4 <= i <= n - 3:
-            # i 對應資料的第 i 列(1-based),Excel 中是 row i+1
-            excel_row = i + 1
-            ma_formula = f"=AVERAGE(C{excel_row - 3}:C{excel_row + 3})"
-            new_row = list(row) + [ma_formula]
-        else:
-            new_row = list(row) + [""]
+        # i 是 1-based 資料序號,Excel 中對應 row i+1
+        excel_row = i + 1
+        # Trailing 7 日 MA:窗口為 [max(1, i-6) .. i]
+        # 對應 Excel 列:[max(2, excel_row - 6) .. excel_row]
+        lo_row = max(2, excel_row - 6)
+        ma_formula = f"=AVERAGE(C{lo_row}:C{excel_row})"
+        new_row = list(row) + [ma_formula]
         # 轉型數值欄
         new_row[2] = int(row[2])
         rows.append(new_row)
@@ -157,8 +157,8 @@ def build_bar_daily_cases() -> None:
     add_chart_meta(
         ws_chart,
         "每日新增確診（28 天）",
-        "Pattern A:主色 + 7 日中心對齊移動平均",
-        "色彩:#739A6D 直條 + #374C34 均線。Y 軸從零開始;不截斷座標。",
+        "Pattern A:主色 + 7 日 trailing 移動平均(本日含前 6 日)",
+        "色彩:#739A6D 直條 + #374C34 均線。Y 軸從零開始;不截斷座標。前 6 天用自適應累積窗口。",
     )
 
     # 直條圖
@@ -487,9 +487,9 @@ def build_pptx_template() -> None:
     embed_slides = [
         {
             "title": "每日新增確診",
-            "subtitle": "Pattern A:主色直條 + 7 日中心對齊移動平均",
+            "subtitle": "Pattern A:主色直條 + 7 日 trailing 移動平均",
             "png": "01b-bar-daily-with-ma.png",
-            "caption": "每日填報受週末效應影響,以 7 日中心對齊均線呈現潛在趨勢。Y 軸從零開始。",
+            "caption": "每日填報受週末效應影響,以 7 日 trailing 均線(本日含前 6 日)呈現潛在趨勢。Y 軸從零開始。",
         },
         {
             "title": "今年 vs 去年同期(含歷史範圍)",
@@ -583,7 +583,7 @@ def build_pptx_template() -> None:
         ("使用本樣板時請遵守:", True, 12, (0x37, 0x4C, 0x34)),
         ("• Y 軸從零開始,不截斷座標", False, 11, (0x44, 0x4C, 0x43)),
         ("• 紅色(#BE373C)僅用於警示,不作一般類別色", False, 11, (0x44, 0x4C, 0x43)),
-        ("• 7 日移動平均使用「中心對齊」(非 trailing)", False, 11, (0x44, 0x4C, 0x43)),
+        ("• 7 日移動平均使用 trailing(本日含前 6 日)", False, 11, (0x44, 0x4C, 0x43)),
         ("• 單色色階堆疊時,最深色放底部", False, 11, (0x44, 0x4C, 0x43)),
         ("", False, 8, (0xFF, 0xFF, 0xFF)),
         (f"完整指引:{PAGES_URL}", False, 11, (0x73, 0x9A, 0x6D)),
@@ -639,7 +639,7 @@ README_CONTENT = """# Office 圖表樣板
 - **不要修改主色** `#739A6D` — 這是組織色彩識別
 - **紅色 `#BE373C` 僅用於警示**,不可作一般類別色
 - **Y 軸從零開始**,不截斷座標軸誤導比例
-- **7 日移動平均**使用「中心對齊」(前 3 + 當日 + 後 3),非 trailing
+- **7 日移動平均**使用 trailing(本日含前 6 日,即 i-6 到 i),前 6 天用自適應累積窗口
 - **單色色階堆疊**最深色放底部(本範例 04 已示範:重症在底)
 
 ## 重新生成

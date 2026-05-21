@@ -13,7 +13,7 @@ This skill encodes the organization's standards for visualizing epidemic and pub
 2. **For general principles** (color system, combination patterns, accessibility), read this SKILL.md.
 3. **For Python implementations**, import from `scripts/epidemic_palette.py`:
    ```python
-   from epidemic_palette import PRIMARY, CATEGORICAL, apply_style, centered_ma
+   from epidemic_palette import PRIMARY, CATEGORICAL, apply_style, trailing_ma
    apply_style()
    ```
 4. **For visual reference**, see `assets/examples/*.png` (pre-generated examples).
@@ -260,19 +260,19 @@ Add point markers at: start, end, extremes. For multi-series, use **different po
 
 For "daily cases + 7-day MA" charts:
 
-- Use **centered** moving average (i-day MA = mean of i-3 to i+3), not trailing — visually aligns with bars
+- Use **trailing** moving average (i-day MA = mean of `i-6` to `i`, i.e. today + previous 6 days) — matches WHO/CDC/JHU conventions and works for live dashboards (no future data required)
 - Need at least **3 weeks (21+ days) of data** for the MA to be meaningful
-- At the two endpoints (first/last 3 days), use a shorter adaptive window rather than `null` to avoid line breaks
+- For the first `window-1` days, use an adaptive shorter window (cumulative from day 1) rather than `null` to avoid line breaks
 - MA line color: use the DARK variant of primary (`#374C34`, p-800) for strong layering over light bars
 
 ```python
-# Python: centered MA with adaptive endpoints
-def centered_ma(data, window=7):
-    half = window // 2
+# Python: trailing MA with adaptive early window
+def trailing_ma(data, window=7):
+    n = len(data)
     return [
-        round(sum(data[max(0,i-half):min(len(data),i+half+1)]) /
-              (min(len(data),i+half+1) - max(0,i-half)))
-        for i in range(len(data))
+        round(sum(data[max(0, i - window + 1):i + 1]) /
+              min(window, i + 1))
+        for i in range(n)
     ]
 ```
 

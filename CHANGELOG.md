@@ -85,7 +85,8 @@
 - **紅色獨立為強調色**：疫情情境中紅色具強烈情緒效應，不可作為一般類別色，僅用於警示
 - **配色順序綠藍黃**：避免「紅綠對立」造成的色盲困擾，且綠藍黃在色覺障礙下可區分性最佳
 - **折線使用加深版**：主色 500 對白底對比僅 3.20，細線時不夠清楚；折線專用 600 對比 4.52 過 AA
-- **中心對齊移動平均**：而非業界常見的「向後看 7 天」，因中心對齊與直條視覺對齊更直觀
+- **Trailing 7 日移動平均**:本日含前 6 日(i-6 到 i)。對齊 WHO/CDC/JHU 等公開儀表板的通用慣例,即時 dashboard 場景亦適用(無需未來資料)。前 6 天使用自適應窗口(累積平均)避免線段斷裂。
+  - *註:v1.0 初版採 centered MA(i-3 到 i+3),於 Unreleased 階段改為 trailing,理由見下方 Changed 段。*
 
 ---
 
@@ -95,7 +96,7 @@
 
 - **投影片版指引(內部預覽,暫不對外發布)** — `docs/guideline-slides-*.{html,pdf}`
   - 摘要版 14 張(5 分鐘速覽):4 原則、主色階、類別配色、強調色、Pattern A/B/D/E、6 條鐵則、圖表選用矩陣、4 張 Chart.js 即時範例(直條 + MA、折線、堆疊雙模式)、無障礙、收尾
-  - 完整版 22 張(30 分鐘版本):摘要 12 張核心 + 8 張補充(序列/發散色階、MONOCHROME 完整、Pattern C、中心對齊 MA 技術、圓餅條件使用、日期軸格式化、工具支援、AI agent 整合)
+  - 完整版 22 張(30 分鐘版本):摘要 12 張核心 + 8 張補充(序列/發散色階、MONOCHROME 完整、Pattern C、trailing MA 邊界處理、圓餅條件使用、日期軸格式化、工具支援、AI agent 整合)
   - 1280×720 16:9 landscape PDF,沿用 guideline.html 的設計語言
   - 由新工具 `dev-tools/build_slides_pdf.py` 從 `guideline-slides-summary.html` + `_slides-extra.html` 合併產生完整版
 - 新增 `dev-tools/build_slides_pdf.py`:用 Chart.js 內嵌 + playwright landscape 渲染
@@ -103,7 +104,7 @@
 - `dev-tools/check_drift.py` 新增「投影片版指引」CHECK(含對外發布注意事項)
 
 - **Excel/PowerPoint 預生成樣板** — `resources/office-templates/`
-  - 5 個 Excel 樣板:直條 + 7 日中心對齊 MA(Pattern A)、折線 3 條(Pattern B)、類別堆疊(Pattern B)、**單色堆疊 重症在底(Pattern E)**、圓餅 5 組
+  - 5 個 Excel 樣板:直條 + 7 日 trailing MA(Pattern A)、折線 3 條(Pattern B)、類別堆疊(Pattern B)、**單色堆疊 重症在底(Pattern E)**、圓餅 5 組
   - 1 個 PowerPoint 簡報樣板:6 頁(封面 + 4 張嵌入既有 PNG + 色票/原則摘要)
   - 由 `dev-tools/build_office_templates.py` 從 `skill/assets/sample-data/` 與 `epidemic_palette.py` 自動生成,色票若調整重跑即同步
 - 新增 `dev-tools/build_office_templates.py`:dev-only 依賴 `openpyxl` + `python-pptx`
@@ -112,6 +113,13 @@
 
 ### Changed · 變更
 
+- **`apply_style()` 改為 CJK 字型自動 fallback**:`epidemic_palette.py` 內新增 `_build_font_list()`,從候選清單(Noto Sans TC / PingFang TC / Microsoft JhengHei / WenQuanYi Micro Hei 等)動態偵測本機可用字型,不再寫死 `Noto Sans CJK JP`。macOS / Windows / Linux 使用者不需強制安裝特定字型,本機已有的任一 CJK 字型即可用
+- **移動平均規範:centered → trailing(BREAKING)**
+  - 規範改為 trailing 7 日(本日含前 6 日,即 `i-6` 到 `i`),對齊 WHO/CDC/JHU 等公開儀表板的通用慣例
+  - 不再採 centered(`i-3` 到 `i+3`)── 雖然視覺對齊較直觀,但讀者解讀心智負擔較高,且即時 dashboard 場景無未來資料可用
+  - `epidemic_palette.centered_ma()` 重命名為 `trailing_ma()`,邏輯改為 trailing 自適應窗口(前 6 天累積平均)
+  - 同步更新:`skill/SKILL.md`、`skill/references/01-bar-chart.md`、`docs/guideline.{md,html}`、投影片摘要/完整版、Excel 樣板 `01-bar-daily-cases.xlsx` 內公式、`generate_examples.py` / `quickstart_with_sample_data.py` 內 caller、`AGENTS.md` 鐵則、`CONTRIBUTING.md` 範例、`check_drift.py` CHECK
+  - 測試 `TestCenteredMA` 改名為 `TestTrailingMA`,新增 1 個邊界測試(73 個測試全綠)
 - **依賴鐵則措辭精煉**:`AGENTS.md` 與 `CONTRIBUTING.md`「不引入新外部相依」精煉為「不引入新 **runtime** 相依」(`skill/` 仍維持 matplotlib + numpy;`dev-tools/` 可使用 playwright / openpyxl / python-pptx 等工具型依賴)
 - `README.md`、`SKILL.md` 等 6 處測試數量說法從 65 統一為 72(實際 `test_palette.py` 共 72 個測試)
 

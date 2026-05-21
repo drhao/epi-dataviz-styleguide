@@ -1416,12 +1416,12 @@ footer ul{list-style:none;}
           <h4>每日新增確診 ／ Daily Cases</h4>
           <span class="chart-card-tag">PATTERN A · 主+中性</span>
         </div>
-        <p class="desc">近 4 週（28 日）每日新增確診數。直條使用主色，搭配 7 日移動平均線（中心對齊）平滑週末填報延遲造成的波動。週末資料明顯偏低不可截去——這是真實的「報告日效應」，需如實呈現。</p>
+        <p class="desc">近 4 週（28 日）每日新增確診數。直條使用主色，搭配 7 日 trailing 移動平均線(本日含前 6 日)平滑週末填報延遲造成的波動。週末資料明顯偏低不可截去——這是真實的「報告日效應」，需如實呈現。</p>
         <div class="chart-wrap"><canvas id="chart1"></canvas></div>
         <dl class="chart-meta">
           <dt>配色</dt><dd>直條 <code>#739A6D</code>（主色）+ 均線 <code>#374C34</code>（主色 800）</dd>
           <dt>直條比例</dt><dd>barPercentage=0.75；條寬約佔類別槽 68%</dd>
-          <dt>均線</dt><dd>中心對齊（i 日 = i−3 到 i+3 平均），與當日資料視覺對齊；兩端 3 日用較短窗口避免斷線</dd>
+          <dt>均線</dt><dd>Trailing 7 日(i 日 = i−6 到 i 平均,本日含前 6 日),對齊 WHO/CDC 通用慣例;前 6 日用自適應累積窗口避免斷線</dd>
         </dl>
       </div>
 
@@ -1926,7 +1926,7 @@ const axisLine  = { color: N300 };
 
 // ============== 1. 每日新增確診（直條 + 7日均線）==============
 // 密集時序直條: barPercentage=0.75, categoryPercentage=0.9
-// 資料區間擴大至 28 天，均線採「中心對齊」(centered)，視覺上與當日資料對齊
+// 資料區間擴大至 28 天，均線採 trailing 7 日(本日含前 6 日),對齊 WHO/CDC 通用慣例
 const dailyLabels = [
   '04/24','04/25','04/26','04/27','04/28','04/29','04/30',
   '05/01','05/02','05/03','05/04','05/05','05/06','05/07',
@@ -1941,13 +1941,12 @@ const dailyData = [
   3220, 3580, 3760, 4020, 4180, 2680, 2240   // W4
 ];
 
-// 中心對齊的 7 日移動平均（i 點 = i-3 到 i+3 的平均）
-// 兩端 3 天用較短的窗口，避免折線斷掉
+// Trailing 7 日移動平均(i 點 = i-6 到 i 的平均,本日含前 6 日)
+// 前 6 天用自適應累積窗口,避免折線斷掉
 const ma7 = dailyData.map((_, i) => {
-  const half = 3;
-  const lo = Math.max(0, i - half);
-  const hi = Math.min(dailyData.length, i + half + 1);
-  const slice = dailyData.slice(lo, hi);
+  const window = 7;
+  const lo = Math.max(0, i - window + 1);
+  const slice = dailyData.slice(lo, i + 1);
   return Math.round(slice.reduce((a,b)=>a+b,0) / slice.length);
 });
 
@@ -1967,7 +1966,7 @@ new Chart(document.getElementById('chart1'), {
       },
       {
         type: 'line',
-        label: '7 日移動平均（中心對齊）',
+        label: '7 日移動平均(trailing)',
         data: ma7,
         borderColor: PRIMARY_DARKER,
         backgroundColor: 'transparent',

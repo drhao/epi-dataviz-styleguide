@@ -306,8 +306,8 @@
     </div>
     <div class="rule-card">
       <span class="tag">RULE 03</span>
-      <h4>移動平均「中心對齊」</h4>
-      <p>7 日 MA 用 <code>i-3 到 i+3</code> 而非業界常見的 trailing。中心對齊與直條視覺對齊更直觀。</p>
+      <h4>移動平均用 trailing 7 日</h4>
+      <p>7 日 MA = <code>i-6 到 i</code>(本日含前 6 日),對齊 WHO/CDC 通用慣例。前 6 天用自適應累積窗口。</p>
     </div>
     <div class="rule-card">
       <span class="tag">RULE 04</span>
@@ -412,7 +412,7 @@
 <section class="slide">
   <div class="slide-title-bar">
     <h2>範例 · 每日確診 + 7 日移動平均</h2>
-    <span class="sub">Pattern A · 中心對齊 MA</span>
+    <span class="sub">Pattern A · trailing 7 日 MA</span>
     <span class="num">10 / 22</span>
   </div>
   <div class="chart-card">
@@ -422,7 +422,7 @@
     </div>
     <div class="chart-wrap"><canvas id="ch-bar"></canvas></div>
     <p class="chart-note">
-      週末填報效應造成單日抖動,以 <span class="highlight">7 日中心對齊均線</span>(i-3 到 i+3)呈現潛在趨勢。Y 軸從零開始,不截斷。
+      週末填報效應造成單日抖動,以 <span class="highlight">7 日 trailing 均線</span>(本日含前 6 日)呈現潛在趨勢。前 6 天用自適應窗口避免斷線。Y 軸從零開始,不截斷。
     </p>
   </div>
   <div class="slide-footer">
@@ -657,36 +657,36 @@
 
 <section class="slide">
   <div class="slide-title-bar">
-    <h2>移動平均的「中心對齊」</h2>
-    <span class="sub">Centered MA · 為什麼不用 trailing</span>
+    <h2>Trailing 7 日移動平均</h2>
+    <span class="sub">本日含前 6 日 · 邊界處理</span>
     <span class="num">17 / 22</span>
   </div>
   <div class="two-col">
     <div>
-      <h4>中心對齊(本指引採用)</h4>
-      <pre style="font-family:var(--mono);font-size:12px;background:var(--n-100);padding:14px;line-height:1.7;border-left:3px solid var(--p-500);color:var(--n-800);overflow:auto;">ma[i] = mean(cases[i-3 : i+4])
-# 即 i-3, i-2, i-1, i, i+1, i+2, i+3
-# 共 7 天,當前點居中</pre>
+      <h4>定義(本指引採用)</h4>
+      <pre style="font-family:var(--mono);font-size:12px;background:var(--n-100);padding:14px;line-height:1.7;border-left:3px solid var(--p-500);color:var(--n-800);overflow:auto;">ma[i] = mean(cases[i-6 : i+1])
+# 即 i-6, i-5, ..., i-1, i
+# 共 7 天,本日為窗口最後一日</pre>
       <p style="font-size:13px;color:var(--n-700);margin-top:10px;">
-        ✓ 與直條視覺對齊更直觀<br>
-        ✓ 平滑曲線居中通過資料點<br>
-        ✗ 邊界處理:前 3 天 + 後 3 天無 MA 值
+        ✓ 對齊 WHO/CDC/JHU 通用慣例,讀者熟悉<br>
+        ✓ 即時 dashboard 適用(無需未來資料)<br>
+        ✓ 不同情境用同一演算法,降低心智負擔
       </p>
     </div>
     <div>
-      <h4>Trailing(業界常見,本指引不採用)</h4>
-      <pre style="font-family:var(--mono);font-size:12px;background:var(--n-100);padding:14px;line-height:1.7;border-left:3px solid var(--n-400);color:var(--n-800);overflow:auto;">ma[i] = mean(cases[i-6 : i+1])
-# 即過去 7 天(含當日)
-# 適合「即時監測」場景</pre>
+      <h4>邊界處理:前 6 天</h4>
+      <pre style="font-family:var(--mono);font-size:12px;background:var(--n-100);padding:14px;line-height:1.7;border-left:3px solid var(--p-500);color:var(--n-800);overflow:auto;">ma[i] = mean(cases[0 : i+1])
+# i = 0..5 時,窗口不足 7
+# 用「從第 1 天累積到當天」</pre>
       <p style="font-size:13px;color:var(--n-700);margin-top:10px;">
-        ✗ 曲線整體往右偏移 3 天<br>
-        ✗ 視覺上與當日直條錯位<br>
-        ✓ 沒有「未來資料」問題(適合即時報表)
+        ✓ 避免折線斷頭,視覺連續<br>
+        ✗ 前 6 天 MA 不平滑(樣本不足)<br>
+        →&nbsp; 因此資料至少 21+ 天才有意義
       </p>
     </div>
   </div>
   <p style="font-size:13px;color:var(--n-600);margin-top:18px;">
-    本指引選 centered 因為主要場景是<strong>事後檢視 7-14 天區間的趨勢報表</strong>,不是即時監測。若你的場景是即時 dashboard,可考慮 trailing,但要在文案中明確標示。
+    <span class="highlight">為何不用 centered MA</span>(以本日為中心、含未來 3 日的版本):雖然視覺上與直條對齊更直觀,但讀者需先理解「窗口包含未來資料」,且即時 dashboard 場景無未來資料可用。v1.0 初版曾採 centered,基於上述理由於 Unreleased 階段改為 trailing。
   </p>
   <div class="slide-footer">
     <span class="label">epi-dataviz-styleguide · full</span>
@@ -799,7 +799,7 @@
       <pre style="font-family:var(--mono);font-size:11px;background:var(--n-100);padding:12px;line-height:1.6;border-left:3px solid var(--p-500);color:var(--n-800);overflow:auto;">from epidemic_palette import (
     PRIMARY, CATEGORICAL,
     MONOCHROME, apply_style,
-    centered_ma, hide_y_axis,
+    trailing_ma, hide_y_axis,
 )
 apply_style()  # 一鍵套用</pre>
       <p style="font-size:12px;color:var(--n-600);margin-top:8px;">內建 4 個常用工具函式 + 8 個色票常數,直接 import 即可。</p>
@@ -922,20 +922,21 @@ const ZERO_LINE = {
   animation: false,
 };
 
-// === Slide 10:直條 + MA ===
+// === Slide 10:直條 + MA(trailing 7 日,本日含前 6 日)===
 (function(){
   const dates = ['4/24','4/25','4/26','4/27','4/28','4/29','4/30','5/1','5/2','5/3','5/4','5/5','5/6','5/7','5/8','5/9','5/10','5/11','5/12','5/13','5/14','5/15','5/16','5/17','5/18','5/19','5/20','5/21'];
   const cases = [1402,1108,1090,1706,1771,1988,1920,2102,1602,1488,2540,2748,3010,2950,2840,2310,2080,3120,3300,3490,3520,3380,2780,2271,3976,3960,4213,4021];
+  // Trailing 7 日 MA:前 6 天用自適應窗口(從第 1 天累積)
   const ma7 = cases.map((_, i) => {
-    if (i < 3 || i > cases.length - 4) return null;
-    const w = cases.slice(i-3, i+4);
-    return Math.round(w.reduce((a,b)=>a+b,0) / 7);
+    const lo = Math.max(0, i - 6);
+    const slice = cases.slice(lo, i + 1);
+    return Math.round(slice.reduce((a,b)=>a+b,0) / slice.length);
   });
   new Chart(document.getElementById('ch-bar'), {
     type: 'bar',
     data: { labels: dates, datasets: [
       { label: '每日新增', data: cases, backgroundColor: '#739A6D', borderColor: '#739A6D', borderRadius: 2, barPercentage: 0.78, categoryPercentage: 0.78 },
-      { label: '7 日中心對齊均線', data: ma7, type: 'line', borderColor: '#374C34', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.35, pointRadius: 0 }
+      { label: '7 日移動平均(trailing)', data: ma7, type: 'line', borderColor: '#374C34', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.2, pointRadius: 0 }
     ]},
     options: ZERO_LINE,
   });

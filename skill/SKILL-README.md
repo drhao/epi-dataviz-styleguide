@@ -72,7 +72,7 @@ import sys
 sys.path.append("path/to/epidemic-dataviz/scripts")
 from epidemic_palette import (
     PRIMARY, CATEGORICAL, LINE_COLORS, ACCENT, NEUTRAL,
-    SEMANTIC, apply_style, centered_ma,
+    SEMANTIC, apply_style, trailing_ma,
 )
 
 apply_style()  # 一次套用所有 matplotlib 樣式

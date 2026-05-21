@@ -189,40 +189,40 @@
 </section>
 
 <!-- ============================================================
-     EXTRA[4]:中心對齊 MA 技術解釋
+     EXTRA[4]:Trailing 7 日 MA 邊界處理
      ============================================================ -->
 <section class="slide">
   <div class="slide-title-bar">
-    <h2>移動平均的「中心對齊」</h2>
-    <span class="sub">Centered MA · 為什麼不用 trailing</span>
+    <h2>Trailing 7 日移動平均</h2>
+    <span class="sub">本日含前 6 日 · 邊界處理</span>
     <span class="num">__P__ / __T__</span>
   </div>
   <div class="two-col">
     <div>
-      <h4>中心對齊(本指引採用)</h4>
-      <pre style="font-family:var(--mono);font-size:12px;background:var(--n-100);padding:14px;line-height:1.7;border-left:3px solid var(--p-500);color:var(--n-800);overflow:auto;">ma[i] = mean(cases[i-3 : i+4])
-# 即 i-3, i-2, i-1, i, i+1, i+2, i+3
-# 共 7 天,當前點居中</pre>
+      <h4>定義(本指引採用)</h4>
+      <pre style="font-family:var(--mono);font-size:12px;background:var(--n-100);padding:14px;line-height:1.7;border-left:3px solid var(--p-500);color:var(--n-800);overflow:auto;">ma[i] = mean(cases[i-6 : i+1])
+# 即 i-6, i-5, ..., i-1, i
+# 共 7 天,本日為窗口最後一日</pre>
       <p style="font-size:13px;color:var(--n-700);margin-top:10px;">
-        ✓ 與直條視覺對齊更直觀<br>
-        ✓ 平滑曲線居中通過資料點<br>
-        ✗ 邊界處理:前 3 天 + 後 3 天無 MA 值
+        ✓ 對齊 WHO/CDC/JHU 通用慣例,讀者熟悉<br>
+        ✓ 即時 dashboard 適用(無需未來資料)<br>
+        ✓ 不同情境用同一演算法,降低心智負擔
       </p>
     </div>
     <div>
-      <h4>Trailing(業界常見,本指引不採用)</h4>
-      <pre style="font-family:var(--mono);font-size:12px;background:var(--n-100);padding:14px;line-height:1.7;border-left:3px solid var(--n-400);color:var(--n-800);overflow:auto;">ma[i] = mean(cases[i-6 : i+1])
-# 即過去 7 天(含當日)
-# 適合「即時監測」場景</pre>
+      <h4>邊界處理:前 6 天</h4>
+      <pre style="font-family:var(--mono);font-size:12px;background:var(--n-100);padding:14px;line-height:1.7;border-left:3px solid var(--p-500);color:var(--n-800);overflow:auto;">ma[i] = mean(cases[0 : i+1])
+# i = 0..5 時,窗口不足 7
+# 用「從第 1 天累積到當天」</pre>
       <p style="font-size:13px;color:var(--n-700);margin-top:10px;">
-        ✗ 曲線整體往右偏移 3 天<br>
-        ✗ 視覺上與當日直條錯位<br>
-        ✓ 沒有「未來資料」問題(適合即時報表)
+        ✓ 避免折線斷頭,視覺連續<br>
+        ✗ 前 6 天 MA 不平滑(樣本不足)<br>
+        →&nbsp; 因此資料至少 21+ 天才有意義
       </p>
     </div>
   </div>
   <p style="font-size:13px;color:var(--n-600);margin-top:18px;">
-    本指引選 centered 因為主要場景是<strong>事後檢視 7-14 天區間的趨勢報表</strong>,不是即時監測。若你的場景是即時 dashboard,可考慮 trailing,但要在文案中明確標示。
+    <span class="highlight">為何不用 centered MA</span>(以本日為中心、含未來 3 日的版本):雖然視覺上與直條對齊更直觀,但讀者需先理解「窗口包含未來資料」,且即時 dashboard 場景無未來資料可用。v1.0 初版曾採 centered,基於上述理由於 Unreleased 階段改為 trailing。
   </p>
   <div class="slide-footer">
     <span class="label">epi-dataviz-styleguide · full</span>
@@ -344,7 +344,7 @@
       <pre style="font-family:var(--mono);font-size:11px;background:var(--n-100);padding:12px;line-height:1.6;border-left:3px solid var(--p-500);color:var(--n-800);overflow:auto;">from epidemic_palette import (
     PRIMARY, CATEGORICAL,
     MONOCHROME, apply_style,
-    centered_ma, hide_y_axis,
+    trailing_ma, hide_y_axis,
 )
 apply_style()  # 一鍵套用</pre>
       <p style="font-size:12px;color:var(--n-600);margin-top:8px;">內建 4 個常用工具函式 + 8 個色票常數,直接 import 即可。</p>
