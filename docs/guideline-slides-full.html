@@ -444,7 +444,7 @@
     </div>
     <div class="chart-wrap"><canvas id="ch-line"></canvas></div>
     <p class="chart-note">
-      3 條折線使用 <span class="highlight">LINE_COLORS 加深版</span>(#5D7F58 / #587A9D / #A8821F),確保細線對白底 WCAG AA 對比 ≥ 4.5:1。
+      <span class="highlight">最新一波 Wave 2024 用主色(#5D7F58)作為焦點</span>,歷史波次依時間遞遠遞弱(2023 藍 #587A9D / 2022 黃 #A8821F)。LINE_COLORS 加深版確保細線對白底 WCAG AA 對比 ≥ 4.5:1。
     </p>
   </div>
   <div class="slide-footer">
@@ -950,9 +950,10 @@ const ZERO_LINE = {
   new Chart(document.getElementById('ch-line'), {
     type: 'line',
     data: { labels: days, datasets: [
-      { label: 'Wave 2022', data: w22, borderColor: '#5D7F58', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.35, pointRadius: 0 },
+      // 最新一波 Wave 2024 用主色作為焦點;歷史波次依時間遞遠遞弱
+      { label: 'Wave 2022', data: w22, borderColor: '#A8821F', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.35, pointRadius: 0 },
       { label: 'Wave 2023', data: w23, borderColor: '#587A9D', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.35, pointRadius: 0 },
-      { label: 'Wave 2024', data: w24, borderColor: '#A8821F', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.35, pointRadius: 0 }
+      { label: 'Wave 2024', data: w24, borderColor: '#5D7F58', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.35, pointRadius: 0 }
     ]},
     options: { ...ZERO_LINE, scales: { ...ZERO_LINE.scales, x: { ...ZERO_LINE.scales.x, title: { display: true, text: '相對天數', color: '#5D675B', font: { size: 11 } } } } },
   });
