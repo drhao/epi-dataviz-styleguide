@@ -42,6 +42,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+em, i, address { font-style: normal; }  /* 本指引網頁不使用斜體 */
 html, body { background: var(--n-100); }
 body {
   font-family: var(--sans);

@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>疫情資料視覺化指引 ／ Epidemic Data Visualization Style Guide</title>
-<meta name="description" content="公部門疫情資料分析、流行病學報告、儀表板與對外公告的視覺化標準。包含色彩系統、9 種圖表規範、無障礙標準、Python／Power BI／Excel 資源、AI agent skill 套件。">
+<meta name="description" content="疫情資料分析、流行病學報告、儀表板與對外公告的視覺化標準。包含色彩系統、9 種圖表規範、無障礙標準、Python／Power BI／Excel 資源、AI agent skill 套件。">
 <meta property="og:title" content="疫情資料視覺化指引">
-<meta property="og:description" content="公部門疫情資料視覺化的完整標準。色彩、圖表、無障礙、工具支援、AI agent skill。">
+<meta property="og:description" content="疫情資料視覺化的完整標準。色彩、圖表、無障礙、工具支援、AI agent skill。">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,6 +30,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+em, i, address { font-style: normal; }  /* 本指引網頁不使用斜體 */
 html { scroll-behavior: smooth; }
 body {
   font-family: var(--sans);
@@ -147,13 +148,11 @@ h1.hero-title {
   max-width: 850px;
 }
 h1.hero-title em {
-  font-style: italic;
   font-weight: 600;
   color: var(--p-600);
 }
 .hero-en {
   font-family: var(--serif);
-  font-style: italic;
   font-weight: 400;
   font-size: 20px;
   color: var(--n-500);
@@ -226,7 +225,6 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 64px 32px; }
 }
 .section-head .en {
   font-family: var(--serif);
-  font-style: italic;
   font-size: 14px;
   color: var(--n-500);
   margin-left: auto;
@@ -277,7 +275,6 @@ section { margin-bottom: 80px; }
 }
 .format-card .h3-en {
   font-family: var(--serif);
-  font-style: italic;
   font-size: 13px;
   color: var(--n-500);
   margin-bottom: 14px;
@@ -359,7 +356,6 @@ section { margin-bottom: 80px; }
 }
 .audience-card .role-en {
   font-family: var(--serif);
-  font-style: italic;
   font-size: 12px;
   color: var(--n-500);
   margin-bottom: 16px;
@@ -410,7 +406,6 @@ section { margin-bottom: 80px; }
 }
 .palette-strip .h3-en {
   font-family: var(--serif);
-  font-style: italic;
   font-size: 13px;
   color: var(--n-500);
   margin-bottom: 24px;
@@ -512,7 +507,6 @@ section { margin-bottom: 80px; }
 }
 .principle .h4-en {
   font-family: var(--serif);
-  font-style: italic;
   font-size: 13px;
   color: var(--n-500);
   margin-bottom: 12px;
@@ -608,7 +602,6 @@ footer {
 }
 .prompt-card-head .role-en {
   font-family: var(--serif);
-  font-style: italic;
   font-size: 12px;
   color: var(--n-500);
   margin-bottom: 10px;
@@ -634,7 +627,6 @@ footer {
 }
 .prompt-card pre .placeholder {
   color: var(--mustard);
-  font-style: italic;
 }
 .prompt-card pre .key {
   color: var(--p-300);
@@ -729,7 +721,7 @@ footer {
 
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-kicker">PUBLIC HEALTH DATA ／ 公部門資料視覺化</div>
+    <div class="hero-kicker">PUBLIC HEALTH DATA ／ 疫情資料視覺化</div>
     <h1 class="hero-title">將疫情資料化為<em>清晰、可信、不引發恐慌</em>的公共溝通</h1>
     <div class="hero-en">A standard for trustworthy epidemic data visualization</div>
     <p class="hero-lead">

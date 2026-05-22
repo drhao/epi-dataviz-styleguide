@@ -250,6 +250,21 @@ DEPRECATED_TERMS = [
         "scope": ["**/*.md", "**/*.html", "**/*.py"],
     },
     {
+        "term": "公部門",
+        "reason": "所有說明文字不特別點明使用者身份;改用「正式報告/對外溝通/組織」等中性詞",
+        "scope": ["**/*.md", "**/*.html", "**/*.py"],
+    },
+    {
+        "term": "font-style: italic",
+        "reason": "本指引網頁不使用斜體;HTML 與 CSS 一律避免",
+        "scope": ["**/*.html", "**/*.css"],
+    },
+    {
+        "term": "font-style:italic",
+        "reason": "本指引網頁不使用斜體;HTML 與 CSS 一律避免",
+        "scope": ["**/*.html", "**/*.css"],
+    },
+    {
         "term": "資料治理小組",
         "reason": "已取代為 Dr. Hao 聯絡資訊（2026.05 更新）",
         "scope": ["**/*.md", "**/*.html"],
@@ -304,9 +319,9 @@ def check_deprecated_terms() -> list[tuple[str, str, list[str]]]:
     for entry in DEPRECATED_TERMS:
         term = entry["term"]
         found_in = []
-        # 掃描所有 md / html / py 檔案(排除 .git、本檔案、CHANGELOG)
+        # 掃描所有 md / html / py / css 檔案(排除 .git、本檔案、CHANGELOG)
         # CHANGELOG.md 內保留歷史條目作為演進記錄,故排除
-        for ext in ("md", "html", "py"):
+        for ext in ("md", "html", "py", "css"):
             for path in REPO_ROOT.rglob(f"*.{ext}"):
                 if ".git" in path.parts:
                     continue

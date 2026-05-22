@@ -81,7 +81,7 @@
 
 ### Design Decisions · 設計決策
 
-- **主色選擇 `#739A6D`**：HSL(112°, 18%, 52%) 鼠尾草綠，中明度低彩度自然色系，傳達穩重平和可信賴的調性，適合公部門使用
+- **主色選擇 `#739A6D`**：HSL(112°, 18%, 52%) 鼠尾草綠，中明度低彩度自然色系，傳達穩重平和可信賴的調性，適合需要嚴謹、不引發恐慌的正式溝通場景
 - **紅色獨立為強調色**：疫情情境中紅色具強烈情緒效應，不可作為一般類別色，僅用於警示
 - **配色順序綠藍黃**：避免「紅綠對立」造成的色盲困擾，且綠藍黃在色覺障礙下可區分性最佳
 - **折線使用加深版**：主色 500 對白底對比僅 3.20，細線時不夠清楚；折線專用 600 對比 4.52 過 AA
@@ -113,6 +113,8 @@
 
 ### Changed · 變更
 
+- **說明文字一律不再點明「公部門」使用者身份**:13 處(README、AGENTS、SKILL-README、CHANGELOG Design Decisions、docs/index.html meta + hero、docs/guideline.html 三處、docs/prompt-examples.md、skill/references/07-histogram-boxplot.md)改為中性描述「正式報告/對外溝通/組織內部正式溝通」等。讓本指引適用範圍不再侷限於特定機關屬性
+- **網頁一律不使用斜體**:`docs/index.html`(9 處)、`docs/guideline.html`(4 處)的 `font-style: italic` 全部移除;三個樣式檔(index.html、guideline.html、_slides.css)新增全域 reset `em, i, address { font-style: normal; }` 覆寫瀏覽器預設,確保 `<em>` 也不斜體。`check_drift.py` 加入「公部門」與「font-style: italic」為 deprecated terms,擴大掃描範圍至 .css
 - **投影片版指引從內部預覽改為對外發布**:`README.md`「我要做會議簡報 / 培訓」段、use case 表、結構樹皆加入入口連結;`docs/index.html` SECTION 01 加入兩張投影片 format card(摘要 14 張 / 完整 22 張),grid 改 `auto-fit` 支援 5 卡 wrap;`check_drift.py` 的 CHECK 從「內部」改為「對外」,`expected_in` 加入 README 與 docs/index.html
 - **`apply_style()` 改為 CJK 字型自動 fallback**:`epidemic_palette.py` 內新增 `_build_font_list()`,從候選清單(Noto Sans TC / PingFang TC / Microsoft JhengHei / WenQuanYi Micro Hei 等)動態偵測本機可用字型,不再寫死 `Noto Sans CJK JP`。macOS / Windows / Linux 使用者不需強制安裝特定字型,本機已有的任一 CJK 字型即可用
 - **移動平均規範:centered → trailing(BREAKING)**

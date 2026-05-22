@@ -1,7 +1,7 @@
 # 疫情資料視覺化指引
 
 > **Epidemic Data Visualization Style Guide**
-> 公部門疫情資料分析、流行病學報告、儀表板與對外公告的視覺化標準
+> 疫情資料分析、流行病學報告、儀表板與對外公告的視覺化標準
 
 [![Version](https://img.shields.io/badge/version-1.0-739A6D)](./CHANGELOG.md)
 [![Tests](https://img.shields.io/badge/tests-72%20passing-739A6D)](./skill/tests/)
