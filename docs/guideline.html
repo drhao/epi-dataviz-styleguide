@@ -40,6 +40,7 @@
 }
 
 *{box-sizing:border-box; margin:0; padding:0;}
+em, i, address { font-style: normal; }  /* 本指引網頁不使用斜體 */
 html{scroll-behavior:smooth;}
 body{
   font-family:var(--sans);
@@ -148,7 +149,6 @@ h1.hero-title{
   max-width:920px;
 }
 h1.hero-title em{
-  font-style:italic;
   color:var(--p-700);
   font-weight:600;
 }
@@ -273,7 +273,6 @@ section.chapter{
   font-size:14px;
   color:var(--n-500);
   margin-left:auto;
-  font-style:italic;
 }
 
 .lead-para{
@@ -611,7 +610,7 @@ strong{color:var(--n-900); font-weight:600;}
   width:18%;
 }
 .matrix .use-when{color:var(--n-600);}
-.matrix .avoid{color:var(--n-500); font-style:italic; font-size:12px;}
+.matrix .avoid{color:var(--n-500); font-size:12px;}
 .matrix code{
   font-family:var(--mono);
   font-size:11px;
@@ -690,7 +689,7 @@ pre.code{
 }
 pre.code .c-key{color:var(--p-300);}
 pre.code .c-str{color:#D4B97A;}
-pre.code .c-com{color:var(--n-500); font-style:italic;}
+pre.code .c-com{color:var(--n-500);}
 
 /* === Footer === */
 footer{
@@ -853,7 +852,7 @@ footer ul{list-style:none;}
       <span class="chapter-sub">Primary Color &amp; Scale</span>
     </div>
     <p class="lead-para">
-      組織主色為 <strong>#739A6D（鼠尾草綠／Sage Green）</strong>，HSL(112°, 18%, 52%)。此色屬中明度、低彩度的自然色系，傳達穩重、平和、可信賴的調性，適合公部門使用情境。
+      組織主色為 <strong>#739A6D（鼠尾草綠／Sage Green）</strong>，HSL(112°, 18%, 52%)。此色屬中明度、低彩度的自然色系，傳達穩重、平和、可信賴的調性，適合需要嚴謹、不引發恐慌的正式溝通場景。
     </p>
 
     <h3>主色階 Primary Scale</h3>
@@ -1196,7 +1195,7 @@ footer ul{list-style:none;}
     <h3>使用情境</h3>
     <p><strong>Success（深綠）：</strong>達標、通過、上升等正面指標。例如「執行率達 105%」。</p>
     <p><strong>Warning（暖黃）：</strong>接近門檻、需注意。例如「預算已使用 85%」。</p>
-    <p><strong>Danger（朱紅）：</strong>未達標、超支、下降等負面指標。注意：在公部門情境中應克制使用，避免引發過度恐慌。</p>
+    <p><strong>Danger（朱紅）：</strong>未達標、超支、下降等負面指標。注意：應克制使用，避免引發過度恐慌。</p>
     <p><strong>Info（鋼藍）：</strong>中性提示、補充說明、參考基準線。</p>
   </section>
 
@@ -1649,7 +1648,7 @@ footer ul{list-style:none;}
       <span class="chapter-sub">Accessibility</span>
     </div>
     <p class="lead-para">
-      公部門資料須服務所有民眾，包含視覺障礙、色覺障礙、認知差異使用者。所有產出均應符合 WCAG 2.1 AA 標準。
+      資料須服務所有讀者，包含視覺障礙、色覺障礙、認知差異使用者。所有產出均應符合 WCAG 2.1 AA 標準。
     </p>
 
     <h3>對比度檢核</h3>
