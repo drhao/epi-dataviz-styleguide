@@ -202,62 +202,74 @@ def pair_05_too_many_pie_slices():
     save_pair(fig, "05-too-many-pie-slices")
 
 
-# ============== 06 · 22 縣市疊一張 ==============
+# ============== 06 · 8 年齡組疊一張 vs 2×4 small multiples ==============
 def pair_06_spaghetti_vs_small_multiples():
+    """8 個年齡組曲線:疊一張看不清各組形態 vs 2×4 small multiples 看得出
+    老年組 lag、青壯峰高、孩童雙峰等差異。"""
     np.random.seed(42)
-    cities = [
-        "臺北", "新北", "桃園", "臺中", "臺南", "高雄", "基隆", "新竹市",
-        "嘉義市", "新竹縣", "苗栗", "彰化", "南投", "雲林", "嘉義縣",
-        "屏東", "宜蘭", "花蓮", "臺東", "澎湖", "金門", "連江",
+    age_groups = [
+        "0-9", "10-19", "20-29", "30-39",
+        "40-49", "50-59", "60-69", "70+",
     ]
     weeks = np.arange(1, 25)
+    # 各年齡組刻意給不同的波形 ── 老年組高峰晚、青壯峰高、孩童雙峰
+    peak_weeks = [10, 12, 13, 14, 14, 15, 17, 19]  # 老年組 lag
+    scales =     [0.8, 0.7, 1.4, 1.5, 1.3, 1.0, 0.9, 0.7]  # 青壯峰高
+
     curves = []
-    for i in range(22):
-        base = 100 * np.sin((weeks + i % 6) * np.pi / 12) + 150
+    for pw, sc in zip(peak_weeks, scales):
+        x = (weeks - pw) / 4
+        base = 200 * np.exp(-x ** 2 / 2) * sc + 30
         curves.append(
-            (base * (0.6 + 0.5 * np.random.rand())
-             + np.random.randn(len(weeks)) * 12).clip(min=0)
+            (base + np.random.randn(len(weeks)) * 12).clip(min=0)
         )
 
     fig = plt.figure(figsize=(15, 6.5))
 
-    # DON'T:22 條折線疊一張(spaghetti)
+    # DON'T:8 條折線疊一張(spaghetti)
     ax_a = plt.subplot(1, 2, 1)
-    rainbow22 = plt.cm.tab20(np.linspace(0, 1, 22))
-    for c, color in zip(curves, rainbow22):
-        ax_a.plot(weeks, c, color=color, linewidth=1.2, alpha=0.8)
+    rainbow8 = plt.cm.tab10(np.linspace(0, 1, 8))
+    for age, c, color in zip(age_groups, curves, rainbow8):
+        ax_a.plot(weeks, c, color=color, linewidth=1.5, alpha=0.85,
+                  label=age)
     ax_a.set_xlabel("Week")
-    ax_a.set_ylabel("Rate")
-    title_dont(ax_a, "22 條折線疊一張(讀者完全分不出哪條是哪縣市)")
+    ax_a.set_ylabel("發生率 (每 10 萬)")
+    ax_a.legend(loc="upper right", fontsize=8, ncol=2)
+    title_dont(ax_a, "8 個年齡組折線疊一張(顏色多,難看出各組高峰位置)")
 
-    # DO:M2 small multiples(4×6 mini grid in right half)
-    gs = fig.add_gridspec(4, 12, left=0.55, right=0.99,
-                           top=0.86, bottom=0.10,
-                           wspace=0.15, hspace=0.4)
-    focus_idx = 0
-    for i in range(22):
-        row = i // 6
-        col = i % 6
+    # DO:M2 small multiples(2×4 mini grid in right half)── 焦點:70+ 老年組
+    gs = fig.add_gridspec(2, 4, left=0.56, right=0.99,
+                           top=0.85, bottom=0.12,
+                           wspace=0.18, hspace=0.42)
+    focus_idx = 7  # 70+ 老年組為焦點(觀察 lag)
+    y_max = max(max(c) for c in curves) * 1.1
+    for i in range(8):
+        row = i // 4
+        col = i % 4
         ax = fig.add_subplot(gs[row, col])
         is_focus = (i == focus_idx)
         color = PRIMARY if is_focus else NEUTRAL["300"]
         ax.plot(weeks, curves[i], color=color,
-                linewidth=1.5 if is_focus else 1.0)
-        ax.set_title(cities[i] + (" (焦點)" if is_focus else ""),
+                linewidth=2.0 if is_focus else 1.4)
+        ax.fill_between(weeks, 0, curves[i],
+                        color=color,
+                        alpha=0.15 if is_focus else 0.05)
+        ax.set_title(age_groups[i] + (" (焦點)" if is_focus else ""),
                      loc="left",
                      color=PRIMARY if is_focus else NEUTRAL["700"],
-                     fontsize=7)
+                     fontsize=9)
+        ax.set_ylim(0, y_max)
         ax.set_xticks([])
         ax.set_yticks([])
         for s in ["top", "right"]:
             ax.spines[s].set_visible(False)
 
     # title overlay for DO half
-    fig.text(0.55, 0.92,
-             "DO  —  M2 small multiples(臺北為焦點 PRIMARY,其餘 N300)",
+    fig.text(0.56, 0.92,
+             "DO  —  M2 small multiples(70+ 為焦點,看出老年組高峰 lag 較晚)",
              color=PRIMARY_DARK, fontsize=11, fontweight="semibold")
 
-    fig.suptitle("06 · 多 panels(>= 4)同指標跨類別比較,改用 M2 small multiples",
+    fig.suptitle("06 · 多 panels 同指標跨類別比較,改用 M2 small multiples",
                  x=0.02, ha="left", fontsize=13, fontweight=700)
     save_pair(fig, "06-spaghetti-vs-small-multiples")
 

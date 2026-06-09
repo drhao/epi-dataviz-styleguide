@@ -119,17 +119,27 @@ def _build_font_list(use_chinese):
         return ["DejaVu Sans"]
 
     candidates = [
-        "Noto Sans TC",        # 開源,跨平台(推薦安裝)
+        # 跨平台優先(若有安裝)
+        "Noto Sans TC",
         "Noto Sans CJK TC",
         "Noto Sans CJK JP",
-        "Source Han Sans TC",  # Adobe 思源黑體
-        "PingFang TC",         # macOS 內建
-        "Heiti TC",            # macOS 內建
-        "Microsoft JhengHei",  # Windows 繁中內建
-        "Microsoft YaHei",     # Windows 簡中內建
-        "WenQuanYi Micro Hei", # Linux 開源常見
-        "Noto Sans SC",        # 簡中 fallback
-        "SimHei",               # Windows 簡中經典
+        "Source Han Sans TC",   # Adobe 思源黑體
+        # macOS 內建(PingFang 在不同 matplotlib 版本可能用不同 name 註冊)
+        "PingFang TC",
+        "PingFang HK",
+        "PingFang SC",
+        "Hiragino Sans GB",     # 部分 macOS 字型 fallback
+        "Heiti TC",             # 舊版 macOS 與較舊系統內建(glyph 涵蓋率較低)
+        "Heiti SC",
+        "STHeiti",
+        "LiHei Pro",            # 舊版繁中
+        # Windows 內建
+        "Microsoft JhengHei",
+        "Microsoft YaHei",
+        "SimHei",
+        # Linux 開源
+        "WenQuanYi Micro Hei",
+        "Noto Sans SC",
     ]
     available = {f.name for f in font_manager.fontManager.ttflist}
     matched = [c for c in candidates if c in available]
