@@ -334,7 +334,7 @@ grep -rln "被取代的舊用詞" .
 
 | 段 | 何時遞增 | 範例 |
 |---|---|---|
-| **MAJOR** | **BREAKING change** ── 既有圖表/程式碼套用本指引後會違規,或需要明顯遷移 | `centered_ma()` → `trailing_ma()`(rename + 語意改變);Pattern 移除 |
+| **MAJOR** | **BREAKING change** ── 既有圖表/程式碼套用本指引後會違規,或需要明顯遷移 | 移動平均函式 rename + 語意改變;Pattern 移除;規範條目的「適用 / 不適用」邊界明顯移動 |
 | **MINOR** | **新規範類別 / 新工具支援 / 重要文字精細化**,不打破既有 | 新 modifier(M1、M2);新 reference;新 chart-type;新範例庫;新交付格式 |
 | **PATCH** | 錯字、格式調整、bug 修正、範例 PNG 重生、CI/build 流程改進 | 字型 fallback;CSS 微調;commit message 規範化 |
 
@@ -351,14 +351,14 @@ grep -rln "被取代的舊用詞" .
 2. 提供「原狀 → 新狀」對照
 3. 提供遷移指引(替代寫法、grep 命令、替換腳本)
 
-例:`centered_ma → trailing_ma` 已採此格式記錄(見 v1.0.0 / Unreleased 區段)。
+例:Unreleased 段內「移動平均規範:centered → trailing」即採此格式記錄。
 
 ### Pre-RFC 規範如何升版
 
 v1.0 採納的規範(patterns A-E、9 種 chart types、4 核心原則等)視為 pre-RFC accepted。後續修訂依「影響範圍」決定版號:
 
 - 文字精細化(Y 軸「從零」→「直條必從零、折線視情境」)→ PATCH(語意未變)
-- 規範條目調整(MA 採 centered → trailing)→ MAJOR(語意變)
+- 規範條目調整(MA 演算法變更)→ MAJOR(語意變)
 - 新規範類別(M1、M2)→ MINOR(擴充)
 
 ### 與 RFC 流程的關係
