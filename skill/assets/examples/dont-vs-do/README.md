@@ -10,7 +10,7 @@ GitHub Pages 訪客可直接看完整 8 對對照頁:
 
 **🌐 [docs/dont-vs-do.html](https://drhao.github.io/epi-dataviz-styleguide/dont-vs-do.html)**
 
-(該頁 PNG 引用 `docs/examples/dont-vs-do/` 副本,因 GitHub Pages 僅 serve `docs/` 路徑。更新源 PNG 後須一併 `cp` 到 docs 副本目錄。)
+(該頁 PNG 引用 `docs/examples/dont-vs-do/` 副本,因 GitHub Pages 僅 serve `docs/` 路徑。**生成腳本 `generate_dont_vs_do.py` 會自動同步**至 docs 副本目錄 ── 含移除孤兒舊檔,維護者不需手動 cp。)
 
 ## 與 docs/guideline.html Ch.9 的定位差異
 

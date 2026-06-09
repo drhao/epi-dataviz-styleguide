@@ -9,6 +9,7 @@ Do/Don't 對照範例庫(教學用,L2/L3 補充範例)。
 輸出至 skill/assets/examples/dont-vs-do/(獨立於主例集)。
 """
 import os
+import shutil
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
@@ -24,7 +25,11 @@ from epidemic_palette import (  # noqa: E402
 
 apply_style()
 
+# 源目錄 ── skill/ 內的權威範例
 OUT_DIR = os.path.join(HERE, "..", "assets", "examples", "dont-vs-do")
+# docs/ 副本 ── GitHub Pages 只 serve docs/ 路徑,須在此存 PNG 副本以供
+# docs/dont-vs-do.html 展示頁引用。main() 結尾自動同步,維護者不需手動 cp。
+DOCS_MIRROR = os.path.join(HERE, "..", "..", "docs", "examples", "dont-vs-do")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 
@@ -334,8 +339,29 @@ def pair_08_sort_by_name_vs_value():
 
 # ============== 主執行 ==============
 
+def sync_to_docs_mirror():
+    """同步 OUT_DIR 全部 PNG 到 DOCS_MIRROR(覆寫舊版,移除孤兒)。
+    docs/dont-vs-do.html 展示頁引用 docs/examples/dont-vs-do/ 副本,
+    GitHub Pages serve 路徑限制下,維護者不需手動 cp。
+    """
+    os.makedirs(DOCS_MIRROR, exist_ok=True)
+    # 移除 docs 副本內已不存在於源目錄的舊 PNG(避免重新命名後孤兒殘留)
+    src_files = {f for f in os.listdir(OUT_DIR) if f.endswith(".png")}
+    for f in os.listdir(DOCS_MIRROR):
+        if f.endswith(".png") and f not in src_files:
+            os.remove(os.path.join(DOCS_MIRROR, f))
+            print(f"  - 移除孤兒副本:docs/examples/dont-vs-do/{f}")
+    # 複製源 → 副本
+    for png in sorted(src_files):
+        shutil.copy2(
+            os.path.join(OUT_DIR, png),
+            os.path.join(DOCS_MIRROR, png),
+        )
+        print(f"  → docs/examples/dont-vs-do/{png}")
+
+
 def main():
-    print(f"輸出目錄: {OUT_DIR}\n")
+    print(f"源目錄: {OUT_DIR}\n")
     pair_01_truncated_yaxis()
     pair_02_red_as_categorical()
     pair_03_rainbow_bars()
@@ -344,7 +370,9 @@ def main():
     pair_06_spaghetti_vs_small_multiples()
     pair_07_chartjunk_vs_minimal()
     pair_08_sort_by_name_vs_value()
-    print(f"\n✓ 全部完成(8 對),輸出於:{OUT_DIR}")
+    print(f"\n同步至 docs 副本(供 dont-vs-do.html 展示頁引用):")
+    sync_to_docs_mirror()
+    print(f"\n✓ 全部完成(8 對 + docs 副本同步)")
 
 
 if __name__ == "__main__":
