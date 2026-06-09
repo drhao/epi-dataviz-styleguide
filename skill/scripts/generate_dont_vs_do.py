@@ -31,12 +31,12 @@ os.makedirs(OUT_DIR, exist_ok=True)
 # ============== 共用 helpers ==============
 
 def title_dont(ax, text):
-    ax.set_title(f"✗ DON'T  {text}", loc="left",
+    ax.set_title(f"DON'T  —  {text}", loc="left",
                  color=ACCENT["alert"], fontsize=11, fontweight="semibold")
 
 
 def title_do(ax, text):
-    ax.set_title(f"✓ DO  {text}", loc="left",
+    ax.set_title(f"DO  —  {text}", loc="left",
                  color=PRIMARY_DARK, fontsize=11, fontweight="semibold")
 
 
@@ -243,7 +243,7 @@ def pair_06_spaghetti_vs_small_multiples():
         color = PRIMARY if is_focus else NEUTRAL["300"]
         ax.plot(weeks, curves[i], color=color,
                 linewidth=1.5 if is_focus else 1.0)
-        ax.set_title(cities[i] + ("★" if is_focus else ""),
+        ax.set_title(cities[i] + (" (焦點)" if is_focus else ""),
                      loc="left",
                      color=PRIMARY if is_focus else NEUTRAL["700"],
                      fontsize=7)
@@ -254,7 +254,7 @@ def pair_06_spaghetti_vs_small_multiples():
 
     # title overlay for DO half
     fig.text(0.55, 0.92,
-             "✓ DO  M2 small multiples(臺北為焦點 PRIMARY,其餘 N300)",
+             "DO  —  M2 small multiples(臺北為焦點 PRIMARY,其餘 N300)",
              color=PRIMARY_DARK, fontsize=11, fontweight="semibold")
 
     fig.suptitle("06 · 多 panels(>= 4)同指標跨類別比較,改用 M2 small multiples",
