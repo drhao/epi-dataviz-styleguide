@@ -2,7 +2,7 @@
 
 - **作者**: Dr. Hao
 - **提案日期**: 2026-06-09
-- **狀態**: Draft(reviewer v2)
+- **狀態**: Draft(reviewer v3 ── 三個視覺對照問題已 resolved)
 - **目標版本**: v1.1(待 Pilot 試行後決定)
 
 ## Context · 為什麼需要這個規範
@@ -63,12 +63,15 @@
 
 9. **適用 error bar 的情境**:類別 < 6 個、各類別有點估計 + 區間。例如各年齡組的重症率(7 組以下)、各疫苗的保護力(3-5 種)
 10. **不適用 error bar 的情境**:時序資料(28+ 點)── 視覺過擁擠,改用規則 1-6 的漸層帶
-11. **Error bar 顏色**:cap 與垂直線用 `NEUTRAL.600`(`#5D675B`),**不搶主色**(主色仍是 bar 的填色)
-12. **Error bar 尺寸**:
-    - 垂直線寬:1.5 px
-    - cap 寬:bar width × 0.3(不過於明顯)
-    - cap 高:1 px
-13. **Error bar 對稱性**:若 CI 不對稱(常見於對數空間估計),不可硬畫成對稱 ── 上下臂分別反映實際 upper / lower
+11. **Error bar 顏色**:cap 與垂直線用 **`PRIMARY_DARKER`**(`#374C34`)── 或多色情境下用該系列主色的更深版。**不用中性灰**:中性灰雖然安靜不搶主色,但與 bar 主色區分不夠明顯,反而視覺干擾(v3 視覺對照後決定)
+12. **Error bar 尺寸**:視覺上明確標示區間端點即可,**不過分搶眼,但不訂死絕對數字**
+    - 垂直線寬:1.5 px(matplotlib `elinewidth=1.5`)
+    - cap:matplotlib 建議 `capsize=4`;Chart.js / D3 / R 等視 chart 整體尺寸與 DPI 調整
+    - 共通原則:cap 視覺上**不超過 bar width 50%、不小於 20%**(避免太搶眼或幾乎看不到)
+13. **Error bar 對稱性 ── 規範強制(Pilot 階段即 enforce)**:對數空間估計(RR、OR、HR 等)的 CI 本來就不對稱,**不可硬畫成對稱**
+    - 強制對稱會嚴重誤導:例 RR=2.5, 95% CI [1.4, 4.5] ── 真實下限 1.4 不跨過 1(顯著);若強制對稱,下限會被計算成 0.95 跨過 1(看起來非顯著),**結論完全相反**
+    - matplotlib `errorbar(yerr=[lower_dist, upper_dist])` 分別傳上下臂
+    - 任何時候只要 lower CI ≠ upper CI,都不可用單值 yerr 強制對稱
 
 ### 程式碼範例
 
@@ -101,7 +104,7 @@ ax.text(forecast_start, ax.get_ylim()[1] * 0.95,
 
 ```python
 # 範例 B · 少量類別:error bar
-from epidemic_palette import apply_style, PRIMARY, NEUTRAL
+from epidemic_palette import apply_style, PRIMARY, PRIMARY_DARKER
 
 apply_style()
 fig, ax = plt.subplots(figsize=(7, 4))
@@ -111,6 +114,7 @@ rates = [0.5, 1.2, 3.8, 8.4, 15.2]      # 重症率 %
 ci_low = [0.3, 0.9, 3.2, 7.2, 13.4]
 ci_high = [0.8, 1.6, 4.5, 9.7, 17.3]
 
+# 規則 13:CI 不對稱 ── 上下臂分別計算,不可強制對稱
 errors = [
     [r - l for r, l in zip(rates, ci_low)],   # lower 距離
     [h - r for h, r in zip(ci_high, rates)],  # upper 距離
@@ -118,7 +122,7 @@ errors = [
 
 ax.bar(ages, rates, color=PRIMARY, width=0.6)
 ax.errorbar(ages, rates, yerr=errors,
-            fmt="none", ecolor=NEUTRAL["600"],
+            fmt="none", ecolor=PRIMARY_DARKER,   # 規則 11:主色更深版
             elinewidth=1.5, capsize=4, capthick=1)
 ax.set_ylabel("重症率(%, 95% CI)")
 ```
@@ -259,25 +263,28 @@ datasets: [
 
 ## Decision · 決策狀態
 
-- [x] **Draft**   ── 草案 v2 完成(已 incorporate reviewer feedback v1)
-- [ ] **Pilot**   ── 待最終 review 後進入試行:寫 `skill/references/M1-uncertainty-modifier.md`(`status: draft`),`SKILL.md` decision tree 暫不更新,範例放 `_drafts/`
+- [x] **Draft**   ── 草案 v3 完成(v1 + v2 + v3 reviewer feedback 皆已 incorporate;規則 11-13 經視覺對照定稿)
+- [ ] **Pilot**   ── **即將進入** ── 寫 `skill/references/M1-uncertainty-modifier.md`(`status: draft`),`SKILL.md` decision tree 暫不更新,範例放 `skill/assets/examples/_drafts/`
 - [ ] **Active**  ── Pilot 跑一段時間無問題後升級,走完整 L1→L2→L3
 - [ ] **Withdrawn**
 
 ---
 
-## Reviewer notes(v2 已 resolve 的)
+## Reviewer notes ── 所有問題已 resolved
 
-- ✓ **#R1 適用 / 不適用 / 邊界範圍**:reviewer v1 認為涵蓋 OK,僅 use cases 修正(類流感、重症病例數預測)
-- ✓ **#R2 規則具體度**:reviewer v1 認可,僅規則 7(Y 軸)需與既有「直條必從零、其他視情境」對齊
+### v1 resolved
+- ✓ **#R1 適用 / 不適用 / 邊界範圍**:涵蓋 OK,僅 use cases 修正(類流感、重症病例數預測)
+- ✓ **#R2 規則具體度**:認可,僅規則 7(Y 軸)需與既有「直條必從零、其他視情境」對齊
 - ✓ **#R3 error bar 整合**:整合進本 RFC 規則 9-13(避免規範散落)
 - ✓ **#R4 命名**:`M1-uncertainty-modifier.md`(M = modifier,與 chart-type 01-10 區分)
 
-## Reviewer notes(v2 待確認)
+### v3 resolved(視覺對照後決定)
 
-1. 規則 11(error bar 顏色用 NEUTRAL.600 而非主色)── 此選擇是為了讓「bar 主色」維持主場,「error bar」作為附屬資訊。但有些畫法會把 error bar 與 bar 同色更深 ── 二選一,維護者決定?
-2. 規則 12 的 cap 寬比例(bar_width × 0.3)── 此數字 somewhat arbitrary,要不要 leave 給實作者調整(規範只寫「不過於明顯」)?
-3. 規則 13 的 CI 不對稱處理 ── 對數空間估計的常見場景,但實務上會帶來實作複雜度。本規範是否要在 Pilot 階段 enforce,還是視為「best practice 不強制」?
+對應的視覺對照圖已在 review 過程中生成、決策定稿:
+
+- ✓ **#R5 規則 11 顏色**:選 **PRIMARY_DARKER (`#374C34`)**。中性灰雖較安靜,但與 bar 主色區分不夠明顯反而視覺干擾。深綠版讓 error bar 視覺辨識度高且仍隸屬主色系統
+- ✓ **#R6 規則 12 尺寸**:**不訂死絕對數字**。matplotlib 建議 `capsize=4` + 共通原則「cap 視覺上不超過 bar width 50%、不小於 20%」。理由:不同工具(Chart.js / D3 / R)的 cap 單位不一,寫死數字會不通用
+- ✓ **#R7 規則 13 不對稱 CI**:**Pilot 階段即 enforce**(非 best practice 軟性建議)。視覺對照顯示強制對稱會讓 RR=2.5 的下限從 1.4 變 0.95,結論從顯著反轉為非顯著 ── 嚴重誤導
 
 ---
 
