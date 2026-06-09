@@ -123,16 +123,19 @@ def _build_font_list(use_chinese):
         "Noto Sans TC",
         "Noto Sans CJK TC",
         "Noto Sans CJK JP",
-        "Source Han Sans TC",   # Adobe 思源黑體
-        # macOS 內建(PingFang 在不同 matplotlib 版本可能用不同 name 註冊)
+        "Source Han Sans TC",        # Adobe 思源黑體
+        # macOS modern fonts(PingFang 在 matplotlib 註冊可能僅 HK variant)
         "PingFang TC",
         "PingFang HK",
         "PingFang SC",
-        "Hiragino Sans GB",     # 部分 macOS 字型 fallback
-        "Heiti TC",             # 舊版 macOS 與較舊系統內建(glyph 涵蓋率較低)
+        "Hiragino Sans",             # macOS 內建,日文為主但 CJK 涵蓋完整
+        "Hiragino Sans GB",
+        "Hiragino Maru Gothic Pro",  # 圓體 fallback(與主指引 sans-serif 略不同,後置)
+        # macOS 舊字型 fallback(glyph 涵蓋率較低)
+        "Heiti TC",
         "Heiti SC",
         "STHeiti",
-        "LiHei Pro",            # 舊版繁中
+        "LiHei Pro",                 # 舊版繁中
         # Windows 內建
         "Microsoft JhengHei",
         "Microsoft YaHei",
