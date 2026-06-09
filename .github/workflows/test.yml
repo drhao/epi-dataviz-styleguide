@@ -1,0 +1,42 @@
+name: CI
+
+# 自動跑核心驗證,避免規範漂移與測試 regression
+# - test_palette.py:80 個 palette + 跨檔案一致性自動化測試
+# - check_drift.py:18 個跨文件概念覆蓋 + 過時用詞檢查
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:  # 允許在 GitHub UI 手動觸發
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: tests + drift check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install runtime dependencies
+        # 本指引刻意維持極簡:matplotlib + numpy 即可(AGENTS.md 鐵則)
+        run: |
+          python -m pip install --upgrade pip
+          pip install matplotlib numpy
+
+      - name: Run test_palette.py (80 tests)
+        run: python3 skill/tests/test_palette.py
+
+      - name: Run check_drift.py (cross-file consistency)
+        run: python3 dev-tools/check_drift.py

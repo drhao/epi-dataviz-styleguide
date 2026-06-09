@@ -111,6 +111,16 @@
 - `docs/guideline.html` Chapter 11 新增「方法 C:使用預生成樣板」段落
 - `README.md`、`docs/index.html`、`skill/SKILL.md` 同步更新工具支援指引
 
+### Added · 新增(automation)
+
+- **GitHub Actions CI** ── `.github/workflows/test.yml`
+  - 對 `main` 的 push / PR 自動跑 `test_palette.py`(80 個測試)+ `check_drift.py`(18 個概念覆蓋 + 過時用詞檢查)
+  - 失敗會在 PR 內 block(視 GitHub branch protection 設定而定)
+  - 補上 `README.md` CI badge(dynamic,反映 main 分支 build 狀態,取代原靜態「tests-80 passing」)
+  - `CONTRIBUTING.md` 提交檢查清單前面加 CI 說明,明確「本機 pre-flight + CI 自動化」雙重保險
+  - 預期防止規範漂移與測試 regression,降低 maintainer 在 PR 階段才發現問題的成本
+  - Python 3.11 + matplotlib + numpy(沿用既有 runtime 鐵則)
+
 ### Added · 新增(教學資源)
 
 - **Do / Don't 對照範例庫** ── `skill/assets/examples/dont-vs-do/`

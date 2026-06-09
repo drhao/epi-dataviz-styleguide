@@ -292,11 +292,17 @@ repo 已配置 `docs/index.html` 作為 GitHub Pages 入口頁。Pages 從 `main
 
 ## 提交檢查清單
 
-每次 commit 上版前確認：
+每次 commit 上版前確認:
 
-**必跑：**
+> **CI 自動化**:對 `main` 的 push / PR 會由 GitHub Actions 自動跑
+> `test_palette.py` 與 `check_drift.py`(見 `.github/workflows/test.yml`)。
+> 失敗會在 PR 內顯示紅勾。下面 checklist 是本機 pre-flight,可降低
+> push 後才發現問題的成本。
 
-- [ ] `python3 skill/tests/test_palette.py` 全部通過（目前 80 個測試）
+**必跑:**
+
+- [ ] `python3 skill/tests/test_palette.py` 全部通過(目前 80 個測試)
+- [ ] `python3 dev-tools/check_drift.py` 18/18 概念覆蓋 + 0 過時用詞
 - [ ] `grep -rn "TODO\|FIXME\|XXX" .` 沒有殘留未完成標記
 - [ ] 文字內容仍符合「4 項核心原則」
 
