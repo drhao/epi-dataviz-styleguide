@@ -23,7 +23,7 @@
 - **無障礙標準**：WCAG AA 對比度、色覺障礙友善
 - **多格式交付**：HTML 互動版、PDF 列印版、Markdown 全文版、**投影片版 PDF**(摘要 14 張 / 完整 22 張)
 - **AI Agent Skill**：可直接放入 Claude Code、Codex、Google Antigravity 的 SKILL.md
-- **工具支援**：Python 色票模組、Power BI 主題檔、Excel 對照表
+- **工具支援**：Python / R 色票模組、Quarto 品牌檔、Streamlit 佈景主題、Power BI 主題檔、Excel 對照表
 - **範例資料集**：12 個虛構但合理的疫情 CSV 資料，可實際練習
 
 ## 使用情境
@@ -35,7 +35,10 @@
 | 想在會議簡報、5 分鐘介紹      | [`docs/guideline-slides-summary.pdf`](./docs/guideline-slides-summary.pdf)(14 張) |
 | 想做內部培訓(30 分鐘版)     | [`docs/guideline-slides-full.pdf`](./docs/guideline-slides-full.pdf)(22 張) |
 | 想在 Notion / Wiki 引用       | [`docs/guideline.md`](./docs/guideline.md) |
-| 寫 Python / R 程式畫圖        | [`skill/scripts/epidemic_palette.py`](./skill/scripts/) |
+| 寫 Python 程式畫圖            | [`skill/scripts/epidemic_palette.py`](./skill/scripts/epidemic_palette.py) |
+| 寫 R / ggplot2 畫圖           | [`skill/scripts/epidemic_palette.R`](./skill/scripts/epidemic_palette.R) |
+| 用 Quarto 出報告／網站        | [`resources/quarto/`](./resources/quarto/)（`_brand.yml` + `epidemic.scss`） |
+| 用 Streamlit 做儀表板         | [`resources/streamlit/`](./resources/streamlit/)（`config.toml`） |
 | Excel 使用者                   | [`resources/palette.csv`](./resources/palette.csv) |
 | Power BI 開發者               | [`resources/powerbi-theme.json`](./resources/powerbi-theme.json) |
 | 用 Claude Code / Codex 開發  | [`skill/`](./skill/) 整個資料夾 |
@@ -65,7 +68,7 @@ epi-dataviz-styleguide/
 │   ├── SKILL.md
 │   ├── SKILL-README.md
 │   ├── references/        ← 10 種圖表的詳細規範
-│   ├── scripts/           ← Python 色票模組 + 範例腳本
+│   ├── scripts/           ← Python / R 色票模組 + 範例腳本
 │   ├── tests/             ← 72 個自動化測試
 │   └── assets/
 │       ├── examples/      ← 預生成範例 PNG
@@ -79,7 +82,9 @@ epi-dataviz-styleguide/
 │
 └── resources/             ← 工具直接匯入用
     ├── palette.csv
-    └── powerbi-theme.json
+    ├── powerbi-theme.json
+    ├── quarto/             ← Quarto _brand.yml + epidemic.scss + README
+    └── streamlit/          ← Streamlit config.toml + README
 ```
 
 ## 5 分鐘快速上手
@@ -110,6 +115,32 @@ ax.bar(['A', 'B', 'C'], [10, 20, 15])
 plt.savefig('test.png')
 "
 ```
+
+### 我要用 R / ggplot2
+
+```r
+source("skill/scripts/epidemic_palette.R")
+library(ggplot2)
+
+ggplot(df, aes(x, y, fill = grp)) +
+  geom_col(width = 0.6) +
+  scale_fill_epi() +   # 類別配色，依優先順序（第一類別 = 主色）
+  theme_epi()          # 移除頂右框、僅水平格線、中文字型
+```
+
+色票值與 Python 版完全一致。單色色階用 `scale_fill_epi_mono("scale_4")`，序列／發散用 `scale_fill_epi_sequential()` / `_diverging()`。
+
+### 我要用 Quarto
+
+1. 把 [`resources/quarto/_brand.yml`](./resources/quarto/_brand.yml) 複製到 Quarto 專案根目錄（Quarto ≥ 1.6，文件主題與圖表一次套用）
+2. 或在文件 YAML 指定 SCSS 主題（相容所有版本）：`format: html: theme: [cosmo, epidemic.scss]`
+3. 詳見 [`resources/quarto/README.md`](./resources/quarto/README.md)
+
+### 我要用 Streamlit
+
+1. 把 [`resources/streamlit/config.toml`](./resources/streamlit/config.toml) 複製到 app 專案的 `.streamlit/config.toml`（設定 app 外觀主色）
+2. 圖表用 matplotlib（`apply_style()` 後 `st.pyplot()`）或將 `CATEGORICAL` 傳給 Plotly／Altair
+3. 詳見 [`resources/streamlit/README.md`](./resources/streamlit/README.md)
 
 ### 我要用 Power BI
 

@@ -19,8 +19,9 @@ epidemic-dataviz/
 │   ├── 08-pyramid-chart.md
 │   └── 09-choropleth-map.md
 │
-├── scripts/                          ← 可執行的 Python 程式
+├── scripts/                          ← 可執行的 Python 程式 + R 色票模組
 │   ├── epidemic_palette.py           ← 共用色票模組（可 import）
+│   ├── epidemic_palette.R            ← R / ggplot2 版色票模組（色票值同 .py）
 │   ├── generate_examples.py          ← 一鍵產生所有範例 PNG
 │   ├── generate_sample_data.py       ← 產生 12 個範例 CSV 資料集
 │   └── quickstart_with_sample_data.py ← 示範：讀資料 + 套用指引
@@ -123,7 +124,7 @@ cd ../scripts/
 python generate_examples.py
 ```
 
-測試會自動檢查 55 個案例：HEX 格式、WCAG 對比度、色覺障礙友善、移動平均正確性、跨檔案一致性。詳見 `tests/README.md`。
+測試會自動檢查 72 個案例：HEX 格式、WCAG 對比度、色覺障礙友善、移動平均正確性、跨檔案一致性。詳見 `tests/README.md`。
 
 ## 版本
 
