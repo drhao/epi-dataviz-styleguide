@@ -113,6 +113,14 @@
 
 ### Added · 新增(使用者體驗)
 
+- **互動式圖表決策樹 widget** ── `docs/index.html` 新增 SECTION 03「不知道用什麼圖?」
+  - 2 階段 wizard:資料形態(6 大類)→ 細節(4-5 個 follow-up) → 推薦結果(chart type + Pattern + 連結到 reference)
+  - 涵蓋 6 種資料形態 × 平均 4 細節 = 24 個 decision endpoint,對應 SKILL.md §3 Chart Selection 文字版 decision tree
+  - 純 vanilla JS,無 framework / 無外部依賴;CSS 沿用 index.html 主色 + 字型風格
+  - 推薦結果含:chart 名稱、Pattern、文字描述、cross-link 按鈕到對應 reference / modifier(M1 / M2)
+  - 後續 SECTION 編號 03 → 04 → 05 → 06 → 07 重編
+  - `dev-tools/check_drift.py` 新增「互動式 chart 決策樹 widget」CHECK
+
 - **5 分鐘入門 by role** ── `docs/quickstart-by-role.md`
   - 4 個典型角色 × 5 步驟入門路徑:
     - 🎨 設計師 / 分析師(Excel / Power BI / Tableau 套用色票)

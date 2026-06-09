@@ -698,6 +698,131 @@ footer {
   .footer-bottom { flex-direction: column; gap: 12px; align-items: flex-start; }
   .masthead-right { display: none; }
 }
+
+/* ===== 互動式圖表決策樹 widget(SECTION 03) ===== */
+.wizard {
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+  border-left: 4px solid var(--p-500);
+  padding: 28px 32px;
+}
+.wiz-step.wiz-hidden { display: none; }
+.wiz-prompt {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 18px;
+  font-size: 17px;
+  color: var(--n-900);
+}
+.wiz-step-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--n-0);
+  background: var(--p-500);
+  padding: 4px 10px;
+  text-transform: uppercase;
+}
+.wiz-choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.wiz-btn {
+  background: var(--n-0);
+  border: 1px solid var(--n-300);
+  border-left: 3px solid var(--p-400);
+  padding: 14px 16px;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--n-900);
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color .15s, background .15s, transform .15s;
+}
+.wiz-btn:hover {
+  border-color: var(--p-700);
+  background: var(--p-50);
+  transform: translateX(2px);
+}
+.wiz-btn small {
+  font-size: 12px;
+  color: var(--n-600);
+  font-weight: 400;
+}
+.wiz-back {
+  margin-top: 8px;
+  background: transparent;
+  border: none;
+  color: var(--n-600);
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 0;
+  letter-spacing: 1px;
+}
+.wiz-back:hover { color: var(--p-700); }
+
+/* 推薦結果區 */
+.wiz-result {
+  border: 1px solid var(--p-300);
+  background: var(--p-50);
+  padding: 22px 26px;
+  margin-bottom: 12px;
+}
+.wiz-result .tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--p-700);
+  margin-bottom: 12px;
+}
+.wiz-result h3 {
+  font-family: var(--serif);
+  font-size: 24px;
+  color: var(--p-800);
+  margin-bottom: 4px;
+}
+.wiz-result .pattern {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--n-700);
+  margin-bottom: 14px;
+}
+.wiz-result .desc {
+  font-size: 14px;
+  color: var(--n-800);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.wiz-result .desc strong { color: var(--p-800); }
+.wiz-result .refs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.wiz-result .refs a {
+  font-size: 12px;
+  font-family: var(--mono);
+  color: var(--p-700);
+  background: var(--n-0);
+  padding: 6px 12px;
+  border: 1px solid var(--p-300);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: border-color .15s, background .15s;
+}
+.wiz-result .refs a:hover {
+  border-color: var(--p-700);
+  background: var(--p-100);
+}
 </style>
 </head>
 <body>
@@ -868,10 +993,54 @@ footer {
     </div>
   </section>
 
-  <!-- 請 AI 生成圖表 -->
+  <!-- 互動式圖表決策樹 widget -->
   <section>
     <div class="section-head">
       <div class="section-num">SECTION 03</div>
+      <h2>不知道用什麼圖?</h2>
+      <div class="en">Chart selection wizard</div>
+    </div>
+
+    <p style="max-width:760px;margin-bottom:24px;color:var(--n-700);font-size:15px;">
+      回答兩個問題,推薦適合的<strong>圖表類型 + 配色 Pattern</strong>。完整 decision tree 對應 <code style="font-family:var(--mono);font-size:13px;background:var(--n-100);padding:2px 6px;color:var(--p-800);">SKILL.md §3 Chart Selection</code> 的文字版。
+    </p>
+
+    <div id="chart-wizard" class="wizard">
+      <div class="wiz-step" id="wiz-step-1">
+        <div class="wiz-prompt">
+          <span class="wiz-step-num">Q1</span>
+          <strong>你的資料是哪種形態?</strong>
+        </div>
+        <div class="wiz-choices">
+          <button class="wiz-btn" data-shape="time">時序變化<small>每日 / 每週 / 跨年比較</small></button>
+          <button class="wiz-btn" data-shape="compare">類別比較<small>各部門 / 縣市 / 族群</small></button>
+          <button class="wiz-btn" data-shape="compose">組成比例<small>變異株占比 / 疫苗劑次</small></button>
+          <button class="wiz-btn" data-shape="distrib">分布形態<small>年齡 / 住院天數</small></button>
+          <button class="wiz-btn" data-shape="relate">關聯 / 相關<small>接種率 vs 重症率</small></button>
+          <button class="wiz-btn" data-shape="geo">地理空間<small>22 縣市發生率</small></button>
+        </div>
+      </div>
+
+      <div class="wiz-step wiz-hidden" id="wiz-step-2">
+        <div class="wiz-prompt">
+          <span class="wiz-step-num">Q2</span>
+          <strong id="wiz-q2-text">細節?</strong>
+        </div>
+        <div class="wiz-choices" id="wiz-q2-choices"></div>
+        <button class="wiz-back" onclick="wizReset()">← 重新開始</button>
+      </div>
+
+      <div class="wiz-step wiz-hidden" id="wiz-step-3">
+        <div class="wiz-result" id="wiz-result"></div>
+        <button class="wiz-back" onclick="wizReset()">← 重新開始</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 請 AI 生成圖表 -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">SECTION 04</div>
       <h2>請 AI 幫你畫圖</h2>
       <div class="en">Prompt your AI</div>
     </div>
@@ -942,7 +1111,7 @@ footer {
   <!-- 色票 -->
   <section>
     <div class="section-head">
-      <div class="section-num">SECTION 04</div>
+      <div class="section-num">SECTION 05</div>
       <h2>主色與類別配色</h2>
       <div class="en">Primary &amp; Categorical Palette</div>
     </div>
@@ -1039,7 +1208,7 @@ footer {
   <!-- 圖表範例 -->
   <section>
     <div class="section-head">
-      <div class="section-num">SECTION 05</div>
+      <div class="section-num">SECTION 06</div>
       <h2>圖表範例</h2>
       <div class="en">Chart examples</div>
     </div>
@@ -1091,7 +1260,7 @@ footer {
   <!-- 設計原則 -->
   <section>
     <div class="section-head">
-      <div class="section-num">SECTION 06</div>
+      <div class="section-num">SECTION 07</div>
       <h2>四項核心原則</h2>
       <div class="en">Guiding principles</div>
     </div>
@@ -1203,6 +1372,242 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
       btn.textContent = '✓ Selected';
       setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
     }
+  });
+});
+</script>
+
+<!-- ===== 互動式圖表決策樹 widget ===== -->
+<script>
+const WIZ_REF = {
+  bar:     "https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/01-bar-chart.md",
+  line:    "https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/02-line-chart.md",
+  area:    "https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/03-area-chart.md",
+  stack:   "https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/04-stacked-chart.md",
+  pie:     "https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/05-pie-chart.md",
+  scatter: "https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/06-scatter-chart.md",
+  hist:    "https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/07-histogram-boxplot.md",
+  pyramid: "https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/08-pyramid-chart.md",
+  choro:   "https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/09-choropleth-map.md",
+  mono:    "https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/10-monochrome-usage.md",
+  m1:      "https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/M1-uncertainty-modifier.md",
+  m2:      "https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/references/M2-small-multiples.md",
+};
+
+const WIZ_DATA = {
+  time: {
+    q: "資料的時間跨度與重點?",
+    options: [
+      { label: "短期密集時序", subtitle: "≤ 28 天每日資料",
+        result: {
+          chart: "直條圖 + 7 日 trailing MA",
+          pattern: "Pattern A(主色直條 + #374C34 均線)",
+          desc: "短期密集時序用 <strong>直條圖</strong>;加 <strong>7 日 trailing MA</strong>(本日含前 6 日)平滑週末填報效應。<strong>Y 軸必從零</strong>。",
+          refs: [["01-bar-chart", "bar"]]
+        } },
+      { label: "中長期趨勢比較", subtitle: "週 / 月 / 多波同期",
+        result: {
+          chart: "折線圖(LINE_COLORS 加深版)",
+          pattern: "Pattern B(類別配色)或 A(焦點)",
+          desc: "中長期趨勢用 <strong>折線</strong>;細線需用加深版色彩(綠 #5D7F58 / 藍 #587A9D / 黃 #A8821F)滿足 WCAG AA;tension 0.3-0.35。",
+          refs: [["02-line-chart", "line"]]
+        } },
+      { label: "跨年同期比較(2-3 年)", subtitle: "今年 vs 去年 + 歷史範圍",
+        result: {
+          chart: "折線(2-3 序列疊一張 + 灰色歷史範圍帶)",
+          pattern: "Pattern A(主色今年 + N400 對照)",
+          desc: "今年用主色實線,去年同期用 <code>NEUTRAL.400</code> 虛線,歷史範圍(±1 SD)用灰色填充帶(alpha 0.22)。讀者一眼看出當前是否偏離常態。",
+          refs: [["02-line-chart §同期比較", "line"]]
+        } },
+      { label: "跨年同期比較(5+ 年)", subtitle: "每年一 panel",
+        result: {
+          chart: "M2 small multiples(每年一 panel)",
+          pattern: "Pattern A + M2(焦點 PRIMARY,其他 N300)",
+          desc: "5 年以上同期波形差異要看清,改用 <strong>small multiples</strong>:統一 Y/X scale、共用圖例、當年 panel 用主色,其他年 N300 為背景。",
+          refs: [["M2 small multiples", "m2"], ["02-line-chart", "line"]]
+        } },
+      { label: "含預測 / 信賴區間", subtitle: "Rt 預測、就診人次預測",
+        result: {
+          chart: "折線 + 漸層 CI 帶(M1 modifier)",
+          pattern: "Pattern A + M1(主色線 + PRIMARY_LIGHT 帶)",
+          desc: "套用 <strong>M1 不確定性 modifier</strong>:50% CI 內層(alpha 0.40)+ 95% 外層(alpha 0.20);預測段切換虛線 <code>dashes=[6,3]</code>;預測起點加垂直 annotation。",
+          refs: [["M1 不確定性", "m1"], ["02-line-chart", "line"]]
+        } },
+    ]
+  },
+  compare: {
+    q: "比較的重點?",
+    options: [
+      { label: "凸顯一個焦點", subtitle: "本機關 vs 平均",
+        result: {
+          chart: "直條圖(focus + neutral)",
+          pattern: "Pattern A(焦點主色 + 其他 N400)",
+          desc: "焦點 bar 用 <code>PRIMARY</code>,其他 bar 用 <code>NEUTRAL.400</code>。讀者一眼看到「哪根是重點」。",
+          refs: [["01-bar-chart §3 顏色策略", "bar"]]
+        } },
+      { label: "多類別並列(2-6 個)", subtitle: "各部門 / 變異株",
+        result: {
+          chart: "直條圖(類別配色)",
+          pattern: "Pattern B(綠 → 藍 → 黃 順序)",
+          desc: "依類別配色順序套用(主色 → 藍 → 黃 → 鴨綠 → 銅 → 梅)。最高優先級項目用主色。<strong>類別 > 6 改用單色色階或重新分組</strong>。",
+          refs: [["01-bar-chart", "bar"]]
+        } },
+      { label: "排名(數值大小)", subtitle: "22 縣市發生率",
+        result: {
+          chart: "水平橫條圖(排序由大到小)",
+          pattern: "Pattern A(前 N 名主色 + 其他 N400)",
+          desc: "<strong>按數值大小排序</strong>(不按字典序),前 2-3 名用主色凸顯,其他 NEUTRAL.400 為背景。讀者一眼看出 ranking。",
+          refs: [["01-bar-chart §4 排序", "bar"]]
+        } },
+      { label: "多縣市 / 多組同指標並排", subtitle: "22 縣市 / 各年齡組",
+        result: {
+          chart: "M2 small multiples",
+          pattern: "Pattern A + M2(焦點 PRIMARY,其他 N300)",
+          desc: "套用 <strong>M2 small multiples</strong>:統一 Y/X scale、共用圖例、焦點 panel 主色 + 其他 N300。22 縣市 → 4×6 grid;8-9 panels → 3×3。",
+          refs: [["M2 small multiples", "m2"]]
+        } },
+    ]
+  },
+  compose: {
+    q: "類別性質與時點?",
+    options: [
+      { label: "有順序(輕/中/重、年齡組)", subtitle: "Pattern E 主場",
+        result: {
+          chart: "100% 堆疊長條(MONOCHROME)",
+          pattern: "Pattern E 單色色階 + 重症在底",
+          desc: "序數類別用 <strong>MONOCHROME 單色色階</strong>(scale_3 / scale_4 等)。<strong>最深色放底部</strong>(嚴重度堆疊時:重症在底為視覺基底)。",
+          refs: [["10-monochrome-usage", "mono"], ["04-stacked-chart", "stack"]]
+        } },
+      { label: "無順序、跨時點看比例變化", subtitle: "變異株月份消長",
+        result: {
+          chart: "100% 堆疊長條(類別配色)",
+          pattern: "Pattern B(順序套色)",
+          desc: "<strong>跨時點看比例變化</strong>用 100% 堆疊長條(每月一條);類別配色順序排,最主流項目用主色。",
+          refs: [["04-stacked-chart", "stack"]]
+        } },
+      { label: "單一時點、類別 ≤ 5、差異 ≥ 5%", subtitle: "圓餅可用情境",
+        result: {
+          chart: "圓餅圖(條件使用)",
+          pattern: "Pattern B(類別配色)",
+          desc: "<strong>類別 ≤ 5 且差異 ≥ 5%</strong> 才用圓餅;平面 2D、從 12 點順時針、直接標籤(類別 + %),不依賴圖例。<strong>無 3D / 無陰影 / 無 explode</strong>。",
+          refs: [["05-pie-chart", "pie"]]
+        } },
+      { label: "類別 > 5 的占比", subtitle: "9 個變異株",
+        result: {
+          chart: "排序橫條圖(取代圓餅)",
+          pattern: "Pattern A(前 N 主色 + 其他 N400)",
+          desc: "類別 > 5 時 <strong>不要用圓餅</strong>(角度比較不準),改用 <strong>排序橫條圖</strong>:由大到小,前 2 名主色凸顯。",
+          refs: [["01-bar-chart §排名", "bar"], ["05-pie-chart §條件使用", "pie"]]
+        } },
+    ]
+  },
+  distrib: {
+    q: "資料的形態?",
+    options: [
+      { label: "單一連續變數的分布", subtitle: "住院天數、年齡",
+        result: {
+          chart: "直方圖 或 盒鬚圖",
+          pattern: "Pattern A(主色填色 + 邊線)",
+          desc: "看分布形狀用 <strong>直方圖</strong>(bin width 自動估或經驗值);看摘要統計用 <strong>盒鬚圖</strong>(中位數、IQR、離群點)。",
+          refs: [["07-histogram-boxplot", "hist"]]
+        } },
+      { label: "多組分布並列比較", subtitle: "各年齡組住院天數",
+        result: {
+          chart: "盒鬚圖並排",
+          pattern: "Pattern B 或 E(視類別性質)",
+          desc: "<strong>盒鬚圖並排</strong>對比各組中位數與 spread;年齡組是序數 → Pattern E 單色;科別等獨立類別 → Pattern B。",
+          refs: [["07-histogram-boxplot", "hist"]]
+        } },
+      { label: "年齡 × 性別結構", subtitle: "人口金字塔",
+        result: {
+          chart: "人口金字塔(雙向橫條)",
+          pattern: "2 色對照(性別)",
+          desc: "<strong>人口金字塔</strong>:男性向左、女性向右,共用中央年齡軸。兩色對照(主色 + 對照色)即可。",
+          refs: [["08-pyramid-chart", "pyramid"]]
+        } },
+    ]
+  },
+  relate: {
+    q: "資料的維度?",
+    options: [
+      { label: "兩個連續變數", subtitle: "接種率 vs 重症率",
+        result: {
+          chart: "散佈圖(可選擇加趨勢線)",
+          pattern: "Pattern A(主色點 + 中性趨勢線)",
+          desc: "<strong>散佈圖</strong>看相關性;主色點 + 中性灰趨勢線(若 fit);避免過度密集(N > 500 改 hexbin)。",
+          refs: [["06-scatter-chart", "scatter"]]
+        } },
+      { label: "三個變數(加 size)", subtitle: "各縣市三維泡泡",
+        result: {
+          chart: "泡泡圖(bubble chart)",
+          pattern: "Pattern A 或 B(視第三維是否類別)",
+          desc: "<strong>泡泡圖</strong>:x、y 軸 + 泡泡大小代表第三變數。**避免泡泡顏色再加維度**(過多視覺通道)。",
+          refs: [["06-scatter-chart §bubble", "scatter"]]
+        } },
+    ]
+  },
+  geo: {
+    q: "想看什麼?",
+    options: [
+      { label: "各縣市單時點分布", subtitle: "目前發生率 ranking",
+        result: {
+          chart: "面量地圖(choropleth)",
+          pattern: "SEQUENTIAL 色階(單向)",
+          desc: "<strong>面量地圖</strong>:用主色 SEQUENTIAL 色階(7 級)。**比較絕對人次時必須標準化**(每 10 萬人發生率),否則人口大縣市永遠最深色。",
+          refs: [["09-choropleth-map", "choro"]]
+        } },
+      { label: "時間 × 區域矩陣", subtitle: "12 個月 × 22 縣市",
+        result: {
+          chart: "熱力圖(heatmap matrix)",
+          pattern: "SEQUENTIAL 色階",
+          desc: "<strong>熱力圖</strong>(縣市 × 月份 matrix):用 SEQUENTIAL 色階,行列依某維度排序(如該縣市總和)。",
+          refs: [["09-choropleth-map §heatmap", "choro"]]
+        } },
+    ]
+  },
+};
+
+function wizStart(shape) {
+  const data = WIZ_DATA[shape];
+  if (!data) return;
+  document.getElementById('wiz-q2-text').textContent = data.q;
+  const choices = document.getElementById('wiz-q2-choices');
+  choices.innerHTML = '';
+  data.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'wiz-btn';
+    btn.innerHTML = opt.label + '<small>' + opt.subtitle + '</small>';
+    btn.addEventListener('click', () => wizFinish(opt.result));
+    choices.appendChild(btn);
+  });
+  document.getElementById('wiz-step-1').classList.add('wiz-hidden');
+  document.getElementById('wiz-step-2').classList.remove('wiz-hidden');
+}
+
+function wizFinish(result) {
+  const refsHtml = result.refs.map(([name, key]) => {
+    const url = WIZ_REF[key] || '#';
+    return `<a href="${url}">${name}</a>`;
+  }).join('');
+  document.getElementById('wiz-result').innerHTML = `
+    <div class="tag">RECOMMENDED</div>
+    <h3>${result.chart}</h3>
+    <div class="pattern">${result.pattern}</div>
+    <div class="desc">${result.desc}</div>
+    <div class="refs">${refsHtml}</div>
+  `;
+  document.getElementById('wiz-step-2').classList.add('wiz-hidden');
+  document.getElementById('wiz-step-3').classList.remove('wiz-hidden');
+}
+
+function wizReset() {
+  document.getElementById('wiz-step-2').classList.add('wiz-hidden');
+  document.getElementById('wiz-step-3').classList.add('wiz-hidden');
+  document.getElementById('wiz-step-1').classList.remove('wiz-hidden');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('#chart-wizard .wiz-btn[data-shape]').forEach(btn => {
+    btn.addEventListener('click', () => wizStart(btn.dataset.shape));
   });
 });
 </script>

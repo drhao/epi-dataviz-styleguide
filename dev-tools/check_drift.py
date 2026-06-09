@@ -342,6 +342,24 @@ CHECKS = [
         ),
     ),
     Check(
+        name="互動式 chart 決策樹 widget",
+        keywords=[
+            "chart-wizard",
+            "WIZ_DATA",
+            "Chart selection wizard",
+            "不知道用什麼圖",
+        ],
+        expected_in=[
+            "docs/index.html",
+            "CHANGELOG.md",
+        ],
+        description=(
+            "docs/index.html SECTION 03 內嵌 JS widget,2 階段 decision tree "
+            "推薦 chart type + Pattern + reference。對應 SKILL.md §3 文字版 "
+            "decision tree 的互動版。"
+        ),
+    ),
+    Check(
         name="5 分鐘入門 by role(quickstart)",
         keywords=[
             "quickstart-by-role",
