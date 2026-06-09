@@ -28,6 +28,8 @@
 
 ## 使用情境
 
+> **不確定從哪開始?** → 看 **[⚡ 5 分鐘入門 by role](./docs/quickstart-by-role.md)**(設計師 / 工程師 / PM / 長官 各自的 5 步驟路徑)
+
 | 你是 | 從這裡開始 |
 |------|----------|
 | 想閱讀完整指引（一般使用者）  | 🌐 [線上指引](https://drhao.github.io/epi-dataviz-styleguide/)（GitHub Pages）|

@@ -111,6 +111,22 @@
 - `docs/guideline.html` Chapter 11 新增「方法 C:使用預生成樣板」段落
 - `README.md`、`docs/index.html`、`skill/SKILL.md` 同步更新工具支援指引
 
+### Added · 新增(使用者體驗)
+
+- **5 分鐘入門 by role** ── `docs/quickstart-by-role.md`
+  - 4 個典型角色 × 5 步驟入門路徑:
+    - 🎨 設計師 / 分析師(Excel / Power BI / Tableau 套用色票)
+    - 💻 工程師(Python / R / JS 程式 + AI agent 整合)
+    - 📋 PM / 培訓 / 簡報製作(濃縮為 brief / 教材)
+    - 🎯 長官 / 決策者(5 分鐘理解規範精神 + 審圖速覽)
+  - 每個角色含「進階方向」段補充
+  - 入口:
+    - `docs/index.html` SECTION 02 標題下加 lead text 連結到 quickstart
+    - 各 audience card 第一個 li 加「⚡ 5 分鐘入門」連結到對應角色 section
+    - `README.md`「使用情境」段前加 quote box
+  - `dev-tools/check_drift.py` 新增「5 分鐘入門 by role」CHECK
+  - 解決原本入門路徑散落在 README / SKILL.md / Pages 各處的問題,提供統一收斂入口
+
 ### Added · 新增(教學線上頁)
 
 - **Do / Don't 對照範例庫展示頁** ── `docs/dont-vs-do.html`

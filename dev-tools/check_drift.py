@@ -342,6 +342,25 @@ CHECKS = [
         ),
     ),
     Check(
+        name="5 分鐘入門 by role(quickstart)",
+        keywords=[
+            "quickstart-by-role",
+            "5 分鐘入門",
+            "⚡ 5 分鐘",
+        ],
+        expected_in=[
+            "docs/quickstart-by-role.md",
+            "docs/index.html",
+            "README.md",
+            "CHANGELOG.md",
+        ],
+        description=(
+            "依角色分流的 5 分鐘入門文件(設計師 / 工程師 / PM / 長官)。"
+            "docs/index.html SECTION 02 與 audience cards、README.md 使用情境表"
+            "應有 cross-link 指向 quickstart-by-role.md。"
+        ),
+    ),
+    Check(
         name="Do/Don't 對照範例庫",
         keywords=[
             "dont-vs-do",
