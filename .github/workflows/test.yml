@@ -29,11 +29,13 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install runtime dependencies
-        # 本指引刻意維持極簡:matplotlib + numpy 即可(AGENTS.md 鐵則)
+      - name: Install dependencies
+        # runtime:matplotlib + numpy(AGENTS.md 鐵則)
+        # test-only:pytest(test_palette.py 頂端 unconditional import,
+        # 不算 runtime 相依;與 dev-tools 用 playwright 同性質)
         run: |
           python -m pip install --upgrade pip
-          pip install matplotlib numpy
+          pip install matplotlib numpy pytest
 
       - name: Run test_palette.py (80 tests)
         run: python3 skill/tests/test_palette.py
