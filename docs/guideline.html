@@ -1640,6 +1640,52 @@ footer ul{list-style:none;}
     </div>
   </section>
 
+  <!-- ============== Modifier · 不確定性視覺化 ============== -->
+  <section id="chM1" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">M1 · MODIFIER</span>
+      <h2>不確定性視覺化</h2>
+      <div class="chapter-en">Uncertainty Visualization Modifier</div>
+    </div>
+
+    <p class="lead-para">
+      當資料含估計值 + 區間(預測區間、信賴區間、抽樣 CI、對數空間 RR/OR/HR)時,套用本指引的不確定性 <strong>modifier 規範</strong>。本規範套在既有 Pattern A/B/D 上,不創新獨立 pattern。
+    </p>
+
+    <p>對應 RFC:<code>docs/rfcs/2026-06-01-uncertainty.md</code>(2026-06-09 採納為 Active)。完整 13 條規則、程式碼範例、Don't/Do 表見 <code>skill/references/M1-uncertainty-modifier.md</code>。</p>
+
+    <h3>兩種主要視覺形式</h3>
+
+    <table class="matrix">
+      <thead>
+        <tr><th>形式</th><th>適用情境</th><th>規則重點</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>漸層填充帶</strong></td>
+          <td>時序預測、CI 帶、歷史 baseline 比較</td>
+          <td>主色淺版(<code>PRIMARY_LIGHT</code> <code>#B4C9B1</code>)+ alpha 0.20-0.40。50% CI 內層 alpha 0.40,95% CI 外層 alpha 0.20。預測段切換虛線(<code>dashes=[6,3]</code>),觀測段保持實線。預測起點加垂直 annotation。CI 帶<strong>只在預測段顯示</strong>,觀測段不畫帶。</td>
+        </tr>
+        <tr>
+          <td><strong>Error bar</strong></td>
+          <td>少量類別(&lt; 6)點估計 + 區間</td>
+          <td>顏色用 <code>PRIMARY_DARKER</code> <code>#374C34</code>(<strong>不用中性灰</strong>,與 bar 主色區分不夠明顯)。matplotlib <code>capsize=4</code> 建議值,cap 寬視覺上 20-50% bar width。<span class="warn">對數空間估計(RR/OR/HR)的 CI 不可強制對稱</span> ── 強制對稱會把「下限 1.4 不跨過 1」變成「下限 0.95 跨過 1」,結論完全相反。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>觸發條件(AI agent 與作者)</h3>
+
+    <ul>
+      <li>資料含 <code>upper_ci</code> / <code>lower_ci</code> 欄位或 <code>se</code> / <code>std_err</code> 欄位</li>
+      <li>分析輸出含「點估計 + 信賴區間」(典型 R/Python 統計模型 output)</li>
+      <li>模型有未來時間點預測(forecast vs observed)</li>
+      <li>使用者明確要求「畫出 95% CI」「加上預測區間」</li>
+    </ul>
+
+    <p style="color:var(--n-600);font-size:13px;">範例 PNG:<code>skill/assets/examples/m1a-uncertainty-trailing-band.png</code>(時序預測)與 <code>m1b-uncertainty-errorbar-asymmetric.png</code>(error bar 不對稱)</p>
+  </section>
+
   <!-- ============== Ch.10 無障礙 ============== -->
   <section id="ch10" class="chapter">
     <div class="chapter-head">

@@ -26,7 +26,8 @@ When asked to create a chart, follow this order:
 2. **Pick a combination pattern** based on whether there's a focus object AND whether series are ordinal → §2
 3. **Apply colors in the prescribed priority order** (green → blue → yellow → neutral) → §1
 4. **Apply proportions and styling** specific to that chart type → §4
-5. **Verify accessibility** (contrast, color blindness, direct labels) → §6
+5. **If data carries estimates with intervals** (predictions, sampling CIs, asymmetric ratios) → apply uncertainty modifier → §4.6
+6. **Verify accessibility** (contrast, color blindness, direct labels) → §6
 
 ## 1. Color System
 
@@ -296,6 +297,19 @@ Otherwise use horizontal 100% stacked bar. Requirements when used:
 - Sort slices largest → smallest, clockwise from 12 o'clock
 - Use categorical palette in order (don't pick "pretty" colors)
 
+### 4.6 Uncertainty Modifier (RFC 2026-06-01)
+
+When data carries estimates with intervals (predictions with 50/95% CI, sampling estimates, log-space ratios), **apply the uncertainty modifier on top of existing Pattern A/B/D**. Do NOT create a separate "uncertainty pattern".
+
+Two main visual forms:
+
+- **Gradient fill band** for **time-series + forecasts**. Use the series' light shade (e.g. `PRIMARY_LIGHT` `#B4C9B1` at alpha 0.30 for the 95% CI; alpha 0.40 inner for 50% CI). Forecast segment uses dashed point-estimate line (`dashes=[6,3]`) + vertical annotation marking the forecast start. Past observations remain solid line, NO band on observed segment.
+- **Error bars** for **few-category point estimates** (< 6 groups). Bar uses series primary; error bar uses `PRIMARY_DARKER` `#374C34` (NOT neutral grey — visually indistinguishable from bar). matplotlib `capsize=4` recommended; cap width visually 20-50% of bar width.
+
+**MUST**: For asymmetric CIs (log-space estimates like RR/OR/HR), pass upper and lower bounds **separately** (`yerr=[lower_dist, upper_dist]`). NEVER force-symmetrize — doing so can flip a significant result (lower bound 1.4 → 0.95, crossing the null line of 1.0).
+
+Full rules, code examples, and the don't/do table: `references/M1-uncertainty-modifier.md`.
+
 ## 5. Typography
 
 Sizes (for charts):
@@ -484,6 +498,7 @@ When working with a specific chart type, **read the corresponding reference file
 | Population pyramid | `references/08-pyramid-chart.md` | age × gender comparison |
 | Choropleth / heatmap | `references/09-choropleth-map.md` | geographic spread, time × region matrices |
 | **Monochrome usage** | `references/10-monochrome-usage.md` | **ordinal data (severity, age, doses, waves) — when categories have natural order** |
+| **Uncertainty modifier** | `references/M1-uncertainty-modifier.md` | **data carries estimates with intervals — predictions, sampling CIs, asymmetric ratios (RR/OR/HR)** |
 
 Each reference includes: when to use / when NOT to use; specific styling rules; key per-chart pitfalls; concise Python code examples; and named PNG examples in `assets/examples/`.
 

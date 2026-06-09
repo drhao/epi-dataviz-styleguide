@@ -177,6 +177,16 @@ ax.plot(weeks, this_year, color=PRIMARY_DARK, linewidth=3,
 - `02b-line-multi-metric.png` — 多指標監測（色 + 形狀雙重編碼）
 - `02c-line-year-over-year.png` — 同期比較含歷史範圍
 
+## 相關規範
+
+折線圖加上 **預測區間 / 信賴區間** 時,套用 `M1-uncertainty-modifier.md`(modifier 規範):
+- 漸層填充帶(50%/95% 兩層)疊在點估計線上
+- 預測段切換虛線(`dashes=[6,3]`),觀測段保持實線
+- 預測起點加垂直 annotation line 標示
+- Rt、再生數等估計值,Y 軸可從合理 lower bound 起算(caption 註明)
+
+範例:`m1a-uncertainty-trailing-band.png`
+
 ## 常見錯誤
 
 | ✗ 錯誤 | ✓ 正確 |

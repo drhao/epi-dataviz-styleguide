@@ -122,6 +122,15 @@ ax.plot(x, dose2, color=LINE_COLORS["blue"], linewidth=2.5)
 - `03a-area-cumulative.png` — 單序列累計覆蓋率（含目標線）
 - `03b-area-multi-series.png` — 疫苗 1/2/3 劑多序列疊加
 
+## 相關規範
+
+區域圖也常用於呈現 **不確定性區間**(信賴區間 / 預測區間),但兩者意義不同:
+
+- **資料 area**(本檔規範):accumulated 數值或多序列疊加,**填色實體、邊線清晰**,讀者讀的是區域大小 = 量值
+- **uncertainty area**(`M1-uncertainty-modifier.md`):點估計線上下的 CI 區間,**淺色 + 高 alpha 透明、無邊線**,讀者讀的是「真實值有 X% 機率落在帶內」
+
+兩種視覺刻意拉開差異,避免讀者把 uncertainty 帶誤讀為「資料數量」。範例:`m1a-uncertainty-trailing-band.png`
+
 ## 常見錯誤
 
 | ✗ 錯誤 | ✓ 正確 |

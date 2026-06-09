@@ -223,6 +223,31 @@ CHECKS = [
         description="維護者聯絡資訊應在所有面向使用者的文件出現",
     ),
     Check(
+        name="不確定性視覺化 modifier(M1)",
+        keywords=[
+            "M1-uncertainty-modifier",
+            "uncertainty modifier",
+            "不確定性視覺化",
+            "預測區間",
+            "PRIMARY_LIGHT, alpha",  # 漸層帶實作 signature
+        ],
+        expected_in=[
+            "skill/SKILL.md",
+            "skill/references/M1-uncertainty-modifier.md",
+            "skill/references/02-line-chart.md",
+            "skill/references/03-area-chart.md",
+            "skill/references/01-bar-chart.md",
+            "skill/references/06-scatter-chart.md",
+            "skill/scripts/generate_examples.py",
+            "CHANGELOG.md",
+        ],
+        description=(
+            "M1 不確定性視覺化 modifier(RFC 2026-06-01,2026-06-09 採納為 Active)"
+            "規範本身在 M1-uncertainty-modifier.md,SKILL.md decision tree 有對應分支,"
+            "01/02/03/06 references 應有 cross-link 段。"
+        ),
+    ),
+    Check(
         name="重症在底（單色堆疊原則）",
         # SKILL.md 用英文 "darkest color at the base"
         keywords=[

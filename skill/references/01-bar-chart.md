@@ -159,6 +159,16 @@ ax.plot(days, ma, color=PRIMARY_DARKER, linewidth=2.5, label="7 日移動平均(
 - `01b-bar-daily-with-ma.png` — 每日新增 + 7 日移動平均
 - `01c-bar-horizontal-ranking.png` — 水平排名長條（含強調）
 
+## 相關規範
+
+直條圖配 **error bar**(各類別點估計 + 95% CI)時,套用 `M1-uncertainty-modifier.md` 規則 9-13:
+
+- 適用情境:類別 < 6 個、各類別有點估計 + 區間(例:各年齡組重症率、各疫苗保護力)
+- error bar 顏色用 `PRIMARY_DARKER` `#374C34`(**不要用中性灰**,與 bar 主色區分不夠)
+- 對數空間估計(RR/OR/HR)**不可強制對稱**,上下臂分別計算
+
+範例:`m1b-uncertainty-errorbar-asymmetric.png`
+
 ## 常見錯誤
 
 | ✗ 錯誤 | ✓ 正確 |

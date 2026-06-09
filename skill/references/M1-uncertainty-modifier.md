@@ -1,17 +1,15 @@
 ---
-status: draft
+status: active
 rfc: 2026-06-01-uncertainty
 since: 2026-06-09
+promoted: 2026-06-09
 ---
 
 # M1 · 不確定性視覺化 Modifier
 
-> **🚧 Pilot 試行中 — 規範草案**
+> 對應 RFC:[2026-06-01](../../docs/rfcs/2026-06-01-uncertainty.md)
 >
-> 本規範處於 Pilot 試行階段,等待實際使用回饋。
-> - AI agent 在 Pilot 期間 **不主動套用** 本規範,僅在使用者明確要求(例:「畫出 95% CI」、「加上預測區間」)時依本規範實作
-> - 完整提案、設計理由、Regression check 見 [RFC 2026-06-01](../../docs/rfcs/2026-06-01-uncertainty.md)
-> - 進入 Active 後本框會移除
+> **本規範為 modifier(修飾性規範)**,套在既有 Pattern A/B/D 上。AI agent 在偵測到資料含「估計值 + 區間」「預測區間」「抽樣 CI」時,應依本規範實作。
 
 ## 定位
 
@@ -190,24 +188,9 @@ datasets: [
 
 ## 範例圖
 
-預生成範例圖(Pilot 階段)位於 `skill/assets/examples/_drafts/`:
+預生成範例圖位於 `skill/assets/examples/`:
 
-- `m1-uncertainty-A-trailing-band.png` — 時序預測(類流感就診人次 + 4 週預測區間)
-- `m1-uncertainty-B-errorbar-asymmetric.png` — 各年齡組重症率(error bar + 不對稱 95% CI)
+- `m1a-uncertainty-trailing-band.png` — 時序預測(類流感就診人次 + 4 週預測區間,50% / 95% 兩層帶)
+- `m1b-uncertainty-errorbar-asymmetric.png` — 各年齡組重症率(error bar + 不對稱 95% CI)
 
-生成腳本:`skill/assets/examples/_drafts/m1_uncertainty_examples.py`
-
-正式採納(進入 Active)後,範例會移至 `skill/assets/examples/`(主目錄)。
-
----
-
-## Pilot 階段 ── 收集回饋
-
-試行期間若發現以下情況,請反映回 RFC 討論:
-
-- 規則寫得過嚴 / 過寬,實際使用受阻
-- 漏掉的常見情境(本指引未涵蓋的 use case)
-- 與既有 patterns 衝突
-- AI agent 在生成時對規則的詮釋分歧
-
-回饋方式:在 `docs/rfcs/2026-06-01-uncertainty.md` 末端加 `## Pilot feedback` 段記錄。
+生成函式:`skill/scripts/generate_examples.py` 內的 `uncertainty_modifier_examples()`

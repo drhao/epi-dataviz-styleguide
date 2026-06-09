@@ -111,13 +111,19 @@
 - `docs/guideline.html` Chapter 11 新增「方法 C:使用預生成樣板」段落
 - `README.md`、`docs/index.html`、`skill/SKILL.md` 同步更新工具支援指引
 
-### Pilot · 試行中
+### Added · 新增(規範)
 
-- **不確定性視覺化 modifier** ── [RFC 2026-06-01](docs/rfcs/2026-06-01-uncertainty.md)
-  - 對應 reference:`skill/references/M1-uncertainty-modifier.md`(`status: draft`)
-  - Pilot 階段範例:`skill/assets/examples/_drafts/m1_uncertainty_examples.py`
-  - **SKILL.md decision tree 未更新** ── AI agent 不主動套用,僅使用者明確要求時依本規範實作
-  - 規則重點:漸層帶(時序預測)+ error bar(少量類別,主色更深版,規則 13 強制不對稱 CI)
+- **不確定性視覺化 modifier(M1)** ── [RFC 2026-06-01](docs/rfcs/2026-06-01-uncertainty.md),**2026-06-09 採納為 Active**
+  - 新規範 `skill/references/M1-uncertainty-modifier.md`(13 條規則 + 程式碼範例 + Don't/Do 表)
+  - 兩種主要視覺形式:
+    - **漸層填充帶**(時序預測、CI 帶):`PRIMARY_LIGHT` `#B4C9B1` + alpha 0.20-0.40;50% 內層 + 95% 外層;預測段虛線、觀測段實線;預測起點 annotation
+    - **Error bar**(少量類別 < 6):`PRIMARY_DARKER` `#374C34`(不用中性灰);`capsize=4`;**規則 13 強制 ── 對數空間估計(RR/OR/HR)CI 不可強制對稱**
+  - 定位為 **modifier**,套在既有 Pattern A/B/D 上,**不創新獨立 pattern**
+  - `SKILL.md` Quick Decision Tree 新增 step 5(uncertainty 偵測)、§4.6 新章節、Reference Files 表新增 M1 條目
+  - 既有 references 補 cross-link:`01-bar-chart.md` / `02-line-chart.md` / `03-area-chart.md` / `06-scatter-chart.md`
+  - 新增 2 張範例 PNG(透過 `generate_examples.py`):`m1a-uncertainty-trailing-band.png`、`m1b-uncertainty-errorbar-asymmetric.png`
+  - `docs/guideline.{md,html}` 各加章節介紹
+  - 走完完整 RFC-lite framework:Draft v1 → v2 → v3(視覺對照定稿)→ Pilot → Active 同日完成(無實作疑慮)
 
 ### Added · 新增(governance)
 

@@ -2,25 +2,22 @@
 
 本目錄存放 **Pilot 階段** 的範例圖。對應的規範還在試行,**不視為 reference 等級的官方範例**。
 
-## 對應規範
+## 目前狀態
 
-| 範例 PNG | 所屬 RFC | Pilot reference |
-|---|---|---|
-| `m1-uncertainty-*.png` | [2026-06-01](../../../../docs/rfcs/2026-06-01-uncertainty.md) | [`skill/references/M1-uncertainty-modifier.md`](../../../references/M1-uncertainty-modifier.md) |
+**目前沒有 Pilot 試行中的規範。**
 
-## 生成與重生
+過往採納紀錄:
 
-範例由本目錄內的 `*.py` 腳本生成。色票若變動或規範修訂,重跑對應腳本即同步:
+| 範例 | 對應 RFC | 採納日期 | 移至 |
+|---|---|---|---|
+| `m1*-uncertainty-*.png` | [2026-06-01](../../../../docs/rfcs/2026-06-01-uncertainty.md) | 2026-06-09 | `skill/assets/examples/` 主目錄 |
 
-```bash
-# 從 repo 根目錄
-python3 skill/assets/examples/_drafts/m1_uncertainty_examples.py
-```
+## 規則(下次 Pilot 啟動時參考)
 
-## 進入 Active 後
+進入 Pilot 階段時:
+- 對應 reference 加 frontmatter `status: draft` + `rfc: YYYY-MM-NN-name`
+- 範例 PNG 命名 `<rfc-id>-<letter>-<name>.png` 或類似 modifier 編號(`m1a`、`m1b`)
+- 生成腳本可暫放本目錄,但採納為 Active 後**移至** `skill/scripts/generate_examples.py` 整合進主例集
+- 主目錄範例與 SKILL.md decision tree 在 **Active 後** 才更新,Pilot 期間刻意不動,避免 AI agent 把 draft 規範當成 active
 
-當 Pilot reference 升級為 Active 狀態(走完 L1 → L2 → L3),對應 PNG 會 **移至** `skill/assets/examples/`(主目錄),本目錄移除該檔。生成腳本也應隨之搬到 `skill/scripts/generate_examples.py` 內,作為主要範例集的一部分。
-
-## 為何分離
-
-主目錄的 `skill/assets/examples/*.png` 是 **規範權威範例**:SKILL.md decision tree 引用、AI agent 模仿、跨機關採用時的視覺基準。Pilot 階段的範例還可能因 reviewer feedback 而調整實作細節,放主目錄會誤導 AI agent 與後續使用者。
+完整流程見 `CONTRIBUTING.md` 的「規範新增的 RFC-lite 流程」段。

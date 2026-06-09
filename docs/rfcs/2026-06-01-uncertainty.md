@@ -2,7 +2,7 @@
 
 - **作者**: Dr. Hao
 - **提案日期**: 2026-06-09
-- **狀態**: Draft(reviewer v3 ── 三個視覺對照問題已 resolved)
+- **狀態**: **Active**(2026-06-09 採納)
 - **目標版本**: v1.1(待 Pilot 試行後決定)
 
 ## Context · 為什麼需要這個規範
@@ -263,17 +263,27 @@ datasets: [
 
 ## Decision · 決策狀態
 
-- [x] **Draft**   ── 草案 v3 完成(v1 + v2 + v3 reviewer feedback 皆已 incorporate;規則 11-13 經視覺對照定稿)
-- [x] **Pilot**   ── **2026-06-09 進入試行**
-  - `skill/references/M1-uncertainty-modifier.md`(`status: draft`)已建立
-  - `skill/assets/examples/_drafts/` 目錄 + 生成腳本 + README 已建立
-  - `SKILL.md` decision tree **未更新**(AI agent 不主動套用,僅使用者明確要求時依本規範實作)
-  - check_drift.py 的「Pilot 試行中的規範」段會列出 M1-uncertainty-modifier
-  - 維護者本機跑生成腳本可重生範例 PNG(本次 commit 不包含 PNG,因容器缺 CJK 字型)
+- [x] **Draft**   ── 草案 v3 完成(v1 + v2 + v3 reviewer feedback 皆已 incorporate)
+- [x] **Pilot**   ── 2026-06-09 進入試行(同日完成 Promote,因為 framework 試走順利、無實作疑慮)
+- [x] **Active**  ── **2026-06-09 採納**
+  - `skill/references/M1-uncertainty-modifier.md` frontmatter `status: active`,移除 Pilot 警示框
+  - `skill/SKILL.md`:Quick Decision Tree step 5 新增 uncertainty modifier;§4.6 新增完整章節;Reference Files 表新增 M1 條目
+  - 既有 references cross-link:`02-line-chart.md` / `03-area-chart.md`(漸層帶主場)+ `01-bar-chart.md` / `06-scatter-chart.md`(error bar)各加「相關規範」段
+  - `skill/scripts/generate_examples.py` 新增 `uncertainty_modifier_examples()`,輸出 `m1a-uncertainty-trailing-band.png`、`m1b-uncertainty-errorbar-asymmetric.png` 至主目錄
+  - `skill/assets/examples/_drafts/` 清空 m1 腳本,README 改為「目前無 Pilot」狀態
+  - `dev-tools/check_drift.py`:新增「不確定性視覺化 modifier(M1)」CHECK
+  - `docs/guideline.{md,html}` 各加章節介紹(指向 reference)
+  - `CHANGELOG.md` 新增採納紀錄
 - [ ] **Active**  ── Pilot 跑一段時間無問題後升級,走完整 L1→L2→L3
 - [ ] **Withdrawn**
 
 ---
+
+## Pilot feedback
+
+Pilot 期間(2026-06-09 同日)無實作疑慮、無 framework 反饋。三個 reviewer 視覺對照已在 Draft v3 階段定稿(規則 11/12/13),無新疑慮浮現,直接走 Promote。
+
+未來若有實際使用回饋,在此段累加紀錄。
 
 ## Reviewer notes ── 所有問題已 resolved
 

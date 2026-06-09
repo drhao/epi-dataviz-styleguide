@@ -143,6 +143,12 @@ ax.legend(title="人口規模", labelspacing=1.5, borderpad=1)
 - `06a-scatter-correlation.png` — 接種率 vs. 重症率（含趨勢線）
 - `06b-bubble-3rd-dimension.png` — 各縣市三維泡泡圖
 
+## 相關規範
+
+散佈圖各資料點若有 **X 或 Y 軸不確定性**,套用 `M1-uncertainty-modifier.md` 規則 9-13(error bar):
+- 顏色用 `PRIMARY_DARKER` 或該系列主色更深版
+- 對數空間估計(例:RR 對 OR 散佈)不可強制對稱
+
 ## 常見錯誤
 
 | ✗ 錯誤 | ✓ 正確 |
