@@ -342,6 +342,29 @@ CHECKS = [
         ),
     ),
     Check(
+        name="Do/Don't 對照範例庫",
+        keywords=[
+            "dont-vs-do",
+            "generate_dont_vs_do",
+            "視覺對照圖",  # 各 reference cross-link 用語
+        ],
+        expected_in=[
+            "skill/SKILL.md",
+            "skill/scripts/generate_dont_vs_do.py",
+            "skill/assets/examples/dont-vs-do/README.md",
+            "skill/references/01-bar-chart.md",
+            "skill/references/02-line-chart.md",
+            "skill/references/05-pie-chart.md",
+            "skill/references/M2-small-multiples.md",
+            "CHANGELOG.md",
+        ],
+        description=(
+            "Do/Don't 對照範例庫(L2 教學補充)。8 對 ✗/✓ 並排 PNG,"
+            "對應既有規則。SKILL.md 提及目錄、各 reference 的「常見錯誤」"
+            "段補 cross-link、生成腳本 + README + CHANGELOG 紀錄。"
+        ),
+    ),
+    Check(
         name="重症在底（單色堆疊原則）",
         # SKILL.md 用英文 "darkest color at the base"
         keywords=[

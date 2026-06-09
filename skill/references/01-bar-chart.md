@@ -176,7 +176,13 @@ ax.plot(days, ma, color=PRIMARY_DARKER, linewidth=2.5, label="7 日移動平均(
 | ✗ 錯誤 | ✓ 正確 |
 |--------|--------|
 | Y 軸從 90 開始放大差異 | Y 軸從 0 開始 |
-| 每根長條不同顏色 | 全部同色，或僅焦點變色 |
+| 每根長條不同顏色 | 全部同色,或僅焦點變色 |
 | 排名圖未排序 | 由大至小排序 |
 | 縣市比較用絕對數 | 標準化為每 10 萬人口 |
+
+**視覺對照圖**(`skill/assets/examples/dont-vs-do/`):
+
+- `01-truncated-yaxis.png` ── Y 軸從零 vs 從 70 截斷
+- `03-rainbow-bars.png` ── 每根不同色 vs Pattern A 焦點凸顯
+- `08-sort-by-name-vs-value.png` ── 按行政區編號排 vs 按數值大小排
 | 確診長條全部標紅 | 中性色長條 + 紅色標警戒線 |

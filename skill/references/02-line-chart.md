@@ -199,3 +199,9 @@ ax.plot(weeks, this_year, color=PRIMARY_DARK, linewidth=3,
 | 每個資料點都標記 | 只標關鍵點（起終、極值） |
 | 用 tension > 0.5 過度平滑 | 用 0.3–0.35 |
 | 圖例文字塞滿圖表 | 線條末端直接標籤 |
+
+**視覺對照圖**(`skill/assets/examples/dont-vs-do/`):
+
+- `02-red-as-categorical.png` ── 折線都用紅色家族 vs Pattern B 類別配色
+- `06-spaghetti-vs-small-multiples.png` ── 22 條疊一張 spaghetti vs M2 small multiples
+- `07-chartjunk-vs-minimal.png` ── 多餘框線/格線 vs 極簡

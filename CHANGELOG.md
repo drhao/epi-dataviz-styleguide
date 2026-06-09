@@ -111,6 +111,26 @@
 - `docs/guideline.html` Chapter 11 新增「方法 C:使用預生成樣板」段落
 - `README.md`、`docs/index.html`、`skill/SKILL.md` 同步更新工具支援指引
 
+### Added · 新增(教學資源)
+
+- **Do / Don't 對照範例庫** ── `skill/assets/examples/dont-vs-do/`
+  - 8 對 ✗ DON'T / ✓ DO 並排 PNG,對應既有規則的常見誤用:
+    - `01-truncated-yaxis` — Y 軸從零(SKILL §4.4 / 01-bar 規則 1)
+    - `02-red-as-categorical` — 紅色僅警示(SKILL §1.3)
+    - `03-rainbow-bars` — 顏色傳達資訊(01-bar §3)
+    - `04-decorated-pie` — 平面 2D + 直接標籤(05-pie)
+    - `05-too-many-pie-slices` — 改用排序橫條(05-pie 條件使用)
+    - `06-spaghetti-vs-small-multiples` — 多 panel 拆 M2(M2 適用)
+    - `07-chartjunk-vs-minimal` — 移除頂右框 + 僅水平格線(SKILL §4.1.5/4.1.6)
+    - `08-sort-by-name-vs-value` — 排名按數值大小(01-bar 規則 4)
+  - 新增 `skill/scripts/generate_dont_vs_do.py` 獨立生成腳本(色票若變動可重生)
+  - 新增 `skill/assets/examples/dont-vs-do/README.md` 索引與使用情境說明
+  - 既有 references 補 cross-link「視覺對照圖」段:`01-bar-chart.md`、`02-line-chart.md`、`05-pie-chart.md`、`M2-small-multiples.md`
+  - `skill/SKILL.md` Resource files 條目補上 dont-vs-do 描述
+  - `dev-tools/check_drift.py` 新增「Do/Don't 對照範例庫」CHECK
+  - 用途:AI agent review 時的視覺證據、設計師培訓教材、跨機關採用推廣
+  - 走 L2/L3 跨層同步,**不開 RFC**(無新規範語意,純既有規則的視覺化)
+
 ### Added · 新增(規範)
 
 - **Small multiples 版面 modifier(M2)** ── [RFC 2026-06-02](docs/rfcs/2026-06-02-small-multiples.md),**2026-06-09 採納為 Active**

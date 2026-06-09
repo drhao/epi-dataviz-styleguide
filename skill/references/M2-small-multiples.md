@@ -174,6 +174,10 @@ for ax, (year, data) in zip(axes.flat, years_data.items()):
 | 3 panel 預設拆 small multiples | 通常同圖比較;**只有複雜度高才拆 2-3 panel** |
 | 跨年度 3 年用 small multiples | < 4 年用 `02c-line-year-over-year` 風格(疊一張) |
 
+**視覺對照圖**(`skill/assets/examples/dont-vs-do/`):
+
+- `06-spaghetti-vs-small-multiples.png` ── 22 條折線疊一張 vs 4×6 small multiples
+
 ---
 
 ## 範例圖

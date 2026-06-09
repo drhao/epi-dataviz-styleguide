@@ -566,7 +566,8 @@ Resource files in the skill:
 - `scripts/generate_sample_data.py` — produces the 12 sample CSV datasets
 - `scripts/quickstart_with_sample_data.py` — runnable demo: reads sample-data, applies guideline
 - `tests/test_palette.py` — 80 automated tests (palette correctness + sample-data integrity + R/Quarto/Streamlit cross-file consistency)
-- `assets/examples/*.png` — pre-generated reference images (19 canonical examples)
+- `assets/examples/*.png` — pre-generated reference images (canonical "DO" examples used across reference files)
+- `assets/examples/dont-vs-do/*.png` — **8 side-by-side ✗ DON'T / ✓ DO comparisons** for the most common rule violations (truncated Y-axis, red-as-categorical, rainbow bars, 3D pie, too-many-slices, spaghetti-lines vs M2, chartjunk, alphabetical-sort vs value-sort). Use when explaining "why not X" during review or training.
 - `assets/examples/quickstart/*.png` — examples produced by reading sample-data
 - `assets/sample-data/*.csv` — 12 realistic-but-fictional datasets covering all chart types
 - `assets/sample-data/README.md` — data dictionary explaining every column

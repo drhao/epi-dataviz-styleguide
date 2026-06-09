@@ -147,5 +147,10 @@ ax.text(0, -0.18, "完整接種率", ha="center", va="center",
 | 切片差異 < 5% | 改用水平長條（人眼難辨） |
 | 純依賴圖例 | 直接標籤（類別 + 百分比） |
 | 兩個圓餅並列比較 | 改用 100% 堆疊長條 |
+
+**視覺對照圖**(`skill/assets/examples/dont-vs-do/`):
+
+- `04-decorated-pie.png` ── 3D / 陰影 / explode / 鮮豔色 vs 平面 2D + Pattern B + 直接標籤
+- `05-too-many-pie-slices.png` ── 圓餅 9 切片 vs 排序橫條由大到小
 | 切片用彩虹色 | 依本指引類別配色順序 |
 | 甜甜圈無中心數字 | 改用圓餅，或加上中心數字 |
