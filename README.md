@@ -4,7 +4,7 @@
 > 疫情資料分析、流行病學報告、儀表板與對外公告的視覺化標準
 
 [![Version](https://img.shields.io/badge/version-1.0-739A6D)](./CHANGELOG.md)
-[![Tests](https://img.shields.io/badge/tests-72%20passing-739A6D)](./skill/tests/)
+[![Tests](https://img.shields.io/badge/tests-80%20passing-739A6D)](./skill/tests/)
 [![License](https://img.shields.io/badge/license-Internal%20Use-A2ABA0)](./LICENSE)
 [![Pages](https://img.shields.io/badge/site-online-739A6D)](https://drhao.github.io/epi-dataviz-styleguide/)
 
@@ -69,7 +69,7 @@ epi-dataviz-styleguide/
 │   ├── SKILL-README.md
 │   ├── references/        ← 10 種圖表的詳細規範
 │   ├── scripts/           ← Python / R 色票模組 + 範例腳本
-│   ├── tests/             ← 72 個自動化測試
+│   ├── tests/             ← 80 個自動化測試
 │   └── assets/
 │       ├── examples/      ← 預生成範例 PNG
 │       └── sample-data/   ← 12 個範例 CSV 資料集
@@ -209,7 +209,7 @@ pip install pytest
 pytest test_palette.py -v
 ```
 
-72 個測試涵蓋 8 個面向：HEX 格式、色彩完整性、色階順序、WCAG 對比度、色覺障礙、移動平均、樣式套用、跨檔案一致性、範例資料完整性。
+80 個測試涵蓋 8 個面向：HEX 格式、色彩完整性、色階順序、WCAG 對比度、色覺障礙、移動平均、樣式套用、跨檔案一致性（含 R／Quarto／Streamlit 交付檔值級比對）、範例資料完整性。
 
 修改色票時 **務必先跑測試**，避免破壞核心承諾。
 
