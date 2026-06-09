@@ -364,7 +364,8 @@ section { margin-bottom: 80px; }
   font-size: 14px;
   color: var(--n-700);
   margin-bottom: 20px;
-  flex: 1;
+  /* 固定描述區高度,讓 3 張卡的「⚡ 5 分鐘入門」與下方清單置頂對齊 */
+  min-height: calc(1.7em * 2);
 }
 .audience-card ul {
   list-style: none;
