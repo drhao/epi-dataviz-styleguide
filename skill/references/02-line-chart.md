@@ -179,6 +179,8 @@ ax.plot(weeks, this_year, color=PRIMARY_DARK, linewidth=3,
 
 ## 相關規範
 
+折線圖**多 panel 並排比較**(22 縣市、各年齡組、5-6 年以上跨年同期等)時,套用 `M2-small-multiples.md`:統一 Y/X scale、共用圖例與軸標、panel 標題左上、焦點 panel 用 PRIMARY 非焦點 NEUTRAL.300。範例:`m2a-small-multiples-cities.png`、`m2b-small-multiples-yearly-with-uncertainty.png`。**跨年度同期比較**:< 4 年用本檔 02c 風格(疊一張 + 灰色歷史範圍),≥ 5-6 年用 M2。
+
 折線圖加上 **預測區間 / 信賴區間** 時,套用 `M1-uncertainty-modifier.md`(modifier 規範):
 - 漸層填充帶(50%/95% 兩層)疊在點估計線上
 - 預測段切換虛線(`dashes=[6,3]`),觀測段保持實線

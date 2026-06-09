@@ -2,7 +2,7 @@
 
 - **作者**: Dr. Hao
 - **提案日期**: 2026-06-09
-- **狀態**: Draft v2(規則 6 / Open Q3 / Open Q4 已 resolve;規則 7 待視覺對照)
+- **狀態**: **Active**(2026-06-09 採納)
 - **目標版本**: v1.2(待 review 確認)
 - **關聯 RFC**: [2026-06-01 不確定性視覺化](./2026-06-01-uncertainty.md)(M1 留下了 small multiples 接口)
 
@@ -71,7 +71,7 @@
 | 17-22 | 4×6 或 5×5(留空缺) | 22 縣市典型 |
 | > 25 | **強制建議重新分組** | 6 區域、年齡 0-19/20-59/60+ 等 |
 
-**7. 焦點 panel 機制**(Pattern A 兼容):某個 panel 是焦點(本機關 / 重點縣市 / 本年度)── 該 panel 用主色 `#739A6D`,其餘 panel 用 `NEUTRAL.500`(`#7A8778`)。焦點 panel 的標題也用主色強調
+**7. 焦點 panel 機制**(Pattern A 兼容):某個 panel 是焦點(本機關 / 重點縣市 / 本年度)── 該 panel 用主色 `PRIMARY` `#739A6D`,**非焦點 panel 用 NEUTRAL.300 `#CACFC9` 為預設**(視覺對照定稿:N300 讓焦點清楚跳出,非焦點作為位置參考)。若各 panel 內波形細節重要(讀者需從非焦點 panel 讀到有意義資訊),改用 **NEUTRAL.400 `#A2ABA0`** 拉高可讀性。焦點 panel 的標題也用主色強調,非焦點 panel 標題用 `NEUTRAL.700` `#444C43`
 
 **8. Panel 邊框**:輕邊框 `NEUTRAL.200`(`#E4E7E4`)1px 區隔每 panel,不用厚框、不用深色;頂右框沿用既有規範可移除(panel 內仍保留底軸與左軸)
 
@@ -106,7 +106,8 @@ focus_city = "臺北市"
 
 for ax, (city, data) in zip(axes.flat, cities):
     is_focus = (city == focus_city)
-    color = PRIMARY if is_focus else NEUTRAL["500"]  # 規則 7
+    # 規則 7:焦點 PRIMARY,非焦點 NEUTRAL.300(可讀性需求高改 .400)
+    color = PRIMARY if is_focus else NEUTRAL["300"]
     ax.plot(data["week"], data["rate"],
             color=color, linewidth=2.0 if is_focus else 1.5)
     ax.set_title(city, loc="left",                    # 規則 5
@@ -142,7 +143,7 @@ years_data = {
 
 for ax, (year, data) in zip(axes.flat, years_data.items()):
     is_current = (year == "2025")
-    color = PRIMARY_DARKER if is_current else NEUTRAL["500"]
+    color = PRIMARY if is_current else NEUTRAL["300"]  # 規則 7
     if is_current and "ci_low" in data:  # M1 規則:預測段 CI 帶
         ax.fill_between(data["week"], data["ci_low"], data["ci_high"],
                         color=PRIMARY_LIGHT, alpha=0.30)
@@ -280,24 +281,33 @@ for ax, (year, data) in zip(axes.flat, years_data.items()):
 
 ## Decision · 決策狀態
 
-- [x] **Draft v1**   ── 待 reviewer review
-- [ ] **Pilot**   ── reference + draft 範例 + SKILL.md 不更新
-- [ ] **Active**  ── L1 → L2 → L3 同步,SKILL.md decision tree 更新
-- [ ] **Withdrawn**
+- [x] **Draft**   ── v1 → v2(grid 表 / Open Q3 / Open Q4 resolved)→ v3(規則 7 視覺對照定稿)
+- [x] **Pilot**   ── 2026-06-09 啟動(同日完成 Promote,因為框架已 battle-tested、規則皆視覺對照定稿、無實作疑慮)
+- [x] **Active**  ── **2026-06-09 採納**
+  - `skill/references/M2-small-multiples.md`(`status: active`)
+  - 既有 references cross-link:`02-line-chart.md` / `03-area-chart.md`(主場)、`01-bar-chart.md`、`M1-uncertainty-modifier.md` 規則 1 邊界補一句
+  - `skill/SKILL.md`:Quick Decision Tree step 7 新增 small multiples;§4.7 新章節;Reference Files 表新增 M2
+  - `skill/scripts/generate_examples.py` 新增 `small_multiples_examples()`,輸出 `m2a-small-multiples-cities.png`、`m2b-small-multiples-yearly-with-uncertainty.png`
+  - `dev-tools/check_drift.py`:新增「Small multiples layout modifier(M2)」CHECK
+  - `docs/guideline.{md,html}` 各加章節介紹
 
 ---
 
-## Reviewer notes ── v2 已 resolve
+## Pilot feedback
 
-- ✓ **#R1 規則 6 grid 推薦表**:可接受,但「2-3 panel」從「不適用」改為「不優先建議,複雜場景可用」(用戶 input)
-- ✓ **#R3 跨年度同期門檻**:5-6 年以上(用戶 input)
-- ✓ **#R4 02c 處置**:兩者並存(用戶 input)
+Pilot 啟動同日完成 Promote。所有 reviewer 問題在 Draft 階段已透過視覺對照解決(規則 6 / 7 + Open Q3 / Q4),無新疑慮浮現。
 
-## Reviewer notes ── v2 待確認
+未來實際使用回饋在此段累加紀錄。
 
-- **#R2 規則 7 焦點 panel 顏色**:待視覺對照後決定。三個候選:
-  - A. `PRIMARY` `#739A6D`(原 v1 草案)
-  - B. `PRIMARY_DARK` `#5D7F58`(折線專用加深版,M1 規則 11 偏好)
-  - C. `PRIMARY_DARKER` `#374C34`(M1 error bar 採用的)
-  
-  視覺對照 PNG 在 reviewer 看完後決定,選定後寫入規則 7 並進 Pilot。
+## Reviewer notes ── 所有問題已 resolved
+
+### v2 resolved
+- ✓ **#R1 規則 6 grid 推薦表**:「2-3 panel」從「不適用」改為「不優先建議,複雜場景可用」
+- ✓ **#R3 跨年度同期門檻**:5-6 年以上才用 M2,< 4 年仍以 02c 風格
+- ✓ **#R4 02c 處置**:兩者並存
+
+### v3 resolved(視覺對照後)
+- ✓ **#R2 規則 7 焦點 panel 配色**:
+  - **焦點 = PRIMARY `#739A6D`**(reviewer 第一次視覺對照後選 A)
+  - **非焦點 = NEUTRAL.300 `#CACFC9`**(reviewer 第二次視覺對照後選 N300,可讀性需求高時改 N400)
+  - 兩階段對照(焦點顏色 + 非焦點淺度)定稿

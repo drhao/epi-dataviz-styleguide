@@ -161,6 +161,8 @@ ax.plot(days, ma, color=PRIMARY_DARKER, linewidth=2.5, label="7 日移動平均(
 
 ## 相關規範
 
+**多 panel 並排排名**(各縣市 Top 5 排名比較、各年度同類別排名)時,套用 `M2-small-multiples.md`:統一 X 軸排名數字、共用 Y 軸標題、焦點 panel(本機關)用 PRIMARY 非焦點 NEUTRAL.300。
+
 直條圖配 **error bar**(各類別點估計 + 95% CI)時,套用 `M1-uncertainty-modifier.md` 規則 9-13:
 
 - 適用情境:類別 < 6 個、各類別有點估計 + 區間(例:各年齡組重症率、各疫苗保護力)

@@ -1686,6 +1686,48 @@ footer ul{list-style:none;}
     <p style="color:var(--n-600);font-size:13px;">範例 PNG:<code>skill/assets/examples/m1a-uncertainty-trailing-band.png</code>(時序預測)與 <code>m1b-uncertainty-errorbar-asymmetric.png</code>(error bar 不對稱)</p>
   </section>
 
+  <!-- ============== Modifier · Small Multiples ============== -->
+  <section id="chM2" class="chapter">
+    <div class="chapter-head">
+      <span class="chapter-num">M2 · MODIFIER</span>
+      <h2>Small Multiples 版面</h2>
+      <div class="chapter-en">Small Multiples Layout Modifier</div>
+    </div>
+
+    <p class="lead-para">
+      當資料需要「同一指標 × 多分類維度」並排比較(22 縣市、各年齡組、5-6 年以上跨年同期等)時,套用 small multiples 版面 modifier。與 M1 相同是 layout modifier,套在既有 chart-type 上,不創新獨立 pattern。
+    </p>
+
+    <p>對應 RFC:<code>docs/rfcs/2026-06-02-small-multiples.md</code>(2026-06-09 採納為 Active)。完整 12 條規則、程式碼範例、Don't/Do 表見 <code>skill/references/M2-small-multiples.md</code>。</p>
+
+    <h3>核心規則重點</h3>
+
+    <table class="matrix">
+      <thead>
+        <tr><th>規則</th><th>內容</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1. 統一 Y/X scale</strong></td><td><code>sharex=True, sharey=True</code> ── 跨 panel 直接比較波形;若 magnitude 差太大需標準化(每 10 萬人發生率等)</td></tr>
+        <tr><td><strong>2. 共用圖例與軸標</strong></td><td>放整體外圍,不在每 panel 重複</td></tr>
+        <tr><td><strong>3. Panel 標題位置</strong></td><td>左上(<code>loc="left"</code>),小於主標題 2 級,色 <code>NEUTRAL.700</code></td></tr>
+        <tr><td><strong>4. Grid 推薦</strong></td><td>4-6 → 2×3;7-9 → 3×3;10-12 → 3×4;13-16 → 4×4;17-22 → 4×6 或 5×5(留空缺);> 25 強制重新分組</td></tr>
+        <tr><td><strong>5. 焦點 panel 配色</strong></td><td>焦點 <code>PRIMARY</code> <code>#739A6D</code>;非焦點預設 <code>NEUTRAL.300</code> <code>#CACFC9</code>;可讀性需求高改 <code>NEUTRAL.400</code> <code>#A2ABA0</code></td></tr>
+        <tr><td><strong>6. 2-3 panel 不優先建議</strong></td><td>通常同圖比較即可,複雜場景(多指標 + 多區間帶)才拆 2-3 panel</td></tr>
+        <tr><td><strong>7. 與 M1 兼容</strong></td><td>每 panel 內可獨立套用 uncertainty 規範(漸層帶、error bar);共用圖例只標一次「95% CI」</td></tr>
+        <tr><td><strong>8. 跨年度同期門檻</strong></td><td>&lt; 4 年用 02c 風格(疊一張 + 灰色歷史範圍);≥ 5-6 年用 M2</td></tr>
+      </tbody>
+    </table>
+
+    <h3>適用 / 不適用</h3>
+
+    <ul>
+      <li><strong>適用</strong>:多 panels(2-25)同一指標不同分類維度;觀察各別 panel 的形狀;M1 的 multi-series CI fallback</li>
+      <li><strong>不適用</strong>:各 panel X/Y 範圍差異極大且無法標準化;強調整體 vs 子集(用 Pattern A);跨類別組成比例(用堆疊圖)</li>
+    </ul>
+
+    <p style="color:var(--n-600);font-size:13px;">範例 PNG:<code>skill/assets/examples/m2a-small-multiples-cities.png</code>(22 縣市並排)與 <code>m2b-small-multiples-yearly-with-uncertainty.png</code>(跨年度 5 年 + M1 銜接示範)</p>
+  </section>
+
   <!-- ============== Ch.10 無障礙 ============== -->
   <section id="ch10" class="chapter">
     <div class="chapter-head">

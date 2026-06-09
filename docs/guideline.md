@@ -348,6 +348,23 @@ def trailing_ma(data, window=7):
 
 完整 13 條規則、程式碼範例、Don't/Do 表見 `skill/references/M1-uncertainty-modifier.md`。
 
+### 9.6 Small Multiples 版面（modifier）
+
+當資料需要「同一指標 × 多分類維度」並排比較時(22 縣市、各年齡組、5-6 年以上跨年同期等),套用 small multiples 版面 modifier(RFC 2026-06-02,2026-06-09 採納)。
+
+**核心 12 規則重點**:
+
+1. **統一 Y / X scale**:`sharex=True, sharey=True`,跨 panel 直接比較波形
+2. **共用圖例與軸標**:放整體外圍,不在每 panel 重複
+3. **Panel 標題左上**:小於主標題 2 級,色 `NEUTRAL.700`
+4. **Grid 推薦表**:4-6 → 2×3;7-9 → 3×3;10-12 → 3×4;13-16 → 4×4;17-22 → 4×6 或 5×5;> 25 強制重新分組
+5. **焦點 panel 機制**(Pattern A 兼容):焦點用 `PRIMARY` `#739A6D`,非焦點預設 `NEUTRAL.300` `#CACFC9`(可讀性需求高改 `NEUTRAL.400` `#A2ABA0`)
+6. **2-3 panel 不優先建議**:複雜場景才拆,通常同圖比較即可
+7. **與 M1 兼容**:每 panel 內可獨立套用 uncertainty 規範
+8. **跨年度同期門檻**:< 4 年用 02c 風格(疊一張),≥ 5-6 年用 M2
+
+完整 12 條規則、程式碼範例、Don't/Do 表見 `skill/references/M2-small-multiples.md`。
+
 ---
 
 ## 10. Do & Don't

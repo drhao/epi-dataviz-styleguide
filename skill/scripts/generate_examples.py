@@ -674,6 +674,133 @@ def uncertainty_modifier_examples():
     save(fig, "m1b-uncertainty-errorbar-asymmetric")
 
 
+# ============== M2. Small multiples 版面 modifier ==============
+def small_multiples_examples():
+    """RFC 2026-06-02 採納範例。
+    A: 22 縣市並排(use case 1);B: 跨年度同期 + M1 兼容(use case 3 + 5)。
+    詳細規範見 references/M2-small-multiples.md。"""
+
+    # ----- A. 22 縣市每週發生率並排 -----
+    cities = [
+        "臺北市", "新北市", "桃園市", "臺中市", "臺南市", "高雄市",
+        "基隆市", "新竹市", "嘉義市", "新竹縣", "苗栗縣", "彰化縣",
+        "南投縣", "雲林縣", "嘉義縣", "屏東縣", "宜蘭縣", "花蓮縣",
+        "臺東縣", "澎湖縣", "金門縣", "連江縣",
+    ]
+    focus_city = "臺北市"
+    weeks = np.arange(1, 25)
+    np.random.seed(42)
+
+    def gen_city_curve(seed, scale, shift):
+        np.random.seed(seed)
+        base = 100 * np.sin((weeks + shift) * np.pi / 12) + 150
+        return (base * scale + np.random.randn(len(weeks)) * 15).clip(min=0)
+
+    cities_data = {
+        c: gen_city_curve(i, 0.6 + 0.5 * np.random.rand(), i % 6)
+        for i, c in enumerate(cities)
+    }
+
+    fig, axes = plt.subplots(4, 6, figsize=(15, 9),
+                              sharex=True, sharey=True)  # 規則 1+2
+
+    for ax, (city, curve) in zip(axes.flat, cities_data.items()):
+        is_focus = (city == focus_city)
+        # 規則 7:焦點 PRIMARY,非焦點 NEUTRAL.300(預設)
+        color = PRIMARY if is_focus else NEUTRAL["300"]
+        ax.plot(weeks, curve, color=color,
+                linewidth=2.0 if is_focus else 1.5)
+        ax.fill_between(weeks, 0, curve, color=color,
+                        alpha=0.12 if is_focus else 0.06)
+        ax.set_title(city + ("  ★" if is_focus else ""), loc="left",
+                     color=PRIMARY if is_focus else NEUTRAL["700"],
+                     fontsize=10)
+        for s in ["top", "right"]:
+            ax.spines[s].set_visible(False)
+
+    # 隱藏空缺 panel(22 縣市 < 24 = 4×6,後 2 格空)
+    for ax in axes.flat[22:]:
+        ax.set_visible(False)
+
+    # 規則 3+4:共用標題與軸
+    fig.suptitle("各縣市每週發生率(每 10 萬人) ── 22 panel 並排",
+                 x=0.06, y=0.99, ha="left", fontsize=13, fontweight=600)
+    fig.supxlabel("週次", x=0.5, fontsize=10, color=NEUTRAL["600"])
+    fig.supylabel("發生率", x=0.005, fontsize=10, color=NEUTRAL["600"])
+
+    plt.tight_layout(rect=[0.01, 0, 1, 0.96])
+    save(fig, "m2a-small-multiples-cities")
+
+    # ----- B. 跨年度同期 + 2025 預測 CI(M1 + M2 銜接示範)-----
+    years = ["2021", "2022", "2023", "2024", "2025"]
+    focus_year = "2025"  # 焦點:當年(含預測)
+    weeks_b = np.arange(1, 25)
+
+    def gen_year_curve(seed, peak_week, scale=1.0):
+        np.random.seed(seed)
+        x = (weeks_b - peak_week) / 5
+        base = 250 * np.exp(-x ** 2 / 2) * scale + 30
+        return (base + np.random.randn(len(weeks_b)) * 10).clip(min=0)
+
+    years_data = {
+        "2021": (gen_year_curve(1, 10, 0.8), None),
+        "2022": (gen_year_curve(2, 14, 1.2), None),
+        "2023": (gen_year_curve(3, 12, 1.0), None),
+        "2024": (gen_year_curve(4, 11, 0.9), None),
+        # 2025:過去到第 8 週是觀測,9-24 週是預測(含 CI)
+        "2025": None,  # special handling
+    }
+
+    obs_2025 = gen_year_curve(5, 10, 1.1)[:8]
+    forecast_x = np.arange(8, 24)
+    point_est_2025 = 200 * np.exp(-((forecast_x - 10) / 5) ** 2 / 2) + 40
+    se_2025 = np.linspace(10, 60, len(forecast_x))
+    lower_95 = point_est_2025 - se_2025 * 2
+    upper_95 = point_est_2025 + se_2025 * 2
+
+    fig, axes = plt.subplots(2, 3, figsize=(13, 6),
+                              sharex=True, sharey=True)
+
+    for ax, year in zip(axes.flat[:5], years):
+        is_current = (year == focus_year)
+        color = PRIMARY if is_current else NEUTRAL["300"]  # 規則 7
+
+        if year == "2025":
+            # 觀測段
+            ax.plot(weeks_b[:8], obs_2025, color=color, linewidth=2.5)
+            # 預測段 CI 帶(M1 規則 1)
+            ax.fill_between(forecast_x, lower_95, upper_95,
+                            color=PRIMARY_LIGHT, alpha=0.30, label="95% CI")
+            # 預測點估計虛線(M1 規則 5)
+            ax.plot(forecast_x, point_est_2025, color=color,
+                    linewidth=2.5, linestyle=(0, (6, 3)))
+            # 預測起點 annotation
+            ax.axvline(x=8, color=NEUTRAL["400"],
+                       linestyle="--", linewidth=0.8)
+            ax.legend(loc="upper right", fontsize=8)
+        else:
+            curve = years_data[year][0]
+            ax.plot(weeks_b, curve, color=color,
+                    linewidth=2.0 if is_current else 1.5)
+
+        ax.set_title(year + ("  ★ 當年" if is_current else ""), loc="left",
+                     color=PRIMARY if is_current else NEUTRAL["700"],
+                     fontsize=11)
+        for s in ["top", "right"]:
+            ax.spines[s].set_visible(False)
+
+    # 隱藏第 6 個空缺 panel
+    axes.flat[5].set_visible(False)
+
+    fig.suptitle("跨年度同期比較(5 年) ── 2025 為焦點,含預測 95% CI",
+                 x=0.05, y=0.99, ha="left", fontsize=13, fontweight=600)
+    fig.supxlabel("週次", fontsize=10, color=NEUTRAL["600"])
+    fig.supylabel("每週新增", fontsize=10, color=NEUTRAL["600"])
+
+    plt.tight_layout(rect=[0.01, 0, 1, 0.95])
+    save(fig, "m2b-small-multiples-yearly-with-uncertainty")
+
+
 # ============== 主執行 ==============
 def main():
     print(f"輸出目錄: {OUT_DIR}\n")
@@ -688,6 +815,7 @@ def main():
     choropleth_examples()
     monochrome_examples()
     uncertainty_modifier_examples()
+    small_multiples_examples()
     print(f"\n✓ 全部完成。輸出於：{OUT_DIR}")
 
 

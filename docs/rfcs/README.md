@@ -68,6 +68,6 @@ Stage 4 ── 後續迭代
 | 編號 | 標題 | 狀態 | 採納日期 |
 |---|---|---|---|
 | [2026-06-01](./2026-06-01-uncertainty.md) | 不確定性視覺化 | Active | 2026-06-09 |
-| [2026-06-02](./2026-06-02-small-multiples.md) | Small Multiples 版面 modifier | Draft | ── |
+| [2026-06-02](./2026-06-02-small-multiples.md) | Small Multiples 版面 modifier | Active | 2026-06-09 |
 
 採納後請更新本表。

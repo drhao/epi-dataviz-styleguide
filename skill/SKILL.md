@@ -27,7 +27,8 @@ When asked to create a chart, follow this order:
 3. **Apply colors in the prescribed priority order** (green → blue → yellow → neutral) → §1
 4. **Apply proportions and styling** specific to that chart type → §4
 5. **If data carries estimates with intervals** (predictions, sampling CIs, asymmetric ratios) → apply uncertainty modifier → §4.6
-6. **Verify accessibility** (contrast, color blindness, direct labels) → §6
+6. **If multiple panels are needed** (compare same metric across 4+ categorical dimensions like 22 cities, age groups, 5+ years) → apply small multiples layout modifier → §4.7
+7. **Verify accessibility** (contrast, color blindness, direct labels) → §6
 
 ## 1. Color System
 
@@ -310,6 +311,22 @@ Two main visual forms:
 
 Full rules, code examples, and the don't/do table: `references/M1-uncertainty-modifier.md`.
 
+### 4.7 Small Multiples Layout Modifier (RFC 2026-06-02)
+
+When the data requires comparing the **same metric across multiple categorical dimensions** (4+ panels recommended — 22 cities, age groups, 5+ years, etc.), **apply the small multiples layout modifier**. Like M1, this is a modifier, NOT a new pattern.
+
+Core rules:
+
+- **Unified Y and X scales** across all panels (`sharex=True, sharey=True`). Without comparability, small multiples lose their meaning. If magnitudes differ widely, standardize first (e.g. cases per 100k).
+- **Shared legend and axis labels** at the figure level — do NOT repeat in each panel.
+- **Panel title at top-left** (`loc="left"`), 2 sizes smaller than figure title, color `NEUTRAL.700`.
+- **Grid layout recommendation by N panels**: 4-6 → 2×3; 7-9 → 3×3; 10-12 → 3×4; 13-16 → 4×4; 17-22 → 4×6/5×5; > 25 → regroup first.
+- **Focus panel mechanism** (Pattern A compatible): focus panel uses `PRIMARY` `#739A6D`, **non-focus panels default to `NEUTRAL.300` `#CACFC9`** (use `NEUTRAL.400` if readability of non-focus panels matters).
+- **2-3 panels: NOT recommended by default** — typically the same chart can show 2-3 series. Only split when a single chart is too complex.
+- **Compatibility with M1**: each panel can independently apply the uncertainty modifier (gradient bands, error bars). Shared legend means "95% CI" appears once at the figure level.
+
+Full rules (12 total), code examples, and the don't/do table: `references/M2-small-multiples.md`.
+
 ## 5. Typography
 
 Sizes (for charts):
@@ -499,6 +516,7 @@ When working with a specific chart type, **read the corresponding reference file
 | Choropleth / heatmap | `references/09-choropleth-map.md` | geographic spread, time × region matrices |
 | **Monochrome usage** | `references/10-monochrome-usage.md` | **ordinal data (severity, age, doses, waves) — when categories have natural order** |
 | **Uncertainty modifier** | `references/M1-uncertainty-modifier.md` | **data carries estimates with intervals — predictions, sampling CIs, asymmetric ratios (RR/OR/HR)** |
+| **Small multiples modifier** | `references/M2-small-multiples.md` | **comparing same metric across multiple categorical dimensions (22 cities, age groups, 5+ years) — multi-panel layout** |
 
 Each reference includes: when to use / when NOT to use; specific styling rules; key per-chart pitfalls; concise Python code examples; and named PNG examples in `assets/examples/`.
 

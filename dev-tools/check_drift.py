@@ -248,6 +248,31 @@ CHECKS = [
         ),
     ),
     Check(
+        name="Small multiples layout modifier(M2)",
+        keywords=[
+            "M2-small-multiples",
+            "small multiples",
+            "Small multiples",
+            "並排比較",
+            "sharex=True, sharey=True",  # 規則 1+2 實作 signature
+        ],
+        expected_in=[
+            "skill/SKILL.md",
+            "skill/references/M2-small-multiples.md",
+            "skill/references/02-line-chart.md",
+            "skill/references/03-area-chart.md",
+            "skill/references/01-bar-chart.md",
+            "skill/references/M1-uncertainty-modifier.md",
+            "skill/scripts/generate_examples.py",
+            "CHANGELOG.md",
+        ],
+        description=(
+            "M2 small multiples 版面 modifier(RFC 2026-06-02,2026-06-09 採納為 Active)"
+            "規範本身在 M2-small-multiples.md,SKILL.md decision tree 有對應分支,"
+            "02/03/01/M1 references 應有 cross-link 段。"
+        ),
+    ),
+    Check(
         name="重症在底（單色堆疊原則）",
         # SKILL.md 用英文 "darkest color at the base"
         keywords=[

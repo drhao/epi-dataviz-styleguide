@@ -124,6 +124,8 @@ ax.plot(x, dose2, color=LINE_COLORS["blue"], linewidth=2.5)
 
 ## 相關規範
 
+區域圖**多地區並排比較**(各縣市累計覆蓋率、各疫苗劑次跨組比較)時,套用 `M2-small-multiples.md`:統一 Y/X scale、共用圖例、focus panel 機制。
+
 區域圖也常用於呈現 **不確定性區間**(信賴區間 / 預測區間),但兩者意義不同:
 
 - **資料 area**(本檔規範):accumulated 數值或多序列疊加,**填色實體、邊線清晰**,讀者讀的是區域大小 = 量值

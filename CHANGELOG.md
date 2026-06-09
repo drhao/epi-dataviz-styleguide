@@ -113,6 +113,22 @@
 
 ### Added · 新增(規範)
 
+- **Small multiples 版面 modifier(M2)** ── [RFC 2026-06-02](docs/rfcs/2026-06-02-small-multiples.md),**2026-06-09 採納為 Active**
+  - 新規範 `skill/references/M2-small-multiples.md`(12 條規則 + 程式碼範例 + Don't/Do 表)
+  - 定位為 **layout modifier**,套在既有 chart-type(line / bar / area)上;與 M1 並列,都是 modifier
+  - 規則重點:
+    - **統一 Y/X scale**(`sharex=True, sharey=True`),共用圖例與軸標
+    - **Panel 標題左上**(`loc="left"`),色 `NEUTRAL.700`
+    - **Grid 推薦表**:4-6 → 2×3;7-9 → 3×3;17-22 → 4×6 或 5×5;> 25 強制重新分組
+    - **焦點 panel 機制**(Pattern A 兼容):焦點 PRIMARY,非焦點預設 NEUTRAL.300(可讀性需求高改 N400)── 經兩次視覺對照定稿
+    - **與 M1 兼容**:每 panel 內可獨立套用 uncertainty,共用圖例只標一次
+    - **跨年度同期門檻**:< 4 年用 02c 風格(疊一張),≥ 5-6 年用 M2,兩者並存
+  - `SKILL.md` Quick Decision Tree 新增 step 6(small multiples 偵測)、§4.7 新章節、Reference Files 表新增 M2
+  - 既有 references 補 cross-link:`01-bar-chart.md`(排名並排)、`02-line-chart.md`(主場 + 跨年度門檻說明)、`03-area-chart.md`(多地區累計圖)、`M1-uncertainty-modifier.md`(規則 1 邊界補一句指向 M2 規則 11)
+  - 新增 2 張範例 PNG(透過 `generate_examples.py`):`m2a-small-multiples-cities.png`、`m2b-small-multiples-yearly-with-uncertainty.png`
+  - `docs/guideline.{md,html}` 各加章節介紹
+  - 走完完整 RFC framework:Draft v1 → v2(grid / Open Q3 / Q4 resolved)→ v3(規則 7 視覺對照定稿,兩階段:焦點顏色 + 非焦點淺度)→ Pilot + Active 同日
+
 - **不確定性視覺化 modifier(M1)** ── [RFC 2026-06-01](docs/rfcs/2026-06-01-uncertainty.md),**2026-06-09 採納為 Active**
   - 新規範 `skill/references/M1-uncertainty-modifier.md`(13 條規則 + 程式碼範例 + Don't/Do 表)
   - 兩種主要視覺形式:
