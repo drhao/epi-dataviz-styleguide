@@ -111,6 +111,22 @@
 - `docs/guideline.html` Chapter 11 新增「方法 C:使用預生成樣板」段落
 - `README.md`、`docs/index.html`、`skill/SKILL.md` 同步更新工具支援指引
 
+### Added · 新增(教學線上頁)
+
+- **Do / Don't 對照範例庫展示頁** ── `docs/dont-vs-do.html`
+  - 把既有 8 對 ✗/✓ PNG 做成單一網頁,GitHub Pages 訪客可直接瀏覽
+  - 頁面結構:hero + 8 段對照(每段含對應規則 tag、PNG、說明)+ 頁尾連結
+  - 沿用 `docs/guideline.html` 設計風格:主色標題列、無斜體、Noto Serif + Sans TC、響應式
+  - PNG 副本放 `docs/examples/dont-vs-do/`(8 張,因 GitHub Pages 僅 serve docs/ 路徑)── 更新源 PNG 後須一併 `cp` 至 docs 副本
+  - 與 `docs/guideline.html` Ch.9 定位互補:
+    - Ch.9:3 對「核心原則」+ Chart.js 動態(主指引內沉浸式 onboarding)
+    - dont-vs-do.html:8 對「具體規則」+ 靜態 PNG(獨立頁、培訓 / review 引用)
+  - 入口:
+    - `docs/guideline.html` Ch.9 章末新增 callout「更多視覺對照見 dont-vs-do.html」
+    - `docs/index.html` 設計師卡片新增連結
+    - `skill/assets/examples/dont-vs-do/README.md` 補上線上瀏覽連結與定位差異說明
+  - `dev-tools/check_drift.py`「Do/Don't 對照範例庫」CHECK 擴充 expected_in 含 dont-vs-do.html、guideline.html、index.html
+
 ### Added · 新增(automation)
 
 - **GitHub Actions CI** ── `.github/workflows/test.yml`

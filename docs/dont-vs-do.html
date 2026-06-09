@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Do / Don't 對照範例庫 ／ 疫情資料視覺化指引</title>
+<meta name="description" content="8 對 ✗ DON'T / ✓ DO 並排對照範例,對應既有規範條目。給 AI agent review、設計師培訓、跨機關採用時的視覺證據。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --p-100:#E8EEE7; --p-200:#D1DECF; --p-300:#B4C9B1; --p-500:#739A6D;
+  --p-600:#5D7F58; --p-700:#496345; --p-800:#374C34;
+  --n-0:#FFFFFF; --n-50:#FAFAFA; --n-100:#F2F3F1; --n-200:#E4E7E4;
+  --n-300:#CACFC9; --n-400:#A2ABA0; --n-500:#7A8778; --n-600:#5D675B;
+  --n-700:#444C43; --n-800:#2C312B; --n-900:#181B18;
+  --alert: #BE373C;
+  --serif: 'Noto Serif TC', serif;
+  --sans:  'Noto Sans TC', sans-serif;
+  --mono:  'JetBrains Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+em, i, address { font-style: normal; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  color: var(--n-800);
+  background: var(--n-50);
+  line-height: 1.7;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Masthead ===== */
+.masthead {
+  background: var(--n-900);
+  color: var(--n-100);
+  border-bottom: 4px solid var(--p-500);
+}
+.masthead-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.masthead a {
+  color: var(--n-100);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 1px;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s;
+}
+.masthead a:hover { border-color: var(--p-300); }
+.masthead .sep { color: var(--n-500); }
+.masthead .here {
+  color: var(--p-300);
+  font-family: var(--serif);
+  font-weight: 600;
+}
+
+/* ===== Hero ===== */
+.hero {
+  background: var(--n-0);
+  border-bottom: 1px solid var(--n-200);
+  padding: 56px 0 48px;
+}
+.hero-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.hero-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--p-600);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--n-900);
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+.hero .lead {
+  font-size: 17px;
+  color: var(--n-700);
+  max-width: 760px;
+  margin-bottom: 24px;
+}
+.hero .meta {
+  font-size: 13px;
+  color: var(--n-600);
+}
+.hero .meta code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--n-100);
+  padding: 2px 6px;
+  color: var(--p-800);
+}
+
+/* ===== Index nav ===== */
+.toc {
+  max-width: 1080px;
+  margin: 36px auto 0;
+  padding: 0 32px;
+}
+.toc-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+}
+.toc-list a {
+  display: block;
+  padding: 10px 14px;
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+  border-left: 3px solid var(--p-500);
+  color: var(--n-800);
+  text-decoration: none;
+  font-size: 13px;
+  transition: border-color .2s, background .2s;
+}
+.toc-list a:hover {
+  background: var(--p-100);
+  border-left-color: var(--p-700);
+}
+.toc-list a .num {
+  font-family: var(--mono);
+  color: var(--p-600);
+  margin-right: 8px;
+}
+
+/* ===== Main content ===== */
+main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 56px 32px 80px;
+}
+
+section.pair {
+  margin-bottom: 64px;
+  scroll-margin-top: 20px;
+}
+section.pair:last-of-type { margin-bottom: 0; }
+
+section.pair h2 {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--n-900);
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--p-500);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+section.pair h2 .num {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--p-600);
+  letter-spacing: 2px;
+}
+
+.rule-tags {
+  margin-bottom: 18px;
+}
+.rule-tags .tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--p-700);
+  background: var(--p-100);
+  padding: 4px 10px;
+  margin-right: 8px;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.pair-img-wrap {
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+  padding: 8px;
+  margin-bottom: 14px;
+}
+.pair-img {
+  width: 100%;
+  display: block;
+}
+
+.pair-note {
+  font-size: 14px;
+  color: var(--n-700);
+  line-height: 1.7;
+  padding-left: 14px;
+  border-left: 3px solid var(--p-300);
+  background: var(--n-0);
+  padding: 12px 14px;
+}
+.pair-note strong {
+  color: var(--p-800);
+}
+
+/* ===== Footer ===== */
+footer {
+  background: var(--n-900);
+  color: var(--n-300);
+  padding: 40px 32px 32px;
+  margin-top: 64px;
+}
+.foot-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.foot-inner a {
+  color: var(--p-300);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.foot-inner a:hover { border-bottom-color: var(--p-300); }
+.foot-inner .legal {
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--n-500);
+  border-top: 1px solid var(--n-700);
+  padding-top: 14px;
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html">← 疫情資料視覺化指引</a>
+    <span class="sep">／</span>
+    <span class="here">Do / Don't 對照範例庫</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">EXAMPLES · DO / DON'T LIBRARY</div>
+    <h1>Do / Don't 對照範例庫</h1>
+    <p class="lead">
+      8 對「<strong style="color:var(--alert)">✗ DON'T 違反規範</strong> / <strong style="color:var(--p-700)">✓ DO 正確做法</strong>」並排對照,對應既有規範條目。給 AI agent review、設計師培訓、跨機關採用時的視覺證據。
+    </p>
+    <p class="meta">
+      源檔位於 <code>skill/assets/examples/dont-vs-do/</code>,生成腳本 <code>skill/scripts/generate_dont_vs_do.py</code>。本頁 PNG 為 <code>docs/examples/dont-vs-do/</code> 副本(GitHub Pages serve 限制)。
+    </p>
+  </div>
+</section>
+
+<nav class="toc">
+  <ul class="toc-list">
+    <li><a href="#pair-01"><span class="num">01</span>Y 軸截斷誤導</a></li>
+    <li><a href="#pair-02"><span class="num">02</span>紅色濫用作類別色</a></li>
+    <li><a href="#pair-03"><span class="num">03</span>每根長條彩虹色</a></li>
+    <li><a href="#pair-04"><span class="num">04</span>過度裝飾圓餅</a></li>
+    <li><a href="#pair-05"><span class="num">05</span>圓餅切片過多</a></li>
+    <li><a href="#pair-06"><span class="num">06</span>多 panel spaghetti vs small multiples</a></li>
+    <li><a href="#pair-07"><span class="num">07</span>多餘框線 vs 極簡</a></li>
+    <li><a href="#pair-08"><span class="num">08</span>字典序 vs 數值排序</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<section class="pair" id="pair-01">
+  <h2><span class="num">01</span>Y 軸截斷誇大差異</h2>
+  <div class="rule-tags">
+    <span class="tag">SKILL.md §4.4</span>
+    <span class="tag">01-bar-chart 規則 1</span>
+  </div>
+  <div class="pair-img-wrap"><img class="pair-img" src="examples/dont-vs-do/01-truncated-yaxis.png" alt="Y 軸截斷 vs 從零"></div>
+  <div class="pair-note">
+    <strong>直條圖比較的是「長度」</strong>,截斷 Y 軸會嚴重誤導比例感受。即使資料變動範圍很小(本例 78-105),仍應從零起算;若想凸顯變化,改用折線圖或加註標籤。本指引此為鐵則(僅直條圖必從零,折線/區域圖可視情境決定)。
+  </div>
+</section>
+
+<section class="pair" id="pair-02">
+  <h2><span class="num">02</span>紅色濫用作類別色</h2>
+  <div class="rule-tags">
+    <span class="tag">SKILL.md §1.3</span>
+    <span class="tag">紅色僅警示</span>
+  </div>
+  <div class="pair-img-wrap"><img class="pair-img" src="examples/dont-vs-do/02-red-as-categorical.png" alt="多條折線都用紅色 vs Pattern B 類別配色"></div>
+  <div class="pair-note">
+    <strong>紅色家族(Alert Red、Terracotta、Clay)僅用於警示</strong>,不可作為一般類別配色。多條折線都用紅色,讀者會感到「全部都很糟」,情緒被視覺放大。改用 Pattern B 類別配色(綠/藍/黃 LINE_COLORS 加深版),折線細也能過 WCAG AA。
+  </div>
+</section>
+
+<section class="pair" id="pair-03">
+  <h2><span class="num">03</span>每根長條不同色(彩虹)</h2>
+  <div class="rule-tags">
+    <span class="tag">01-bar-chart §3 顏色策略</span>
+    <span class="tag">Pattern A</span>
+  </div>
+  <div class="pair-img-wrap"><img class="pair-img" src="examples/dont-vs-do/03-rainbow-bars.png" alt="每根長條不同色 vs Pattern A 焦點凸顯"></div>
+  <div class="pair-note">
+    <strong>顏色應該傳達資訊</strong>。每根長條不同色但顏色無語意,只是視覺噪音,反而分散注意力。Pattern A 用中性背景(NEUTRAL.400)+ 主色/警示色凸顯焦點 ── 讀者一眼看到「哪根是重點」。
+  </div>
+</section>
+
+<section class="pair" id="pair-04">
+  <h2><span class="num">04</span>過度裝飾圓餅(3D / 陰影 / explode)</h2>
+  <div class="rule-tags">
+    <span class="tag">05-pie-chart 規範</span>
+  </div>
+  <div class="pair-img-wrap"><img class="pair-img" src="examples/dont-vs-do/04-decorated-pie.png" alt="3D / explode / 陰影圓餅 vs 平面 2D + 直接標籤"></div>
+  <div class="pair-note">
+    <strong>3D 視角讓比例失真</strong>,陰影分散注意力,explode 破壞比較。圓餅圖只在「類別 ≤ 5、總和 100%、單一時點、切片差異 ≥ 5%」時用,且必須平面 2D + Pattern B 類別配色 + 從 12 點順時針 + 直接標籤(類別 + 百分比),不依賴圖例。
+  </div>
+</section>
+
+<section class="pair" id="pair-05">
+  <h2><span class="num">05</span>圓餅切片過多(類別 > 5)</h2>
+  <div class="rule-tags">
+    <span class="tag">05-pie-chart 條件使用</span>
+  </div>
+  <div class="pair-img-wrap"><img class="pair-img" src="examples/dont-vs-do/05-too-many-pie-slices.png" alt="圓餅 9 切片 vs 橫條排序由大到小"></div>
+  <div class="pair-note">
+    <strong>類別超過 5 個時圓餅就難讀</strong>。讀者比較「角度」遠不如比較「長度」準確 ── 改用排序橫條圖(由大到小),主流類別用主色凸顯,其餘 NEUTRAL.400。讀者一眼看出 ranking 與相對重要度。
+  </div>
+</section>
+
+<section class="pair" id="pair-06">
+  <h2><span class="num">06</span>多 panel:spaghetti 疊一張 vs M2 small multiples</h2>
+  <div class="rule-tags">
+    <span class="tag">M2-small-multiples 適用</span>
+  </div>
+  <div class="pair-img-wrap"><img class="pair-img" src="examples/dont-vs-do/06-spaghetti-vs-small-multiples.png" alt="8 個年齡組折線疊一張 vs 2×4 small multiples"></div>
+  <div class="pair-note">
+    <strong>同指標跨多分類維度(4+ panels)</strong>,疊一張折線圖讀者分不清各組形態。改用 M2 small multiples 規範:統一 Y/X scale、共用圖例、focus panel 用主色 + 其餘 NEUTRAL.300。本例焦點 70+ 年齡組,清楚看出老年組高峰 lag 較晚。
+  </div>
+</section>
+
+<section class="pair" id="pair-07">
+  <h2><span class="num">07</span>多餘框線/格線 vs 極簡</h2>
+  <div class="rule-tags">
+    <span class="tag">SKILL.md §4.1.5 grid</span>
+    <span class="tag">§4.1.6 spines</span>
+  </div>
+  <div class="pair-img-wrap"><img class="pair-img" src="examples/dont-vs-do/07-chartjunk-vs-minimal.png" alt="全邊框 + 雙向格線 + 灰底 vs 移除頂右邊框 + 僅水平格線"></div>
+  <div class="pair-note">
+    <strong>移除不傳達資訊的裝飾</strong>。四面邊框 + 垂直水平格線 + 灰底背景都是 chartjunk(Tufte 用語),不增加資訊,只增加視覺負擔。本指引預設(<code>apply_style()</code>):移除頂右邊框、僅顯示水平格線(讀數方向)、白底。
+  </div>
+</section>
+
+<section class="pair" id="pair-08">
+  <h2><span class="num">08</span>排名圖按字典序 vs 按數值排序</h2>
+  <div class="rule-tags">
+    <span class="tag">01-bar-chart 規則 4 排序</span>
+  </div>
+  <div class="pair-img-wrap"><img class="pair-img" src="examples/dont-vs-do/08-sort-by-name-vs-value.png" alt="按行政區編號排序 vs 按發生率由大到小"></div>
+  <div class="pair-note">
+    <strong>排名類直條/橫條圖必須按數值排序</strong>。按行政區編號(字典序、建檔順序)排,讀者要自己 scan 才能比較;按發生率由大到小排,排名一目了然,前 3 名用主色凸顯,其餘 NEUTRAL.400 維持為背景參考。
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <p>
+      <strong style="color:var(--p-300)">完整指引:</strong>
+      <a href="index.html">回首頁</a>
+      <span style="color:var(--n-500);margin:0 8px;">·</span>
+      <a href="guideline.html">互動式 HTML 版</a>
+      <span style="color:var(--n-500);margin:0 8px;">·</span>
+      <a href="guideline.pdf">列印版 PDF</a>
+      <span style="color:var(--n-500);margin:0 8px;">·</span>
+      <a href="https://github.com/drhao/epi-dataviz-styleguide/blob/main/skill/assets/examples/dont-vs-do/README.md">範例庫 README(內含對應 RFC / reference 條目)</a>
+    </p>
+    <p style="margin-top:14px;">
+      <strong style="color:var(--p-300)">給維護者:</strong>
+      源 PNG 在 <code style="font-family:var(--mono);color:var(--p-200);background:rgba(255,255,255,0.05);padding:2px 6px;">skill/assets/examples/dont-vs-do/</code>,本頁圖檔為 <code style="font-family:var(--mono);color:var(--p-200);background:rgba(255,255,255,0.05);padding:2px 6px;">docs/examples/dont-vs-do/</code> 副本。更新規則色票後重跑 <code style="font-family:var(--mono);color:var(--p-200);background:rgba(255,255,255,0.05);padding:2px 6px;">python3 skill/scripts/generate_dont_vs_do.py</code> 並 <code style="font-family:var(--mono);color:var(--p-200);background:rgba(255,255,255,0.05);padding:2px 6px;">cp</code> 至 docs 副本。
+    </p>
+    <p class="legal">
+      聯絡:Dr. Hao · dr.hao.tw@gmail.com · 本指引為組織內部使用文件,公開於 repo 僅供透明審視。
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

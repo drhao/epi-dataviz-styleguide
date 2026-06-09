@@ -356,6 +356,9 @@ CHECKS = [
             "skill/references/02-line-chart.md",
             "skill/references/05-pie-chart.md",
             "skill/references/M2-small-multiples.md",
+            "docs/dont-vs-do.html",  # 線上展示頁
+            "docs/guideline.html",   # Ch.9 callout 連結到展示頁
+            "docs/index.html",       # 設計師卡片入口
             "CHANGELOG.md",
         ],
         description=(

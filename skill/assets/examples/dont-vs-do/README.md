@@ -4,6 +4,27 @@
 
 主目錄 `skill/assets/examples/*.png` 是「規範示範範例」── 給 AI agent 與設計師模仿;本目錄是「教學對照範例」── 給 review 或培訓時指出「為什麼不能 X」的視覺證據。
 
+## 線上瀏覽
+
+GitHub Pages 訪客可直接看完整 8 對對照頁:
+
+**🌐 [docs/dont-vs-do.html](https://drhao.github.io/epi-dataviz-styleguide/dont-vs-do.html)**
+
+(該頁 PNG 引用 `docs/examples/dont-vs-do/` 副本,因 GitHub Pages 僅 serve `docs/` 路徑。更新源 PNG 後須一併 `cp` 到 docs 副本目錄。)
+
+## 與 docs/guideline.html Ch.9 的定位差異
+
+兩者並存互補:
+
+| | docs/guideline.html **Ch.9** | 本範例庫 / **dont-vs-do.html** |
+|---|---|---|
+| 對數 | 3 對 | 8 對 |
+| 主題 | 4 項**核心原則**的應用 | **具體規則**的典型誤用 |
+| 呈現 | Chart.js 動態繪製(嵌主指引) | 靜態 PNG(獨立檔案 + 獨立網頁) |
+| 讀者 | docs 訪客(原則沉浸式 onboarding) | AI agent / 培訓 / review 引用 |
+
+Ch.9 教「**為什麼**」遵守原則(原則導向),本範例庫教「**哪些具體錯**」(規則導向)。同一概念兩種呈現,非冗餘。
+
 ## 索引
 
 | 檔案 | 對應規則 | 重點 |
