@@ -146,11 +146,12 @@ CHECKS = [
         description="移動平均採 trailing 7 日(本日含前 6 日)的規範必須在多處提及",
     ),
     Check(
-        name="Y 軸從零開始",
-        # SKILL.md 用英文 "Y-axis MUST start at zero"
+        name="Y 軸誠實呈現(直條必從零,折線視情境)",
+        # SKILL.md §4.4 區分:Bar MUST start at zero; Line preferred but optional
         keywords=[
             "Y 軸", "Y-axis", "從零開始", "beginAtZero",
             "start at zero", "從 0 開始", "zero baseline",
+            "直條圖 Y 軸",  # 精細化後的常見寫法
         ],
         expected_in=[
             "skill/SKILL.md",
@@ -158,7 +159,10 @@ CHECKS = [
             "docs/guideline.html",
             "docs/index.html",
         ],
-        description="Y 軸誠實呈現原則必須在多處強調",
+        description=(
+            "直條必從零(鐵則),折線/區域 zero baseline preferred but optional。"
+            "若變化才是訊息(Rt、相對風險等),折線可從合理 lower bound 起算但須註明。"
+        ),
     ),
     Check(
         name="WCAG AA 對比",
