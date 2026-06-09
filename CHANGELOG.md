@@ -127,6 +127,17 @@
     - `skill/assets/examples/dont-vs-do/README.md` 補上線上瀏覽連結與定位差異說明
   - `dev-tools/check_drift.py`「Do/Don't 對照範例庫」CHECK 擴充 expected_in 含 dont-vs-do.html、guideline.html、index.html
 
+### Added · 新增(governance)
+
+- **版本策略明確化(semver)** ── `CONTRIBUTING.md` 新增「版本策略」段
+  - 採用 Semantic Versioning 簡化版,適用「規範性文件 + 工具支援」混合 repo:
+    - MAJOR:BREAKING(例:trailing MA 取代 centered MA)
+    - MINOR:新規範類別 / 新工具支援 / 重要文字精細化
+    - PATCH:錯字、格式、bug、範例重生、CI/build 流程
+  - 明定 BREAKING change 通報格式(標記、原狀→新狀對照、遷移指引)
+  - 明定 RFC 流程與版本策略的正交關係:RFC 決定「採納與否」,版本決定「採納後如何打 tag」
+  - Git tag 慣例 `vMAJOR.MINOR.PATCH`
+
 ### Added · 新增(automation)
 
 - **GitHub Actions CI** ── `.github/workflows/test.yml`

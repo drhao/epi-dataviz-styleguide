@@ -324,6 +324,53 @@ grep -rln "你新增的關鍵字" . --include="*.md" --include="*.html" --includ
 grep -rln "被取代的舊用詞" .
 ```
 
+## 版本策略(Versioning)
+
+本指引採用 [Semantic Versioning](https://semver.org/) 簡化版 ── 適用「規範性文件 + 工具支援」混合 repo 的語境。
+
+### 版號規則
+
+`MAJOR.MINOR.PATCH` 三段式,語意:
+
+| 段 | 何時遞增 | 範例 |
+|---|---|---|
+| **MAJOR** | **BREAKING change** ── 既有圖表/程式碼套用本指引後會違規,或需要明顯遷移 | `centered_ma()` → `trailing_ma()`(rename + 語意改變);Pattern 移除 |
+| **MINOR** | **新規範類別 / 新工具支援 / 重要文字精細化**,不打破既有 | 新 modifier(M1、M2);新 reference;新 chart-type;新範例庫;新交付格式 |
+| **PATCH** | 錯字、格式調整、bug 修正、範例 PNG 重生、CI/build 流程改進 | 字型 fallback;CSS 微調;commit message 規範化 |
+
+### 何時 release(打 tag)
+
+- **PATCH**(1.0.x):隨時可發,無強制節奏。視需要批次出版
+- **MINOR**(1.x.0):累積 ≥ 1 個新規範或工具支援時發版
+- **MAJOR**(x.0.0):有 BREAKING change 必發。CHANGELOG 須明示遷移路徑
+
+### Breaking change 通報
+
+任何 BREAKING change 必須在 CHANGELOG 內:
+1. 標記 `**BREAKING**`(粗體)
+2. 提供「原狀 → 新狀」對照
+3. 提供遷移指引(替代寫法、grep 命令、替換腳本)
+
+例:`centered_ma → trailing_ma` 已採此格式記錄(見 v1.0.0 / Unreleased 區段)。
+
+### Pre-RFC 規範如何升版
+
+v1.0 採納的規範(patterns A-E、9 種 chart types、4 核心原則等)視為 pre-RFC accepted。後續修訂依「影響範圍」決定版號:
+
+- 文字精細化(Y 軸「從零」→「直條必從零、折線視情境」)→ PATCH(語意未變)
+- 規範條目調整(MA 採 centered → trailing)→ MAJOR(語意變)
+- 新規範類別(M1、M2)→ MINOR(擴充)
+
+### 與 RFC 流程的關係
+
+- RFC 只決定**該規範是否採納**(governance)
+- 版本策略決定**已採納後如何打 tag**
+- 兩者正交:可以有 MINOR release 含多個 RFC,也可以一個 RFC 累積到 MAJOR 才釋出
+
+### Git tag 命名
+
+`vMAJOR.MINOR.PATCH`(例:`v1.0.0`、`v1.1.0`)。Tag 後 CHANGELOG 對應段標題加版號 + 日期(`## [1.1.0] - 2026-XX-XX`)。
+
 ## 命名與風格慣例
 
 ### Git commit message
