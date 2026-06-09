@@ -111,6 +111,22 @@
 - `docs/guideline.html` Chapter 11 新增「方法 C:使用預生成樣板」段落
 - `README.md`、`docs/index.html`、`skill/SKILL.md` 同步更新工具支援指引
 
+### Added · 新增(governance)
+
+- **RFC-lite 規範新增流程** ── `docs/rfcs/`
+  - 新增 `docs/rfcs/README.md`(流程說明、何時要寫 RFC、命名 `YYYY-MM-NN-name.md`、索引表)
+  - 新增 `docs/rfcs/0000-template.md`(RFC 模板)
+  - 關鍵 mechanism:
+    - 對既有 patterns / references / 19 張範例 PNG 強制盤點影響(Affected existing rules + Regression check 段)
+    - Stages:Draft → Pilot(status: draft)→ Active → 後續迭代
+    - Pilot 期間 `SKILL.md` decision tree 不更新,AI agent 不主動套用 draft 規範
+  - `CONTRIBUTING.md` 加「規範新增的 RFC-lite 流程」章節(含寫作 guard rails:避免絕對性用語、必備「適用 / 不適用」兩段)
+  - `dev-tools/check_drift.py` 新增:
+    - `parse_frontmatter()` 解析 reference YAML frontmatter
+    - `report_draft_references()` 列出 status: draft 的規範清單
+    - 主流程多一個「Pilot 試行中的規範」report
+  - **v1.0 既有規範視為 pre-RFC accepted**,不需回填 RFC
+
 ### Changed · 變更
 
 - **說明文字一律不再點明「公部門」使用者身份**:13 處(README、AGENTS、SKILL-README、CHANGELOG Design Decisions、docs/index.html meta + hero、docs/guideline.html 三處、docs/prompt-examples.md、skill/references/07-histogram-boxplot.md)改為中性描述「正式報告/對外溝通/組織內部正式溝通」等。讓本指引適用範圍不再侷限於特定機關屬性

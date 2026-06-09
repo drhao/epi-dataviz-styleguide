@@ -282,6 +282,47 @@ DEPRECATED_TERMS = [
 ]
 
 
+# ============== Reference frontmatter / RFC 試行狀態 ==============
+
+def parse_frontmatter(path: Path) -> dict:
+    """簡單 YAML frontmatter 解析(只支援 key: value 單行欄位)。"""
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (UnicodeDecodeError, IsADirectoryError, FileNotFoundError):
+        return {}
+    if not text.startswith("---\n"):
+        return {}
+    end = text.find("\n---", 4)
+    if end < 0:
+        return {}
+    body = text[4:end]
+    result = {}
+    for line in body.splitlines():
+        if ":" in line:
+            k, _, v = line.partition(":")
+            result[k.strip()] = v.strip()
+    return result
+
+
+def report_draft_references() -> list[tuple[str, str]]:
+    """列出 skill/references/ 內 status: draft 的規範。
+
+    沒有 frontmatter 的 reference 視為 active(向後相容 pre-RFC 既有規範)。
+    """
+    refs_dir = REPO_ROOT / "skill" / "references"
+    drafts = []
+    if not refs_dir.exists():
+        return drafts
+    for md in sorted(refs_dir.glob("*.md")):
+        fm = parse_frontmatter(md)
+        if fm.get("status", "active").lower() == "draft":
+            drafts.append((
+                str(md.relative_to(REPO_ROOT)),
+                fm.get("rfc", "?"),
+            ))
+    return drafts
+
+
 # ============== 檢查邏輯 ==============
 
 def file_contains_any(path: Path, keywords: list[str]) -> bool:
@@ -371,6 +412,19 @@ def main():
     print()
     print(f"  通過 {passed_checks}/{total_checks}")
     print()
+
+    # === Pilot 規範清單(RFC 試行階段) ===
+    drafts = report_draft_references()
+    if drafts:
+        print("【Pilot 試行中的規範】")
+        print()
+        print(f"  以下 {len(drafts)} 個 reference 為 status: draft,SKILL.md decision tree 未更新")
+        print("  AI agent 不主動套用。詳見 docs/rfcs/")
+        print()
+        for path, rfc in drafts:
+            print(f"  ● {path}")
+            print(f"      RFC: {rfc}")
+        print()
 
     # === 過時用詞檢查 ===
     print("【過時用詞檢查】")
