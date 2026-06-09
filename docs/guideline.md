@@ -476,22 +476,23 @@ Chart.defaults.borderColor = '#E4E7E4';
 
 ### 12.3 R（ggplot2）
 
-```r
-epi_colors <- c("#739A6D", "#587A9D", "#C8A041",
-                "#49888D", "#916E46", "#955F71")
+直接 source 共用模組 `skill/scripts/epidemic_palette.R`（色票值與 Python 版完全一致），即可使用現成的 scale 與主題：
 
+```r
+source("epidemic_palette.R")
 library(ggplot2)
-theme_epi <- function() {
-  theme_minimal(base_family = "Noto Sans TC", base_size = 11) +
-  theme(
-    panel.grid.major = element_line(color = "#E4E7E4"),
-    panel.grid.minor = element_blank(),
-    axis.line = element_line(color = "#CACFC9"),
-    plot.title = element_text(family = "Noto Serif TC",
-                              face = "bold", size = 16)
-  )
-}
+
+ggplot(cases, aes(date, n, fill = region)) +
+  geom_col(width = 0.6) +
+  scale_fill_epi() +     # 類別配色，依優先順序（第一類別 = 主色）
+  theme_epi()            # 移除頂右框、僅水平格線、中文字型
+
+# 單色色階（Pattern E）：scale_fill_epi_mono("scale_4")
+# 序列／發散：scale_fill_epi_sequential() / scale_fill_epi_diverging()
+# 折線請用 EPI_LINE_COLORS$primary（#5D7F58）等加深版
 ```
+
+主要匯出：`EPI_CATEGORICAL`、`EPI_LINE_COLORS`、`EPI_ACCENT`、`EPI_MONOCHROME`、`EPI_SEQUENTIAL`、`EPI_DIVERGING`，以及 `theme_epi()`、`trailing_ma()`。
 
 ### 12.4 Excel / Microsoft 365
 
@@ -560,6 +561,38 @@ theme_epi <- function() {
 }
 ```
 
+### 12.7 Quarto
+
+`resources/quarto/` 提供兩種做法：
+
+- **`_brand.yml`**（Quarto ≥ 1.6）：統一品牌，**同時**套用文件主題與圖表（ggplot2 經 thematic、matplotlib 經 brand）。放到專案根目錄即生效。
+- **`epidemic.scss`**（任何版本）：HTML 主題，覆寫 Bootstrap `$primary`、字型、連結與標題色，並提供 `--epi-cat-1` ~ `--epi-cat-6` CSS 變數。
+
+```yaml
+# 文件 YAML（SCSS 做法，相容所有版本）
+format:
+  html:
+    theme: [cosmo, epidemic.scss]
+    mainfont: "Noto Sans TC"
+```
+
+圖表若需精準的類別順序或單色色階，仍建議在 code cell 內 source `epidemic_palette.R`（或 import `epidemic_palette.py`）。
+
+### 12.8 Streamlit
+
+`resources/streamlit/config.toml` 設定 app 外觀（複製到 `.streamlit/config.toml`）：
+
+```toml
+[theme]
+primaryColor = "#739A6D"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F2F3F1"
+textColor = "#181B18"
+font = "sans serif"
+```
+
+`[theme]` 只控制 app 外觀，**不含圖表**。圖表請用 matplotlib（`apply_style()` 後 `st.pyplot(fig)`），或將 `CATEGORICAL` 傳給 Plotly（`color_discrete_sequence`）／Altair（`alt.Scale(range=...)`）。
+
 ---
 
 ## 命名慣例
@@ -585,6 +618,9 @@ theme_epi <- function() {
 - `dataviz-guideline.pdf` — 列印版完整文件
 - `epidemic-dataviz-palette.csv` — 完整色票對照表
 - `epidemic-dataviz-theme.json` — Power BI 主題檔
+- `skill/scripts/epidemic_palette.R` — R / ggplot2 色票模組
+- `resources/quarto/_brand.yml`、`epidemic.scss` — Quarto 品牌與 HTML 主題
+- `resources/streamlit/config.toml` — Streamlit app 佈景主題
 - `SKILL.md` — AI agent 工具用 skill 定義檔
 
 ## 聯絡

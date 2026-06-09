@@ -156,7 +156,7 @@ python3 quickstart_with_sample_data.py
 
 - [ ] **`skill/scripts/epidemic_palette.py`**（若涉及色票、輔助函式）
   - 新增/修改 dict、常數、function
-  - 跑 `python tests/test_palette.py` 確認 72 個測試全過
+  - 跑 `python tests/test_palette.py` 確認 80 個測試全過
 - [ ] **`skill/references/XX-name.md`**（圖表類型詳細規範）
   - 規則描述、適用情境、不適用情境、常見錯誤、程式碼範例
 - [ ] **`skill/SKILL.md`**（AI agent 第一手依據）
@@ -296,7 +296,7 @@ repo 已配置 `docs/index.html` 作為 GitHub Pages 入口頁。Pages 從 `main
 
 **必跑：**
 
-- [ ] `python3 skill/tests/test_palette.py` 全部通過（目前 72 個測試）
+- [ ] `python3 skill/tests/test_palette.py` 全部通過（目前 80 個測試）
 - [ ] `grep -rn "TODO\|FIXME\|XXX" .` 沒有殘留未完成標記
 - [ ] 文字內容仍符合「4 項核心原則」
 

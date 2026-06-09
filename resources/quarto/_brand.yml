@@ -1,0 +1,64 @@
+# _brand.yml — 疫情資料視覺化指引 Quarto 統一品牌設定
+#
+# 適用 Quarto >= 1.6（brand 功能）。放在專案根目錄即自動套用，
+# 同一份 _brand.yml 會同時影響：
+#   - HTML 文件主題（Bootstrap 變數）
+#   - ggplot2（透過 thematic）
+#   - matplotlib / plotnine（透過 brand 整合）
+#   - Typst / PDF 輸出
+#
+# 色票值與 skill/scripts/epidemic_palette.py、epidemic_palette.R 完全一致。
+# 主色 #739A6D（Sage Green）；類別順序綠 → 藍 → 黃 → 鴨綠 → 銅 → 梅。
+# 紅色家族（alert）僅用於警示，請勿在圖表中作為一般類別色。
+
+meta:
+  name: 疫情資料視覺化指引 / Epidemic Data Visualization Style Guide
+
+color:
+  palette:
+    sage:        "#739A6D"   # 主色 500
+    sage-dark:   "#5D7F58"   # 主色 600（折線、連結）
+    sage-darker: "#374C34"   # 主色 800（標題、重點均線）
+    slate-blue:  "#587A9D"   # 類別 02
+    mustard:     "#C8A041"   # 類別 03
+    teal:        "#49888D"   # 類別 04
+    bronze:      "#916E46"   # 類別 05
+    plum:        "#955F71"   # 類別 06
+    alert:       "#BE373C"   # 警示紅（僅強調）
+    caution:     "#D2962D"   # 注意提醒
+    success:     "#54734F"
+    info:        "#477A9E"
+    neutral-900: "#181B18"
+    neutral-700: "#444C43"
+    neutral-300: "#CACFC9"
+    neutral-100: "#F2F3F1"
+    white:       "#FFFFFF"
+  foreground: neutral-900
+  background: white
+  primary: sage
+  secondary: slate-blue
+  tertiary: neutral-300
+  success: success
+  info: info
+  warning: caution
+  danger: alert
+
+typography:
+  fonts:
+    - family: Noto Sans TC
+      source: google
+    - family: Noto Serif TC
+      source: google
+    - family: IBM Plex Mono
+      source: google
+  base:
+    family: Noto Sans TC
+    size: 11pt
+  headings:
+    family: Noto Serif TC
+    weight: 700
+    color: sage-darker
+  monospace:
+    family: IBM Plex Mono
+  link:
+    color: sage-dark

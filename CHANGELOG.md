@@ -141,6 +141,19 @@
   - `docs/guideline.{md,html}` 各加章節介紹
   - 走完完整 RFC-lite framework:Draft v1 → v2 → v3(視覺對照定稿)→ Pilot → Active 同日完成(無實作疑慮)
 
+### Added · 新增(工具支援)
+
+- **R / Quarto / Streamlit 工具支援** — 三者皆有實際可匯入的交付檔,色票值與 `epidemic_palette.py` 完全一致
+  - `skill/scripts/epidemic_palette.R`:R / ggplot2 色票模組,對等 Python 版。提供 `EPI_*` 色票常數、`scale_fill_epi()` / `scale_colour_epi()`、單色 `scale_*_epi_mono(key)`(Pattern E)、`scale_*_epi_sequential()` / `_diverging()`、`theme_epi()`、`trailing_ma()`。採 `scale_*_manual` 相容各版本 ggplot2(>= 3.4)
+  - `resources/quarto/_brand.yml`:Quarto >= 1.6 統一品牌,同時套用文件主題與圖表(ggplot2 經 thematic、matplotlib 經 brand)
+  - `resources/quarto/epidemic.scss`:相容所有 Quarto 版本的 HTML 主題,覆寫 Bootstrap `$primary`、字型、連結/標題色,並提供 `--epi-cat-1` ~ `--epi-cat-6` CSS 變數
+  - `resources/quarto/README.md`、`resources/streamlit/README.md`:兩種工具的完整使用說明(含圖表配色做法)
+  - `resources/streamlit/config.toml`:Streamlit app 佈景主題(chrome)。圖表配色透過 matplotlib `apply_style()` 或 Plotly/Altair 指定 `CATEGORICAL` 達成
+  - 同步更新六層文件:`skill/SKILL.md` frontmatter + §7.3 R 擴充 + §7.6 Quarto + §7.7 Streamlit + 資源清單、`skill/SKILL-README.md` scripts 樹加 R 模組、`docs/guideline.md` §12.3/12.7/12.8、`docs/guideline.html` Ch.11 新增 R/Quarto/Streamlit 段、`docs/index.html` 開發者導覽卡 + 頁尾工具資源 + meta、`README.md` 使用情境表 + 結構樹 + 快速上手段
+  - **`dev-tools/check_drift.py`**:「主色 #739A6D」CHECK 的 `expected_in` 擴充涵蓋三個新檔;新增「R ggplot2 模組」「Quarto 支援」「Streamlit 支援」三項 CHECK;`Check` 新增 `match_all` 選項並新增「類別配色完整一致(值級)」CHECK——驗證 6 個類別 HEX 完整出現在 R / Quarto 交付檔,擋下非主色(藍/黃/鴨綠/銅/梅)漂移
+  - **`skill/tests/test_palette.py`**:`TestCrossFileConsistency` 新增 7 個值級測試——R 模組(類別配色順序、主色/折線黃/警示紅、MONOCHROME 各組)、Quarto(`_brand.yml` 類別配色完整 + sage 為主色 + primary 角色、`epidemic.scss` 類別配色完整)、Streamlit(`config.toml` primaryColor 為主色),與既有 PowerBI 逐色比對同強度
+  - 測試數量與 drift CHECK 數說法同步更新(README badge、結構樹、各 SKILL/AGENTS/CONTRIBUTING、投影片、docs/index.html hero stat)
+
 ### Added · 新增(governance)
 
 - **RFC-lite 規範新增流程** ── `docs/rfcs/`

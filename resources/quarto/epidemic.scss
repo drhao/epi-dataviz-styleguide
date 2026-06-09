@@ -1,0 +1,55 @@
+/*-- scss:defaults --*/
+// 疫情資料視覺化指引 — Quarto HTML 主題（SCSS）
+//
+// 用法（文件 YAML）：
+//   format:
+//     html:
+//       theme: [cosmo, epidemic.scss]
+//
+// 適用所有 Quarto 版本（不需 1.6 的 brand 功能）。若已用 _brand.yml，
+// 本檔可作為更細緻 HTML 樣式的補充。色票值與 epidemic_palette.py 一致。
+
+// 字型（建議搭配 Google Fonts 或本機 Noto）
+$font-family-sans-serif: "Noto Sans TC", -apple-system, "Segoe UI", sans-serif !default;
+$headings-font-family:   "Noto Serif TC", Georgia, serif !default;
+$font-family-monospace:  "IBM Plex Mono", "SFMono-Regular", monospace !default;
+
+// 主色與語意色（Bootstrap 變數）
+$primary:   #739A6D !default;
+$secondary: #587A9D !default;
+$success:   #54734F !default;
+$info:      #477A9E !default;
+$warning:   #D2962D !default;
+$danger:    #BE373C !default;
+
+// 文字 / 背景 / 連結
+$body-color:     #444C43 !default;   // Neutral 700
+$body-bg:        #FFFFFF !default;
+$link-color:     #5D7F58 !default;   // 主色 600（對白底過 AA）
+$headings-color: #374C34 !default;   // 主色 800
+
+/*-- scss:rules --*/
+// 類別配色 CSS 變數，供自訂圖表 / 表格 / Observable 使用
+:root {
+  --epi-cat-1: #739A6D;
+  --epi-cat-2: #587A9D;
+  --epi-cat-3: #C8A041;
+  --epi-cat-4: #49888D;
+  --epi-cat-5: #916E46;
+  --epi-cat-6: #955F71;
+  --epi-alert:        #BE373C;
+  --epi-line-primary: #5D7F58;
+  --epi-line-mustard: #A8821F;
+}
+
+// callout 主色化
+.callout.callout-style-default > .callout-header {
+  background-color: #F6F9F6;
+}
+
+// 數值表格對齊（tabular-nums）
+.table td,
+.table th {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
