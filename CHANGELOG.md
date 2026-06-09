@@ -123,6 +123,30 @@
   - 順帶修正 `skill/SKILL-README.md` 殘留的「55 個案例」舊數字(同步為 80)
   - 測試數量說法同步更新:README badge/結構樹/說明、`AGENTS.md`、`CONTRIBUTING.md`、`skill/SKILL.md`、`skill/SKILL-README.md`、投影片(summary/full/_slides-extra)、`docs/index.html` hero stat(舊值 65 一併修正)皆改為 80
 
+### Pilot · 試行中
+
+- **不確定性視覺化 modifier** ── [RFC 2026-06-01](docs/rfcs/2026-06-01-uncertainty.md)
+  - 對應 reference:`skill/references/M1-uncertainty-modifier.md`(`status: draft`)
+  - Pilot 階段範例:`skill/assets/examples/_drafts/m1_uncertainty_examples.py`
+  - **SKILL.md decision tree 未更新** ── AI agent 不主動套用,僅使用者明確要求時依本規範實作
+  - 規則重點:漸層帶(時序預測)+ error bar(少量類別,主色更深版,規則 13 強制不對稱 CI)
+
+### Added · 新增(governance)
+
+- **RFC-lite 規範新增流程** ── `docs/rfcs/`
+  - 新增 `docs/rfcs/README.md`(流程說明、何時要寫 RFC、命名 `YYYY-MM-NN-name.md`、索引表)
+  - 新增 `docs/rfcs/0000-template.md`(RFC 模板)
+  - 關鍵 mechanism:
+    - 對既有 patterns / references / 19 張範例 PNG 強制盤點影響(Affected existing rules + Regression check 段)
+    - Stages:Draft → Pilot(status: draft)→ Active → 後續迭代
+    - Pilot 期間 `SKILL.md` decision tree 不更新,AI agent 不主動套用 draft 規範
+  - `CONTRIBUTING.md` 加「規範新增的 RFC-lite 流程」章節(含寫作 guard rails:避免絕對性用語、必備「適用 / 不適用」兩段)
+  - `dev-tools/check_drift.py` 新增:
+    - `parse_frontmatter()` 解析 reference YAML frontmatter
+    - `report_draft_references()` 列出 status: draft 的規範清單
+    - 主流程多一個「Pilot 試行中的規範」report
+  - **v1.0 既有規範視為 pre-RFC accepted**,不需回填 RFC
+
 ### Changed · 變更
 
 - **說明文字一律不再點明「公部門」使用者身份**:13 處(README、AGENTS、SKILL-README、CHANGELOG Design Decisions、docs/index.html meta + hero、docs/guideline.html 三處、docs/prompt-examples.md、skill/references/07-histogram-boxplot.md)改為中性描述「正式報告/對外溝通/組織內部正式溝通」等。讓本指引適用範圍不再侷限於特定機關屬性
