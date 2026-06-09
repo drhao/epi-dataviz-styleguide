@@ -4,18 +4,20 @@
 
 ## 測試涵蓋範圍
 
-55 個測試案例，分為 8 個測試類別：
+80 個測試案例，分為 10 個測試類別：
 
 | 類別 | 測試項目 | 數量 |
 |------|---------|------|
-| `TestHexFormat` | 所有色票格式合法（#RRGGBB 大寫） | 7 |
+| `TestHexFormat` | 所有色票格式合法（#RRGGBB 大寫） | 8 |
 | `TestCompleteness` | 必要色彩存在、數量正確、主色為 #739A6D | 7 |
 | `TestOrdering` | 主色階、序列色階單調變暗 | 2 |
-| `TestContrast` | WCAG 對比度（文字 4.5、圖形 3.0、填色 2.4） | 14 |
+| `TestContrast` | WCAG 對比度（文字 4.5、圖形 3.0、填色 2.4） | 15 |
 | `TestColorBlindness` | 三種色覺障礙下的可區分性 | 11 |
 | `TestTrailingMA` | Trailing 移動平均函式正確性 | 7 |
-| `TestApplyStyle` | matplotlib 樣式套用不崩潰 | 3 |
-| `TestCrossFileConsistency` | CSV / PowerBI JSON 與 Python 模組一致 | 3 |
+| `TestApplyStyle` | matplotlib 樣式套用不崩潰 | 6 |
+| `TestCrossFileConsistency` | CSV / PowerBI JSON / R 模組 / Quarto / Streamlit 與 Python 模組值級一致 | 10 |
+| `TestMonochrome` | 單色組合（MONOCHROME）正確性與單調性 | 7 |
+| `TestSampleData` | 範例 CSV 完整性、編碼、加總、單調性 | 7 |
 
 ## 執行方式
 
@@ -44,7 +46,7 @@ python test_palette.py
   ...
 
 ══════════════════════════════════════════════════
-  共 55 個測試  ✓ 55  ✗ 0  ⊘ 0
+  共 80 個測試  ✓ 80  ✗ 0  ⊘ 0
 ══════════════════════════════════════════════════
 ```
 

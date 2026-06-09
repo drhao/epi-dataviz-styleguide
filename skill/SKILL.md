@@ -1,6 +1,6 @@
 ---
 name: epidemic-dataviz
-description: Apply the organization's epidemic data visualization standards when creating ANY chart, plot, dashboard, or visualization related to epidemic, public health, or disease surveillance data. Use this skill whenever the user requests visualizations involving case counts, mortality, vaccination, variants, hospitalization, age distribution, geographic spread, R/Rt values, or any other epidemiological metric — even if they don't explicitly mention "guideline" or "standards". This skill covers color palettes (sage green primary #739A6D with strict ordering: green → blue → yellow → neutral → red accents), chart proportions (bar widths, line thickness), chart type selection, accessibility requirements (WCAG AA), and tool-specific implementations for Python (matplotlib/seaborn/plotly), JavaScript (Chart.js, D3, Plotly.js), R (ggplot2), Excel/PowerBI themes, and HTML/CSS.
+description: Apply the organization's epidemic data visualization standards when creating ANY chart, plot, dashboard, or visualization related to epidemic, public health, or disease surveillance data. Use this skill whenever the user requests visualizations involving case counts, mortality, vaccination, variants, hospitalization, age distribution, geographic spread, R/Rt values, or any other epidemiological metric — even if they don't explicitly mention "guideline" or "standards". This skill covers color palettes (sage green primary #739A6D with strict ordering: green → blue → yellow → neutral → red accents), chart proportions (bar widths, line thickness), chart type selection, accessibility requirements (WCAG AA), and tool-specific implementations for Python (matplotlib/seaborn/plotly), JavaScript (Chart.js, D3, Plotly.js), R (ggplot2), Quarto (_brand.yml/SCSS), Streamlit, Excel/PowerBI themes, and HTML/CSS.
 ---
 
 # Epidemic Data Visualization Guideline
@@ -391,24 +391,23 @@ Chart.defaults.plugins.legend.labels.usePointStyle = true;
 
 ### 7.3 R (ggplot2)
 
+Source the shared module `scripts/epidemic_palette.R` — it mirrors the Python module (same HEX values) and provides ready-to-use ggplot2 scales and a theme:
+
 ```r
-epi_colors <- c("#739A6D", "#587A9D", "#C8A041",
-                "#49888D", "#916E46", "#955F71")
-
+source("scripts/epidemic_palette.R")
 library(ggplot2)
-theme_epi <- function() {
-  theme_minimal(base_family = "Noto Sans TC", base_size = 11) +
-  theme(
-    panel.grid.major = element_line(color = "#E4E7E4"),
-    panel.grid.minor = element_blank(),
-    axis.line = element_line(color = "#CACFC9"),
-    plot.title = element_text(family = "Noto Serif TC",
-                              face = "bold", size = 16)
-  )
-}
 
-# scale_*_manual(values = epi_colors)
+ggplot(cases, aes(date, n, fill = region)) +
+  geom_col(width = 0.6) +
+  scale_fill_epi() +     # categorical, in priority order (1st = primary)
+  theme_epi()            # top/right spines off, horizontal grid, CJK fonts
 ```
+
+Key exports: `EPI_CATEGORICAL`, `EPI_LINE_COLORS`, `EPI_ACCENT`, `EPI_MONOCHROME`,
+`EPI_SEQUENTIAL`, `EPI_DIVERGING`; scales `scale_fill_epi()` / `scale_colour_epi()`,
+`scale_fill_epi_mono(key)` (Pattern E), `scale_*_epi_sequential()` / `_diverging()`;
+helpers `theme_epi()` and `trailing_ma()`. For line series use the darkened
+variants in `EPI_LINE_COLORS` (e.g. `EPI_LINE_COLORS$primary` = `#5D7F58`).
 
 ### 7.4 Excel / Office
 
@@ -436,6 +435,46 @@ Use the `epidemic-dataviz-theme.json` file (in the skill's assets):
 ```
 
 Import via: View → Themes → Browse for themes.
+
+### 7.6 Quarto
+
+Two complementary deliverables live in `resources/quarto/`:
+
+- **`_brand.yml`** (Quarto ≥ 1.6): unified branding — themes the document AND
+  plots (ggplot2 via thematic, matplotlib via brand). Drop it in the project root.
+- **`epidemic.scss`** (any version): HTML theme overriding Bootstrap `$primary`,
+  fonts, link/heading colors; exposes `--epi-cat-1`…`--epi-cat-6` CSS vars.
+
+```yaml
+# document YAML — SCSS approach (works on all Quarto versions)
+format:
+  html:
+    theme: [cosmo, epidemic.scss]
+    mainfont: "Noto Sans TC"
+```
+
+For precise categorical ordering / monochrome scales in plots, still `source()`
+`epidemic_palette.R` (or import `epidemic_palette.py`) inside code cells —
+`_brand.yml` themes plots but does not force the green→blue→yellow order.
+
+### 7.7 Streamlit
+
+`resources/streamlit/config.toml` themes the app chrome (copy to
+`.streamlit/config.toml`):
+
+```toml
+[theme]
+primaryColor = "#739A6D"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F2F3F1"
+textColor = "#181B18"
+font = "sans serif"
+```
+
+`[theme]` only colors the app shell — **not** charts. For brand-consistent charts,
+render with matplotlib (`apply_style()` then `st.pyplot(fig)`) or pass
+`CATEGORICAL` as the color sequence to Plotly (`color_discrete_sequence=CATEGORICAL`)
+or Altair (`alt.Scale(range=CATEGORICAL)`). See `resources/streamlit/README.md`.
 
 ## 8. Do & Don't Checklist
 
@@ -489,16 +528,19 @@ Each reference includes: when to use / when NOT to use; specific styling rules; 
 
 Resource files in the skill:
 - `scripts/epidemic_palette.py` — importable color module + `apply_style()` for matplotlib
+- `scripts/epidemic_palette.R` — R/ggplot2 mirror: `scale_fill_epi()`, `theme_epi()`, `trailing_ma()` (same HEX values as the Python module)
 - `scripts/generate_examples.py` — runnable script that produces all reference example PNGs
 - `scripts/generate_sample_data.py` — produces the 12 sample CSV datasets
 - `scripts/quickstart_with_sample_data.py` — runnable demo: reads sample-data, applies guideline
-- `tests/test_palette.py` — 72 automated tests (palette correctness + sample-data integrity)
+- `tests/test_palette.py` — 80 automated tests (palette correctness + sample-data integrity + R/Quarto/Streamlit cross-file consistency)
 - `assets/examples/*.png` — pre-generated reference images (19 canonical examples)
 - `assets/examples/quickstart/*.png` — examples produced by reading sample-data
 - `assets/sample-data/*.csv` — 12 realistic-but-fictional datasets covering all chart types
 - `assets/sample-data/README.md` — data dictionary explaining every column
 - `epidemic-dataviz-palette.csv` — full color table for Excel users
 - `epidemic-dataviz-theme.json` — Power BI theme file
+- `resources/quarto/_brand.yml` + `epidemic.scss` — Quarto branding (document + plots) and HTML SCSS theme
+- `resources/streamlit/config.toml` — Streamlit app theme (chrome) + charting guidance in its README
 - `resources/office-templates/*.xlsx` — pre-built Excel chart templates (5 patterns: bar, line, stacked, mono-stacked, pie)
 - `resources/office-templates/epidemic-report-template.pptx` — PowerPoint report template (6 slides, embedded PNGs)
 - `docs/guideline-slides-summary.html` / `.pdf` — slide-format guide, summary version (14 slides, 5-min skim)

@@ -483,11 +483,30 @@ class TestApplyStyle:
 # ============== 跨檔案一致性 ==============
 
 class TestCrossFileConsistency:
-    """檢查 SKILL.md、CSV、JSON 中的色彩與 Python 模組一致"""
+    """檢查 CSV、PowerBI JSON、R 模組、Quarto、Streamlit 交付檔的色彩與 Python 模組一致"""
 
     @property
     def package_root(self):
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    @property
+    def repo_root(self):
+        # package_root = skill/；repo 根目錄為其上一層（resources/ 在此）
+        return os.path.dirname(self.package_root)
+
+    def _read(self, *parts):
+        path = os.path.join(*parts)
+        if not os.path.exists(path):
+            pytest.skip(f"檔案不存在: {path}")
+        with open(path, encoding="utf-8") as f:
+            return f.read()
+
+    @staticmethod
+    def _find(pattern, content, label):
+        import re
+        m = re.search(pattern, content, re.S | re.M)
+        assert m, f"未找到{label}（pattern: {pattern}）"
+        return m.group(1)
 
     def test_csv_contains_primary(self):
         path = os.path.join(self.package_root, "epidemic-dataviz-palette.csv")
@@ -518,6 +537,73 @@ class TestCrossFileConsistency:
             theme = json.load(f)
         assert theme["good"] == ep.SEMANTIC["success"]
         assert theme["bad"] == ep.SEMANTIC["danger"]
+
+    # ---- R / ggplot2 模組（值級，對齊 PowerBI 逐色比對強度）----
+
+    def test_r_module_categorical_matches(self):
+        """R 模組 EPI_CATEGORICAL 必須與 Python CATEGORICAL 順序、值完全一致"""
+        import re
+        content = self._read(self.package_root, "scripts", "epidemic_palette.R")
+        body = self._find(r"EPI_CATEGORICAL\s*<-\s*c\((.*?)\)", content, "EPI_CATEGORICAL")
+        hexes = re.findall(r"#[0-9A-Fa-f]{6}", body)
+        assert hexes == ep.CATEGORICAL, \
+            f"R EPI_CATEGORICAL {hexes} 與 Python CATEGORICAL {ep.CATEGORICAL} 不一致"
+
+    def test_r_module_primary_line_accent_match(self):
+        """R 模組主色、折線黃加深版、警示紅須與 Python 一致"""
+        content = self._read(self.package_root, "scripts", "epidemic_palette.R")
+        primary = self._find(r'EPI_PRIMARY\s*<-\s*"(#[0-9A-Fa-f]{6})"', content, "EPI_PRIMARY")
+        assert primary == ep.PRIMARY, f"R EPI_PRIMARY {primary} != {ep.PRIMARY}"
+        line_yellow = self._find(r'yellow\s*=\s*"(#[0-9A-Fa-f]{6})"', content, "折線黃")
+        assert line_yellow == ep.LINE_COLORS["yellow"], \
+            f"R 折線黃 {line_yellow} != {ep.LINE_COLORS['yellow']}"
+        alert = self._find(r'alert\s*=\s*"(#[0-9A-Fa-f]{6})"', content, "警示紅")
+        assert alert == ep.ACCENT["alert"], f"R alert {alert} != {ep.ACCENT['alert']}"
+
+    def test_r_module_monochrome_matches(self):
+        """R 模組 EPI_MONOCHROME 各組必須與 Python MONOCHROME 完全一致"""
+        import re
+        content = self._read(self.package_root, "scripts", "epidemic_palette.R")
+        r_mono = {}
+        for key, body in re.findall(r'(focus_2|scale_[3-7])\s*=\s*c\((.*?)\)', content, re.S):
+            r_mono[key] = re.findall(r"#[0-9A-Fa-f]{6}", body)
+        assert set(r_mono) == set(ep.MONOCHROME), \
+            f"R 單色組合鍵 {set(r_mono)} 與 Python {set(ep.MONOCHROME)} 不一致"
+        for key, colors in ep.MONOCHROME.items():
+            assert r_mono[key] == colors, \
+                f"R MONOCHROME[{key}] {r_mono[key]} != Python {colors}"
+
+    # ---- Quarto 交付檔 ----
+
+    def test_quarto_brand_categorical_complete(self):
+        """Quarto _brand.yml 必須包含全部 6 個類別配色（避免非主色漂移）"""
+        content = self._read(self.repo_root, "resources", "quarto", "_brand.yml")
+        for hx in ep.CATEGORICAL:
+            assert hx in content, f"_brand.yml 缺少類別配色 {hx}"
+
+    def test_quarto_brand_primary_is_organizational(self):
+        """_brand.yml 的 sage 必為組織主色，且 primary 角色指向 sage"""
+        content = self._read(self.repo_root, "resources", "quarto", "_brand.yml")
+        sage = self._find(r'sage:\s*"(#[0-9A-Fa-f]{6})"', content, "_brand.yml sage")
+        assert sage == ep.PRIMARY, f"_brand.yml sage {sage} != 主色 {ep.PRIMARY}"
+        prim_role = self._find(r'^\s*primary:\s*(\S+)', content, "_brand.yml primary 角色")
+        assert prim_role == "sage", f"_brand.yml primary 角色應為 sage，實際 {prim_role}"
+
+    def test_quarto_scss_categorical_complete(self):
+        """epidemic.scss 的 --epi-cat-* 必須涵蓋全部 6 個類別配色"""
+        content = self._read(self.repo_root, "resources", "quarto", "epidemic.scss")
+        for hx in ep.CATEGORICAL:
+            assert hx in content, f"epidemic.scss 缺少類別配色 {hx}"
+
+    # ---- Streamlit 交付檔 ----
+
+    def test_streamlit_config_primary(self):
+        """Streamlit config.toml 的 primaryColor 必須是組織主色"""
+        content = self._read(self.repo_root, "resources", "streamlit", "config.toml")
+        primary = self._find(r'primaryColor\s*=\s*"(#[0-9A-Fa-f]{6})"', content,
+                             "Streamlit primaryColor")
+        assert primary == ep.PRIMARY, \
+            f"Streamlit primaryColor {primary} != 主色 {ep.PRIMARY}"
 
 
 class TestMonochrome:

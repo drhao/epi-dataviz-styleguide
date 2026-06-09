@@ -1,0 +1,15 @@
+# .streamlit/config.toml — 疫情資料視覺化指引 Streamlit 佈景主題
+#
+# 用法：複製本檔到你的 Streamlit app 專案的 .streamlit/config.toml。
+# 色票值與 skill/scripts/epidemic_palette.py 一致，主色 #739A6D（Sage Green）。
+#
+# 注意：Streamlit 的 [theme] 只控制「app 外觀」（chrome）的主色與背景，
+# 不直接控制圖表配色。圖表請用 matplotlib（import epidemic_palette 後
+# apply_style()），或 plotly / altair 並指定類別色序，詳見本資料夾 README.md。
+
+[theme]
+primaryColor = "#739A6D"             # Sage 主色：互動元件、滑桿、選取、連結
+backgroundColor = "#FFFFFF"          # 主背景
+secondaryBackgroundColor = "#F2F3F1" # 側欄／卡片背景（Neutral 100）
+textColor = "#181B18"                # 內文（Neutral 900）
+font = "sans serif"

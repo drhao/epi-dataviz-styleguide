@@ -1685,7 +1685,7 @@ footer ul{list-style:none;}
       <span class="chapter-sub">Implementation</span>
     </div>
     <p class="lead-para">
-      本指引提供可直接複製的 CSS 變數與常見資料視覺化工具（Python Matplotlib／Chart.js）的色票設定。
+      本指引提供可直接複製的 CSS 變數與常見資料視覺化工具（Python Matplotlib、R ggplot2、Quarto、Streamlit、Chart.js）的色票設定。
     </p>
 
     <h3>Excel ／ Microsoft 365</h3>
@@ -1833,6 +1833,38 @@ footer ul{list-style:none;}
 <span class="c-key">import</span> matplotlib.pyplot <span class="c-key">as</span> plt
 plt.rcParams[<span class="c-str">"axes.prop_cycle"</span>] = plt.cycler(<span class="c-str">color</span>=CATEGORICAL)
 plt.rcParams[<span class="c-str">"font.family"</span>] = <span class="c-str">"Noto Sans TC"</span></pre>
+
+    <h3>R ／ ggplot2</h3>
+    <p>Source 共用模組 <code>skill/scripts/epidemic_palette.R</code>（色票值與 Python 版一致），即可使用現成的 scale 與主題。類別依資料因子順序對應色票順序，第一類別即主色。</p>
+    <pre class="code">source("epidemic_palette.R")
+library(ggplot2)
+
+ggplot(cases, aes(date, n, fill = region)) +
+  geom_col(width = 0.6) +
+  scale_fill_epi() +     # 類別配色，依優先順序
+  theme_epi()            # 移除頂右框、僅水平格線、中文字型
+
+# 單色色階（Pattern E）：scale_fill_epi_mono("scale_4")
+# 序列／發散：scale_fill_epi_sequential() / scale_fill_epi_diverging()
+# 折線加深版：EPI_LINE_COLORS$primary（#5D7F58）</pre>
+
+    <h3>Quarto</h3>
+    <p><code>resources/quarto/</code> 提供兩種做法：<strong><code>_brand.yml</code></strong>（Quarto ≥ 1.6，統一品牌，同時套用文件主題與 ggplot2／matplotlib 圖表）與 <strong><code>epidemic.scss</code></strong>（任何版本，HTML 主題）。</p>
+    <pre class="code"># 文件 YAML（SCSS 做法，相容所有版本）
+format:
+  html:
+    theme: [cosmo, epidemic.scss]
+    mainfont: "Noto Sans TC"</pre>
+    <p>圖表若需精準的類別順序或單色色階，仍建議在 code cell 內 source <code>epidemic_palette.R</code> 或 import <code>epidemic_palette.py</code>。</p>
+
+    <h3>Streamlit</h3>
+    <p><code>resources/streamlit/config.toml</code> 設定 app 外觀（複製到 <code>.streamlit/config.toml</code>）。<code>[theme]</code> 只控制 app 外觀，<strong>不含圖表</strong>——圖表請用 matplotlib（<code>apply_style()</code> 後 <code>st.pyplot(fig)</code>），或將 <code>CATEGORICAL</code> 傳給 Plotly／Altair。</p>
+    <pre class="code">[theme]
+primaryColor = "#739A6D"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F2F3F1"
+textColor = "#181B18"
+font = "sans serif"</pre>
 
     <h3>命名慣例</h3>
     <p>在程式碼與設計檔中，建議統一使用以下命名規則：</p>

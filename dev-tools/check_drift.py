@@ -63,10 +63,11 @@ L3_PUBLIC = [      # 對外展示層
 class Check:
     """單一檢查項目"""
     name: str                          # 檢查名稱
-    keywords: list[str]                # 要找的關鍵字（任一出現即視為「有提及」）
+    keywords: list[str]                # 要找的關鍵字
     expected_in: list[str]             # 預期出現的檔案路徑列表
     description: str = ""              # 為什麼檢查這個
     optional_in: list[str] = field(default_factory=list)  # 出現也好,沒出現也 OK
+    match_all: bool = False            # True = 每個關鍵字都要出現（值級一致性）；False = 任一出現即可
 
 
 # ============== 檢查項目定義 ==============
@@ -106,13 +107,81 @@ CHECKS = [
         keywords=["#739A6D", "#739a6d"],
         expected_in=[
             "skill/scripts/epidemic_palette.py",
+            "skill/scripts/epidemic_palette.R",
             "skill/SKILL.md",
             "docs/guideline.md",
             "docs/guideline.html",
             "docs/index.html",
             "resources/palette.csv",
+            "resources/quarto/_brand.yml",
+            "resources/quarto/epidemic.scss",
+            "resources/streamlit/config.toml",
         ],
-        description="主色 HEX 必須在所有色彩定義檔中一致出現",
+        description="主色 HEX 必須在所有色彩定義檔中一致出現（含 R / Quarto / Streamlit 交付檔）",
+    ),
+    Check(
+        name="R / ggplot2 色票模組（epidemic_palette.R）",
+        # R 支援的權威是實際模組檔，文件層以 theme_epi / scale_fill_epi 指稱
+        keywords=["epidemic_palette.R", "theme_epi", "scale_fill_epi"],
+        expected_in=[
+            "skill/scripts/epidemic_palette.R",
+            "skill/SKILL.md",
+            "skill/SKILL-README.md",
+            "docs/guideline.md",
+            "docs/guideline.html",
+            "README.md",
+            "CHANGELOG.md",
+        ],
+        description="R / ggplot2 色票模組應在權威源、人類文件與對外文件一致出現",
+    ),
+    Check(
+        name="Quarto 支援（_brand.yml / SCSS）",
+        keywords=["Quarto", "_brand.yml", "epidemic.scss"],
+        expected_in=[
+            "resources/quarto/_brand.yml",
+            "resources/quarto/epidemic.scss",
+            "resources/quarto/README.md",
+            "skill/SKILL.md",
+            "docs/guideline.md",
+            "docs/guideline.html",
+            "README.md",
+            "CHANGELOG.md",
+        ],
+        description="Quarto 工具支援必須在交付檔與各層文件一致出現",
+    ),
+    Check(
+        name="Streamlit 支援（config.toml）",
+        keywords=["Streamlit", "streamlit"],
+        expected_in=[
+            "resources/streamlit/config.toml",
+            "resources/streamlit/README.md",
+            "skill/SKILL.md",
+            "docs/guideline.md",
+            "docs/guideline.html",
+            "README.md",
+            "CHANGELOG.md",
+        ],
+        description="Streamlit 工具支援必須在交付檔與各層文件一致出現",
+    ),
+    Check(
+        name="類別配色完整一致（R / Quarto 交付檔，值級）",
+        # 全部 6 個類別 HEX 都必須出現，避免非主色（藍/黃/鴨綠/銅/梅）悄悄漂移。
+        # config.toml 僅宣告主色，故不納入此檢查。
+        keywords=[
+            "#739A6D", "#587A9D", "#C8A041",
+            "#49888D", "#916E46", "#955F71",
+        ],
+        match_all=True,
+        expected_in=[
+            "skill/scripts/epidemic_palette.R",
+            "resources/quarto/_brand.yml",
+            "resources/quarto/epidemic.scss",
+        ],
+        description=(
+            "6 個類別配色 HEX 必須完整出現在 R / Quarto 交付檔。"
+            "check_drift 對其他交付檔僅驗主色出現,此項補上值級一致性,"
+            "與 test_palette.py 對 PowerBI 的逐色比對等強度。"
+        ),
     ),
     Check(
         name="紅色僅警示（不可作類別色）",
@@ -340,14 +409,26 @@ def file_contains_any(path: Path, keywords: list[str]) -> bool:
     return any(kw in content for kw in keywords)
 
 
+def file_contains_all(path: Path, keywords: list[str]) -> bool:
+    """檔案是否包含全部關鍵字（值級一致性檢查用）"""
+    if not path.exists():
+        return False
+    try:
+        content = path.read_text(encoding="utf-8")
+    except (UnicodeDecodeError, IsADirectoryError):
+        return False
+    return all(kw in content for kw in keywords)
+
+
 def check_concept_coverage(check: Check) -> tuple[bool, list[str], list[str]]:
     """檢查單一概念在預期檔案中的覆蓋情況。回傳 (是否全部通過, 缺漏的檔案, 在 optional 中發現的檔案)"""
     missing = []
     optional_found = []
+    contains = file_contains_all if check.match_all else file_contains_any
 
     for relpath in check.expected_in:
         path = REPO_ROOT / relpath
-        if not file_contains_any(path, check.keywords):
+        if not contains(path, check.keywords):
             missing.append(relpath)
 
     for relpath in check.optional_in:
