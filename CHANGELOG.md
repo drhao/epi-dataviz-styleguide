@@ -90,7 +90,19 @@
 
 ---
 
-## [Unreleased]
+## [1.1.0] - 2026-06-09
+
+繼 v1.0.0 後的第一個 MINOR 版本。重點:**2 個新規範 modifier(M1 不確定性、M2 small multiples)+ RFC-lite governance framework + R/Quarto/Streamlit 工具支援 + GitHub Actions CI + 互動式 chart 決策樹**。
+
+### ⚠ 對 Python `import` 用戶的遷移指引
+
+> 規範精神不變(MA 仍是 MA),但 Python 函式 rename。對「讀規範套用」的多數使用者無影響;若你的程式碼有 `from epidemic_palette import centered_ma`,跑這條 sed:
+>
+> ```bash
+> grep -rln "centered_ma" your/code/ | xargs sed -i 's/centered_ma/trailing_ma/g'
+> ```
+>
+> 演算法差異:centered(`i-3` 到 `i+3`)→ trailing(`i-6` 到 `i`)。圖表上 MA 線會往右平移約 3 天。詳見 RFC 2026-06-01 與 `references/M1-uncertainty-modifier.md` §相關說明。
 
 ### Added · 新增
 
@@ -278,4 +290,5 @@
 
 ---
 
+[1.1.0]: https://github.com/drhao/epi-dataviz-styleguide/releases/tag/v1.1.0
 [1.0.0]: https://github.com/drhao/epi-dataviz-styleguide/releases/tag/v1.0.0

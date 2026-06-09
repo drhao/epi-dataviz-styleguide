@@ -3,7 +3,7 @@
 > **Epidemic Data Visualization Style Guide**
 > 疫情資料分析、流行病學報告、儀表板與對外公告的視覺化標準
 
-[![Version](https://img.shields.io/badge/version-1.0-739A6D)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.1-739A6D)](./CHANGELOG.md)
 [![CI](https://github.com/drhao/epi-dataviz-styleguide/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/drhao/epi-dataviz-styleguide/actions/workflows/test.yml)
 [![License](https://img.shields.io/badge/license-Internal%20Use-A2ABA0)](./LICENSE)
 [![Pages](https://img.shields.io/badge/site-online-739A6D)](https://drhao.github.io/epi-dataviz-styleguide/)

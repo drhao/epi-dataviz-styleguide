@@ -334,9 +334,11 @@ grep -rln "被取代的舊用詞" .
 
 | 段 | 何時遞增 | 範例 |
 |---|---|---|
-| **MAJOR** | **BREAKING change** ── 既有圖表/程式碼套用本指引後會違規,或需要明顯遷移 | 移動平均函式 rename + 語意改變;Pattern 移除;規範條目的「適用 / 不適用」邊界明顯移動 |
-| **MINOR** | **新規範類別 / 新工具支援 / 重要文字精細化**,不打破既有 | 新 modifier(M1、M2);新 reference;新 chart-type;新範例庫;新交付格式 |
+| **MAJOR** | **規範精神大幅變動** ── 顛覆性改變,既有圖表必須大幅重做 | 主色廢除;4 項核心原則改寫;reference 結構重組(chart-type 重編號);Pattern 系統廢除 / 重建 |
+| **MINOR** | **新規範類別 / 新工具支援 / 演算法精細化** | 新 modifier(M1、M2);新 reference;新 chart-type;新範例庫;新交付格式;**MA 演算法調整**(centered → trailing 屬此級) |
 | **PATCH** | 錯字、格式調整、bug 修正、範例 PNG 重生、CI/build 流程改進 | 字型 fallback;CSS 微調;commit message 規範化 |
+
+> **Note · 為何 Python 函式 rename 不升 MAJOR**:本指引是「**規範文件 + 工具支援**」混合 repo,不是純 lib。Python 函式 rename(例 `centered_ma` → `trailing_ma`)雖對 import 用戶是 breaking,但對「讀規範套用」的多數使用者(設計師 / 分析師 / PM / 長官)衝擊有限,分類為 **MINOR**(CHANGELOG 內明示遷移 sed 指令即可)。嚴格 lib semver 的「任何 API rename = MAJOR」不直接套用 ── 我們關注的是「規範精神是否變動」。
 
 ### 何時 release(打 tag)
 
@@ -358,7 +360,7 @@ grep -rln "被取代的舊用詞" .
 v1.0 採納的規範(patterns A-E、9 種 chart types、4 核心原則等)視為 pre-RFC accepted。後續修訂依「影響範圍」決定版號:
 
 - 文字精細化(Y 軸「從零」→「直條必從零、折線視情境」)→ PATCH(語意未變)
-- 規範條目調整(MA 演算法變更)→ MAJOR(語意變)
+- 規範條目調整(MA 演算法 centered → trailing)→ MINOR(規範精神不變,仍是 MA;CHANGELOG 內提供 sed 遷移指令)
 - 新規範類別(M1、M2)→ MINOR(擴充)
 
 ### 與 RFC 流程的關係

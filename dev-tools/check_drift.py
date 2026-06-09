@@ -566,7 +566,11 @@ def check_deprecated_terms() -> list[tuple[str, str, list[str]]]:
                     continue
                 if path.name == "check_drift.py":
                     continue
-                if path.name == "CHANGELOG.md":
+                # 歷史紀錄與遷移文件可保留 deprecated terms 作說明
+                if path.name in ("CHANGELOG.md", "CONTRIBUTING.md"):
+                    continue
+                # docs/rfcs/ 內 RFC 文件可保留(描述演進過程)
+                if "rfcs" in path.parts:
                     continue
                 try:
                     if term in path.read_text(encoding="utf-8"):

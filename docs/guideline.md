@@ -1,6 +1,6 @@
 # 疫情資料視覺化指引
 
-> Epidemic Data Visualization Guideline · Version 1.0 · 2026
+> Epidemic Data Visualization Guideline · Version 1.1 · 2026
 > Public Sector Edition
 
 本指引提供組織內所有疫情資料分析、流行病學報告、儀表板與對外公告製作視覺化時的色彩、圖表與設計準則。考量疫情資訊的高敏感度，特別規範紅色僅用於強調與警示，避免過度引發公眾焦慮。
