@@ -12,6 +12,72 @@
    - [`CHANGELOG.md`](./CHANGELOG.md) 「Design Decisions」段落
 3. **討論再動手**：重大變動建議先在內部會議討論並達成共識。
 
+## 規範新增的 RFC-lite 流程
+
+下方「三種典型修改場景」處理**已決定**的變動如何同步到各層。但「**該不該加這個新規範**」屬於前置討論,需要 RFC 機制留存與盤點 ── **避免規範擴張讓既有運作良好的圖表被誤傷**。
+
+### 何時需要 RFC
+
+| 變動類型 | RFC? | 流程 |
+|---|---|---|
+| 錯字、格式 | ✗ | L1 |
+| 補充說明、新範例 | ✗ | L2 |
+| 既有規則調整 | △ | BREAKING 必寫;小調整視範圍 |
+| **新規範類別**(新圖表、新 pattern、新規則大類) | ✓ | RFC → L3 |
+| 新工具支援 / 新依賴 | ✗ | L3 (有先例:office-templates、slides) |
+
+### Stages
+
+#### Stage 0 ── 對話討論
+在 GitHub Issue / 維護者對話中發想,確認方向。
+
+#### Stage 1 ── 寫 RFC
+在 `docs/rfcs/YYYY-MM-NN-name.md` 用 `0000-template.md` 起草。
+
+**兩段必須完整填寫,缺一不可進 Pilot:**
+
+1. **Affected existing rules** ── 對既有 patterns / references / SKILL.md decision tree 的影響盤點
+2. **Regression check** ── 對既有 19 張範例 PNG 標記 `keep / adjust / waive / break`。若 `break` 數量 > 1,**警訊** ── 回 Stage 0 重新檢討方向
+
+#### Stage 2 ── Pilot(試行)
+
+- `skill/references/NN-xxx.md` 寫規範草案,**檔頭加 YAML frontmatter**:
+  ```yaml
+  ---
+  status: draft
+  rfc: 2026-06-NN-name
+  ---
+  ```
+- 範例放 `skill/assets/examples/_drafts/`(不混進 active 範例)
+- **`skill/SKILL.md` 的 decision tree 暫不更新** ── AI agent 不主動套用 draft 規範
+- `dev-tools/check_drift.py` 對 `status: draft` 的 reference 視為 informational(不強制全層同步)
+
+#### Stage 3 ── Promote 至 Active
+
+- 走完整 L1 → L2 → L3 同步流程
+- `status: draft` 改 `active`,SKILL.md decision tree 更新
+- CHANGELOG 加採納紀錄
+- RFC 的 Decision 段勾選 `Active`,更新 `docs/rfcs/README.md` 索引表
+
+#### Stage 4 ── 後續迭代
+
+- 規範錯了 → `status: deprecated` + 寫替代規範指向
+- 採用 `check_drift.py` 的 DEPRECATED_TERMS 機制掃描殘留引用
+
+### 寫作 guard rails(對抗規範擴張)
+
+新規範 reference 撰寫時:
+
+1. **必備兩段**:「適用情境」與「不適用情境」 ── 後者跟前者一樣重要
+2. **慎用絕對性用語**:「always / never / 一律 / 永遠 / 全部」,改用「除非 X,否則 Y」
+3. **盤點與既有規範的衝突**:強迫在 RFC 的 Affected existing rules 段交代
+
+### Pre-RFC 既有規範
+
+v1.0 的所有規範(patterns A-E、9 種圖表、4 項核心原則等)視為 **pre-RFC accepted**,不需回填 RFC 文件。CHANGELOG 的 v1.0.0 條目與 Design Decisions 段即為其紀錄。
+
+僅 v1.0 之後**新增的規範類別**需走 RFC。
+
 ## 三種典型修改場景
 
 ### 場景 A：修改色票
