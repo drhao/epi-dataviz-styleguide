@@ -264,7 +264,12 @@ datasets: [
 ## Decision · 決策狀態
 
 - [x] **Draft**   ── 草案 v3 完成(v1 + v2 + v3 reviewer feedback 皆已 incorporate;規則 11-13 經視覺對照定稿)
-- [ ] **Pilot**   ── **即將進入** ── 寫 `skill/references/M1-uncertainty-modifier.md`(`status: draft`),`SKILL.md` decision tree 暫不更新,範例放 `skill/assets/examples/_drafts/`
+- [x] **Pilot**   ── **2026-06-09 進入試行**
+  - `skill/references/M1-uncertainty-modifier.md`(`status: draft`)已建立
+  - `skill/assets/examples/_drafts/` 目錄 + 生成腳本 + README 已建立
+  - `SKILL.md` decision tree **未更新**(AI agent 不主動套用,僅使用者明確要求時依本規範實作)
+  - check_drift.py 的「Pilot 試行中的規範」段會列出 M1-uncertainty-modifier
+  - 維護者本機跑生成腳本可重生範例 PNG(本次 commit 不包含 PNG,因容器缺 CJK 字型)
 - [ ] **Active**  ── Pilot 跑一段時間無問題後升級,走完整 L1→L2→L3
 - [ ] **Withdrawn**
 

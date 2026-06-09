@@ -111,6 +111,14 @@
 - `docs/guideline.html` Chapter 11 新增「方法 C:使用預生成樣板」段落
 - `README.md`、`docs/index.html`、`skill/SKILL.md` 同步更新工具支援指引
 
+### Pilot · 試行中
+
+- **不確定性視覺化 modifier** ── [RFC 2026-06-01](docs/rfcs/2026-06-01-uncertainty.md)
+  - 對應 reference:`skill/references/M1-uncertainty-modifier.md`(`status: draft`)
+  - Pilot 階段範例:`skill/assets/examples/_drafts/m1_uncertainty_examples.py`
+  - **SKILL.md decision tree 未更新** ── AI agent 不主動套用,僅使用者明確要求時依本規範實作
+  - 規則重點:漸層帶(時序預測)+ error bar(少量類別,主色更深版,規則 13 強制不對稱 CI)
+
 ### Added · 新增(governance)
 
 - **RFC-lite 規範新增流程** ── `docs/rfcs/`
