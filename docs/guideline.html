@@ -420,6 +420,51 @@ strong{color:var(--n-900); font-weight:600;}
 }
 .cat-chip .hex{color:var(--n-500);}
 
+/* === 類別色完整 10 級色階(每色一列) === */
+.cat-scales{display:grid; gap:8px; margin:18px 0 28px;}
+.cat-scale-row{
+  display:grid;
+  grid-template-columns:130px 1fr;
+  gap:12px;
+  align-items:stretch;
+}
+.cat-scale-label{
+  display:flex; align-items:center;
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:13px;
+  color:var(--n-800);
+  padding-right:8px;
+  border-right:2px solid var(--n-200);
+}
+.cat-scale-strip{
+  display:grid;
+  grid-template-columns:repeat(10, 1fr);
+  border:1px solid var(--n-200);
+}
+.cat-scale-strip .swatch{aspect-ratio:1.4; padding:8px 6px; font-size:9px;}
+.cat-scale-strip .swatch[data-base="true"]{
+  outline:2px solid var(--p-700);
+  outline-offset:-2px;
+  z-index:1;
+  position:relative;
+}
+.cat-scale-strip .swatch[data-base="true"]::after{
+  content:'BASE';
+  position:absolute;
+  top:-12px; left:50%;
+  transform:translateX(-50%);
+  font-family:var(--mono);
+  font-size:8px;
+  letter-spacing:1.5px;
+  color:var(--p-700);
+  background:var(--n-0);
+  padding:1px 5px;
+  border:1px solid var(--p-300);
+  white-space:nowrap;
+}
+.cat-scales{margin-top:36px;}
+
 /* === 配色搭配模式卡片 === */
 .combo-grid{
   display:grid;
@@ -916,6 +961,103 @@ footer ul{list-style:none;}
       <div class="cat-chip"><div class="color" style="background:#955F71"></div><div class="meta"><div class="name">06 Plum</div><div class="hex">#955F71</div></div></div>
     </div>
 
+    <h3>類別色完整 10 級色階</h3>
+    <p>每個類別色都有對應 <code>PRIMARY_SCALE</code> 結構的 10 級色階(50/100/200/300/400/<strong>500</strong>/600/700/800/900),<strong>500 級 = 上方類別配色 base</strong>。用途:多序列圖表中每序列同時用「淺階填色帶 + 深階主線」(M1 不確定性 modifier 的常見組合);KPI dashboard 卡片三層色(50 底色 + 500 主色 + 700 文字);跨類別保持 design system 一致性。</p>
+
+    <div class="cat-scales">
+      <div class="cat-scale-row">
+        <span class="cat-scale-label">Sage(主色)</span>
+        <div class="cat-scale-strip">
+          <div class="swatch light" style="background:#F6F9F6"><span class="step">50</span><span class="hex">#F6F9F6</span></div>
+          <div class="swatch light" style="background:#E8EEE7"><span class="step">100</span><span class="hex">#E8EEE7</span></div>
+          <div class="swatch light" style="background:#D1DECF"><span class="step">200</span><span class="hex">#D1DECF</span></div>
+          <div class="swatch light" style="background:#B4C9B1"><span class="step">300</span><span class="hex">#B4C9B1</span></div>
+          <div class="swatch light" style="background:#91B08C"><span class="step">400</span><span class="hex">#91B08C</span></div>
+          <div class="swatch light" data-base="true" style="background:#739A6D"><span class="step">500</span><span class="hex">#739A6D</span></div>
+          <div class="swatch dark" style="background:#5D7F58"><span class="step">600</span><span class="hex">#5D7F58</span></div>
+          <div class="swatch dark" style="background:#496345"><span class="step">700</span><span class="hex">#496345</span></div>
+          <div class="swatch dark" style="background:#374C34"><span class="step">800</span><span class="hex">#374C34</span></div>
+          <div class="swatch dark" style="background:#253423"><span class="step">900</span><span class="hex">#253423</span></div>
+        </div>
+      </div>
+      <div class="cat-scale-row">
+        <span class="cat-scale-label">Slate Blue</span>
+        <div class="cat-scale-strip">
+          <div class="swatch light" style="background:#EBEDF0"><span class="step">50</span><span class="hex">#EBEDF0</span></div>
+          <div class="swatch light" style="background:#DBE0E6"><span class="step">100</span><span class="hex">#DBE0E6</span></div>
+          <div class="swatch light" style="background:#CBD6E2"><span class="step">200</span><span class="hex">#CBD6E2</span></div>
+          <div class="swatch light" style="background:#A8B9CD"><span class="step">300</span><span class="hex">#A8B9CD</span></div>
+          <div class="swatch light" style="background:#7E97B7"><span class="step">400</span><span class="hex">#7E97B7</span></div>
+          <div class="swatch dark" data-base="true" style="background:#587A9D"><span class="step">500</span><span class="hex">#587A9D</span></div>
+          <div class="swatch dark" style="background:#486480"><span class="step">600</span><span class="hex">#486480</span></div>
+          <div class="swatch dark" style="background:#394E64"><span class="step">700</span><span class="hex">#394E64</span></div>
+          <div class="swatch dark" style="background:#2A3B4D"><span class="step">800</span><span class="hex">#2A3B4D</span></div>
+          <div class="swatch dark" style="background:#1C2835"><span class="step">900</span><span class="hex">#1C2835</span></div>
+        </div>
+      </div>
+      <div class="cat-scale-row">
+        <span class="cat-scale-label">Mustard</span>
+        <div class="cat-scale-strip">
+          <div class="swatch light" style="background:#F2F0E8"><span class="step">50</span><span class="hex">#F2F0E8</span></div>
+          <div class="swatch light" style="background:#EBE6D6"><span class="step">100</span><span class="hex">#EBE6D6</span></div>
+          <div class="swatch light" style="background:#EDE4C0"><span class="step">200</span><span class="hex">#EDE4C0</span></div>
+          <div class="swatch light" style="background:#E1D299"><span class="step">300</span><span class="hex">#E1D299</span></div>
+          <div class="swatch light" style="background:#D4BD68"><span class="step">400</span><span class="hex">#D4BD68</span></div>
+          <div class="swatch light" data-base="true" style="background:#C8A041"><span class="step">500</span><span class="hex">#C8A041</span></div>
+          <div class="swatch light" style="background:#A88531"><span class="step">600</span><span class="hex">#A88531</span></div>
+          <div class="swatch dark" style="background:#826727"><span class="step">700</span><span class="hex">#826727</span></div>
+          <div class="swatch dark" style="background:#654F1C"><span class="step">800</span><span class="hex">#654F1C</span></div>
+          <div class="swatch dark" style="background:#463612"><span class="step">900</span><span class="hex">#463612</span></div>
+        </div>
+      </div>
+      <div class="cat-scale-row">
+        <span class="cat-scale-label">Teal</span>
+        <div class="cat-scale-strip">
+          <div class="swatch light" style="background:#EAF0F0"><span class="step">50</span><span class="hex">#EAF0F0</span></div>
+          <div class="swatch light" style="background:#DAE6E6"><span class="step">100</span><span class="hex">#DAE6E6</span></div>
+          <div class="swatch light" style="background:#C9E2E4"><span class="step">200</span><span class="hex">#C9E2E4</span></div>
+          <div class="swatch light" style="background:#A8CFD2"><span class="step">300</span><span class="hex">#A8CFD2</span></div>
+          <div class="swatch light" style="background:#7FB9BD"><span class="step">400</span><span class="hex">#7FB9BD</span></div>
+          <div class="swatch dark" data-base="true" style="background:#49888D"><span class="step">500</span><span class="hex">#49888D</span></div>
+          <div class="swatch dark" style="background:#3C6F73"><span class="step">600</span><span class="hex">#3C6F73</span></div>
+          <div class="swatch dark" style="background:#2F575A"><span class="step">700</span><span class="hex">#2F575A</span></div>
+          <div class="swatch dark" style="background:#234345"><span class="step">800</span><span class="hex">#234345</span></div>
+          <div class="swatch dark" style="background:#172E2F"><span class="step">900</span><span class="hex">#172E2F</span></div>
+        </div>
+      </div>
+      <div class="cat-scale-row">
+        <span class="cat-scale-label">Bronze</span>
+        <div class="cat-scale-strip">
+          <div class="swatch light" style="background:#F0EDEA"><span class="step">50</span><span class="hex">#F0EDEA</span></div>
+          <div class="swatch light" style="background:#E7DFDA"><span class="step">100</span><span class="hex">#E7DFDA</span></div>
+          <div class="swatch light" style="background:#E5D4C8"><span class="step">200</span><span class="hex">#E5D4C8</span></div>
+          <div class="swatch light" style="background:#D4B9A6"><span class="step">300</span><span class="hex">#D4B9A6</span></div>
+          <div class="swatch light" style="background:#C0987C"><span class="step">400</span><span class="hex">#C0987C</span></div>
+          <div class="swatch dark" data-base="true" style="background:#916E46"><span class="step">500</span><span class="hex">#916E46</span></div>
+          <div class="swatch dark" style="background:#765A39"><span class="step">600</span><span class="hex">#765A39</span></div>
+          <div class="swatch dark" style="background:#5C462D"><span class="step">700</span><span class="hex">#5C462D</span></div>
+          <div class="swatch dark" style="background:#473622"><span class="step">800</span><span class="hex">#473622</span></div>
+          <div class="swatch dark" style="background:#312416"><span class="step">900</span><span class="hex">#312416</span></div>
+        </div>
+      </div>
+      <div class="cat-scale-row">
+        <span class="cat-scale-label">Plum</span>
+        <div class="cat-scale-strip">
+          <div class="swatch light" style="background:#EFEBEE"><span class="step">50</span><span class="hex">#EFEBEE</span></div>
+          <div class="swatch light" style="background:#E5DCE2"><span class="step">100</span><span class="hex">#E5DCE2</span></div>
+          <div class="swatch light" style="background:#E0CDDA"><span class="step">200</span><span class="hex">#E0CDDA</span></div>
+          <div class="swatch light" style="background:#CCAEC0"><span class="step">300</span><span class="hex">#CCAEC0</span></div>
+          <div class="swatch light" style="background:#B4889E"><span class="step">400</span><span class="hex">#B4889E</span></div>
+          <div class="swatch dark" data-base="true" style="background:#955F71"><span class="step">500</span><span class="hex">#955F71</span></div>
+          <div class="swatch dark" style="background:#7A4E5C"><span class="step">600</span><span class="hex">#7A4E5C</span></div>
+          <div class="swatch dark" style="background:#5F3D48"><span class="step">700</span><span class="hex">#5F3D48</span></div>
+          <div class="swatch dark" style="background:#492E37"><span class="step">800</span><span class="hex">#492E37</span></div>
+          <div class="swatch dark" style="background:#321F25"><span class="step">900</span><span class="hex">#321F25</span></div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--n-600);margin-top:8px;">色階生成腳本:<code>dev-tools/generate_categorical_scales.py</code>。完整 R 版常數見 <code>skill/scripts/epidemic_palette.R</code>。</p>
     <h3>強調色 ／ Accent Colors</h3>
     <p>強調色為紅／橙色系，<strong>不得作為一般類別配色使用</strong>，僅用於：超過警戒值的資料點、關鍵異常、年度高峰、需要立即注意的訊息。一張圖中強調色出現的元素應少於 20%。強調強度由強到弱：Alert Red &gt; Terracotta &gt; Clay &gt; Caution Amber。</p>
 
