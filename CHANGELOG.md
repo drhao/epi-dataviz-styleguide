@@ -90,6 +90,19 @@
 
 ---
 
+## [Unreleased]
+
+### Added · 新增(色彩系統擴充)
+
+- **6 個類別色完整 10 級色階** ── `skill/scripts/epidemic_palette.py` 新增 `SLATE_SCALE` / `MUSTARD_SCALE` / `TEAL_SCALE` / `BRONZE_SCALE` / `PLUM_SCALE` 5 個常數,加上 `CATEGORICAL_SCALES` dict lookup(`sage` 對應既有 PRIMARY_SCALE)
+  - 每個色階 10 級 50/100/200/300/400/**500**/600/700/800/900,**500 為 CATEGORICAL 對應 base**
+  - 用途:多序列 emphasis(淺色背景帶 + 深色主線)、KPI dashboard 三層色、跨類別保持 design system 一致性
+  - 生成方法:淺階(50-400)用 PRIMARY 各級 lightness 為模板,Mustard / Bronze / Plum 在淺階套微 hue shift 避免「米色家族」相近;500 為 base;深階(600-900)用該類別 base lightness × PRIMARY 比例;50/100 lightness 比 PRIMARY 對應級略低(0.93/0.88 vs 0.97/0.92)讓 hue 有色感空間
+  - 新增 `dev-tools/generate_categorical_scales.py` 一次性生成工具 + 色卡對照 PNG(輸出 `docs/examples/categorical-scales.png`)
+  - 同步:`skill/scripts/epidemic_palette.R` 加 `EPI_*_SCALE` 5 個常數 + `EPI_CATEGORICAL_SCALES` list、`skill/SKILL.md` §1.2.1、`docs/guideline.md` §3.1.1、`resources/palette.csv` 加 50 個 entries
+  - 測試:`test_palette.py` 新增 3 個驗證(各色階 10 級、500 必為 base、單調 luminance 遞減)── 80 → 83 個測試
+  - `dev-tools/check_drift.py` 新增「類別色完整 10 級色階」CHECK
+
 ## [1.1.0] - 2026-06-09
 
 繼 v1.0.0 後的第一個 MINOR 版本。重點:**2 個新規範 modifier(M1 不確定性、M2 small multiples)+ RFC-lite governance framework + R/Quarto/Streamlit 工具支援 + GitHub Actions CI + 互動式 chart 決策樹**。

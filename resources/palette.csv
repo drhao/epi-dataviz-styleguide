@@ -35,3 +35,53 @@ Semantic,Danger,danger,#BE373C,190,55,60,未達標 異常
 Semantic,Info,info,#477A9E,71,122,158,提示 參考
 Line Variants,Line Primary (折線深主色),line-primary,#5D7F58,93,127,88,折線圖主序列
 Line Variants,Line Mustard (折線深黃),line-mustard,#A8821F,168,130,31,折線圖黃色序列
+Slate Scale,Slate 50,slate-50,#EBEDF0,235,237,240,極淺背景
+Slate Scale,Slate 100,slate-100,#DBE0E6,219,224,230,卡片底色
+Slate Scale,Slate 200,slate-200,#CBD6E2,203,214,226,輕度填色
+Slate Scale,Slate 300,slate-300,#A8B9CD,168,185,205,中度填色 / 圖示
+Slate Scale,Slate 400,slate-400,#7E97B7,126,151,183,中等飽和
+Slate Scale,Slate 500,slate-500,#587A9D,88,122,157,主色(類別配色)
+Slate Scale,Slate 600,slate-600,#486480,72,100,128,折線深版
+Slate Scale,Slate 700,slate-700,#394E64,57,78,100,文字 / 邊框
+Slate Scale,Slate 800,slate-800,#2A3B4D,42,59,77,深色標題
+Slate Scale,Slate 900,slate-900,#1C2835,28,40,53,極深背景
+Mustard Scale,Mustard 50,mustard-50,#F2F0E8,242,240,232,極淺背景
+Mustard Scale,Mustard 100,mustard-100,#EBE6D6,235,230,214,卡片底色
+Mustard Scale,Mustard 200,mustard-200,#EDE4C0,237,228,192,輕度填色
+Mustard Scale,Mustard 300,mustard-300,#E1D299,225,210,153,中度填色 / 圖示
+Mustard Scale,Mustard 400,mustard-400,#D4BD68,212,189,104,中等飽和
+Mustard Scale,Mustard 500,mustard-500,#C8A041,200,160,65,主色(類別配色)
+Mustard Scale,Mustard 600,mustard-600,#A88531,168,133,49,折線深版
+Mustard Scale,Mustard 700,mustard-700,#826727,130,103,39,文字 / 邊框
+Mustard Scale,Mustard 800,mustard-800,#654F1C,101,79,28,深色標題
+Mustard Scale,Mustard 900,mustard-900,#463612,70,54,18,極深背景
+Teal Scale,Teal 50,teal-50,#EAF0F0,234,240,240,極淺背景
+Teal Scale,Teal 100,teal-100,#DAE6E6,218,230,230,卡片底色
+Teal Scale,Teal 200,teal-200,#C9E2E4,201,226,228,輕度填色
+Teal Scale,Teal 300,teal-300,#A8CFD2,168,207,210,中度填色 / 圖示
+Teal Scale,Teal 400,teal-400,#7FB9BD,127,185,189,中等飽和
+Teal Scale,Teal 500,teal-500,#49888D,73,136,141,主色(類別配色)
+Teal Scale,Teal 600,teal-600,#3C6F73,60,111,115,折線深版
+Teal Scale,Teal 700,teal-700,#2F575A,47,87,90,文字 / 邊框
+Teal Scale,Teal 800,teal-800,#234345,35,67,69,深色標題
+Teal Scale,Teal 900,teal-900,#172E2F,23,46,47,極深背景
+Bronze Scale,Bronze 50,bronze-50,#F0EDEA,240,237,234,極淺背景
+Bronze Scale,Bronze 100,bronze-100,#E7DFDA,231,223,218,卡片底色
+Bronze Scale,Bronze 200,bronze-200,#E5D4C8,229,212,200,輕度填色
+Bronze Scale,Bronze 300,bronze-300,#D4B9A6,212,185,166,中度填色 / 圖示
+Bronze Scale,Bronze 400,bronze-400,#C0987C,192,152,124,中等飽和
+Bronze Scale,Bronze 500,bronze-500,#916E46,145,110,70,主色(類別配色)
+Bronze Scale,Bronze 600,bronze-600,#765A39,118,90,57,折線深版
+Bronze Scale,Bronze 700,bronze-700,#5C462D,92,70,45,文字 / 邊框
+Bronze Scale,Bronze 800,bronze-800,#473622,71,54,34,深色標題
+Bronze Scale,Bronze 900,bronze-900,#312416,49,36,22,極深背景
+Plum Scale,Plum 50,plum-50,#EFEBEE,239,235,238,極淺背景
+Plum Scale,Plum 100,plum-100,#E5DCE2,229,220,226,卡片底色
+Plum Scale,Plum 200,plum-200,#E0CDDA,224,205,218,輕度填色
+Plum Scale,Plum 300,plum-300,#CCAEC0,204,174,192,中度填色 / 圖示
+Plum Scale,Plum 400,plum-400,#B4889E,180,136,158,中等飽和
+Plum Scale,Plum 500,plum-500,#955F71,149,95,113,主色(類別配色)
+Plum Scale,Plum 600,plum-600,#7A4E5C,122,78,92,折線深版
+Plum Scale,Plum 700,plum-700,#5F3D48,95,61,72,文字 / 邊框
+Plum Scale,Plum 800,plum-800,#492E37,73,46,55,深色標題
+Plum Scale,Plum 900,plum-900,#321F25,50,31,37,極深背景

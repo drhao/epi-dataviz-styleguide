@@ -58,6 +58,88 @@ CATEGORICAL = [
     "#955F71",  # 06 Plum
 ]
 
+# === 類別色完整 10 級色階(對應 PRIMARY_SCALE 結構)===
+# 500 = CATEGORICAL 主色(權威);其他級別由 dev-tools/generate_categorical_scales.py 生成
+# 淺階(50-400)用 PRIMARY 該級 lightness + 部分類別色加 hue shift 拉開視覺
+# 深階(600-900)用該類別 base lightness × PRIMARY 比例
+# 50/100 level lightness 比 PRIMARY 對應級低(0.93/0.88 vs 0.97/0.92),
+# 讓非主色 hue 有更多色感空間
+
+SLATE_SCALE = [
+    "#EBEDF0",  # 50
+    "#DBE0E6",  # 100
+    "#CBD6E2",  # 200
+    "#A8B9CD",  # 300
+    "#7E97B7",  # 400
+    "#587A9D",  # 500 ← base
+    "#486480",  # 600
+    "#394E64",  # 700
+    "#2A3B4D",  # 800
+    "#1C2835",  # 900
+]
+
+MUSTARD_SCALE = [
+    "#F2F0E8",  # 50
+    "#EBE6D6",  # 100
+    "#EDE4C0",  # 200
+    "#E1D299",  # 300
+    "#D4BD68",  # 400
+    "#C8A041",  # 500 ← base
+    "#A88531",  # 600
+    "#826727",  # 700
+    "#654F1C",  # 800
+    "#463612",  # 900
+]
+
+TEAL_SCALE = [
+    "#EAF0F0",  # 50
+    "#DAE6E6",  # 100
+    "#C9E2E4",  # 200
+    "#A8CFD2",  # 300
+    "#7FB9BD",  # 400
+    "#49888D",  # 500 ← base
+    "#3C6F73",  # 600
+    "#2F575A",  # 700
+    "#234345",  # 800
+    "#172E2F",  # 900
+]
+
+BRONZE_SCALE = [
+    "#F0EDEA",  # 50
+    "#E7DFDA",  # 100
+    "#E5D4C8",  # 200
+    "#D4B9A6",  # 300
+    "#C0987C",  # 400
+    "#916E46",  # 500 ← base
+    "#765A39",  # 600
+    "#5C462D",  # 700
+    "#473622",  # 800
+    "#312416",  # 900
+]
+
+PLUM_SCALE = [
+    "#EFEBEE",  # 50
+    "#E5DCE2",  # 100
+    "#E0CDDA",  # 200
+    "#CCAEC0",  # 300
+    "#B4889E",  # 400
+    "#955F71",  # 500 ← base
+    "#7A4E5C",  # 600
+    "#5F3D48",  # 700
+    "#492E37",  # 800
+    "#321F25",  # 900
+]
+
+# 統一 lookup:類別名 → 色階(便於迴圈處理或多序列 emphasis)
+CATEGORICAL_SCALES = {
+    "sage":    PRIMARY_SCALE,
+    "slate":   SLATE_SCALE,
+    "mustard": MUSTARD_SCALE,
+    "teal":    TEAL_SCALE,
+    "bronze":  BRONZE_SCALE,
+    "plum":    PLUM_SCALE,
+}
+
 # 折線專用加深版
 LINE_COLORS = {
     "primary": "#5D7F58",

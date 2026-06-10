@@ -60,6 +60,32 @@ Use in this exact order. Take only what you need (2 categories → use first 2; 
 
 **Maximum 6 categories.** Beyond that, merge to "Other" (use Neutral `#CACFC9`).
 
+#### 1.2.1 Full 10-step Scales (each categorical color)
+
+Each of the 6 categorical colors has a full 10-step scale (50/100/200/300/400/**500**/600/700/800/900), mirroring `PRIMARY_SCALE`. The **500 level always equals the `CATEGORICAL` base**.
+
+```python
+from epidemic_palette import (
+    PRIMARY_SCALE,   # sage (also CATEGORICAL[0] base at 500)
+    SLATE_SCALE, MUSTARD_SCALE, TEAL_SCALE, BRONZE_SCALE, PLUM_SCALE,
+    CATEGORICAL_SCALES,  # dict lookup: "sage"/"slate"/"mustard"/"teal"/"bronze"/"plum"
+)
+
+# Example: multi-series chart where each series has light bg + dark line
+for i, key in enumerate(["sage", "slate", "mustard"]):
+    scale = CATEGORICAL_SCALES[key]
+    ax.fill_between(x, lower, upper, color=scale[2], alpha=0.4)  # 200 level band
+    ax.plot(x, mid, color=scale[6], linewidth=2.5)               # 600 level line
+```
+
+**Generation method** (for transparency):
+- Light steps (50-400): use PRIMARY scale's per-step lightness as template; selected hues (mustard, bronze, plum) apply a small hue shift in light steps to keep them visually distinct from each other when desaturated (Bronze 50 vs Plum 50 would otherwise both look like off-white)
+- 500: the categorical base (authoritative)
+- Dark steps (600-900): scale the base lightness by the PRIMARY-ratio (avoiding collisions when base is already dark like Bronze)
+- 50/100 lightness slightly lower than PRIMARY 50/100 (0.93/0.88 vs 0.97/0.92), giving non-sage hues more room to express color identity
+
+Source-of-truth implementation: `dev-tools/generate_categorical_scales.py`.
+
 ### 1.3 Accent Colors (NEVER use as a regular categorical)
 
 Red/orange family is reserved for emphasis. Use sparingly (< 20% of elements in a chart).

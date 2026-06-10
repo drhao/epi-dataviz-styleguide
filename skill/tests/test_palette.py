@@ -120,6 +120,27 @@ class TestOrdering:
         for i in range(len(lums) - 1):
             assert lums[i] > lums[i+1], f"序列色階非單調，step {i}"
 
+    def test_categorical_scales_have_10_levels(self):
+        """6 個類別色階各有 10 級"""
+        for name, scale in ep.CATEGORICAL_SCALES.items():
+            assert len(scale) == 10, f"{name}_SCALE 必須 10 級,實際 {len(scale)}"
+
+    def test_categorical_scales_500_is_base(self):
+        """每個類別色階的 500 級必須等於 CATEGORICAL 對應 base"""
+        scale_order = ["sage", "slate", "mustard", "teal", "bronze", "plum"]
+        for i, name in enumerate(scale_order):
+            assert ep.CATEGORICAL_SCALES[name][5].upper() == ep.CATEGORICAL[i].upper(), \
+                f"{name}_SCALE[5] 必須等於 CATEGORICAL[{i}]({ep.CATEGORICAL[i]})"
+
+    def test_categorical_scales_monotonically_darken(self):
+        """6 個類別色階各自從 50 到 900 單調變暗"""
+        from color_utils import relative_luminance, hex_to_rgb
+        for name, scale in ep.CATEGORICAL_SCALES.items():
+            lums = [relative_luminance(hex_to_rgb(c)) for c in scale]
+            for i in range(len(lums) - 1):
+                assert lums[i] > lums[i+1], \
+                    f"{name}_SCALE 非單調: step {i} → {i+1}"
+
 
 # ============== WCAG 對比度 ==============
 

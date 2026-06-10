@@ -405,6 +405,34 @@ CHECKS = [
         ),
     ),
     Check(
+        name="類別色完整 10 級色階(CATEGORICAL_SCALES)",
+        keywords=[
+            "CATEGORICAL_SCALES",
+            "SLATE_SCALE", "MUSTARD_SCALE", "TEAL_SCALE",
+            "BRONZE_SCALE", "PLUM_SCALE",
+            "EPI_CATEGORICAL_SCALES",  # R 版
+            "Slate Scale", "Mustard Scale", "Teal Scale",
+            "Bronze Scale", "Plum Scale",  # palette.csv Group 名
+            "categorical-scales", "categorical scales",  # 通用提及
+        ],
+        expected_in=[
+            "skill/scripts/epidemic_palette.py",
+            "skill/scripts/epidemic_palette.R",
+            "skill/SKILL.md",
+            "docs/guideline.md",
+            "resources/palette.csv",
+            "CHANGELOG.md",
+        ],
+        optional_in=[
+            "dev-tools/generate_categorical_scales.py",  # 生成工具,自動 import
+        ],
+        description=(
+            "6 個類別色各自的完整 10 級色階(對應 PRIMARY_SCALE 結構),"
+            "500 級必為 CATEGORICAL 對應 base。生成腳本與規範權威源、"
+            "R 版、palette.csv、文件層應同步。"
+        ),
+    ),
+    Check(
         name="重症在底（單色堆疊原則）",
         # SKILL.md 用英文 "darkest color at the base"
         keywords=[

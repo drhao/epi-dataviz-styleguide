@@ -41,6 +41,44 @@ EPI_CATEGORICAL <- c(
   "#955F71"   # 06 Plum
 )
 
+# === 類別色完整 10 級色階(對應 EPI_PRIMARY_SCALE 結構)===
+# 500 = EPI_CATEGORICAL 主色;其他級別由 dev-tools/generate_categorical_scales.py 生成
+EPI_SLATE_SCALE <- c(
+  "#EBEDF0", "#DBE0E6", "#CBD6E2", "#A8B9CD", "#7E97B7",
+  "#587A9D",  # 500 ← base
+  "#486480", "#394E64", "#2A3B4D", "#1C2835"
+)
+EPI_MUSTARD_SCALE <- c(
+  "#F2F0E8", "#EBE6D6", "#EDE4C0", "#E1D299", "#D4BD68",
+  "#C8A041",  # 500 ← base
+  "#A88531", "#826727", "#654F1C", "#463612"
+)
+EPI_TEAL_SCALE <- c(
+  "#EAF0F0", "#DAE6E6", "#C9E2E4", "#A8CFD2", "#7FB9BD",
+  "#49888D",  # 500 ← base
+  "#3C6F73", "#2F575A", "#234345", "#172E2F"
+)
+EPI_BRONZE_SCALE <- c(
+  "#F0EDEA", "#E7DFDA", "#E5D4C8", "#D4B9A6", "#C0987C",
+  "#916E46",  # 500 ← base
+  "#765A39", "#5C462D", "#473622", "#312416"
+)
+EPI_PLUM_SCALE <- c(
+  "#EFEBEE", "#E5DCE2", "#E0CDDA", "#CCAEC0", "#B4889E",
+  "#955F71",  # 500 ← base
+  "#7A4E5C", "#5F3D48", "#492E37", "#321F25"
+)
+
+# 統一 lookup list
+EPI_CATEGORICAL_SCALES <- list(
+  sage    = EPI_PRIMARY_SCALE,
+  slate   = EPI_SLATE_SCALE,
+  mustard = EPI_MUSTARD_SCALE,
+  teal    = EPI_TEAL_SCALE,
+  bronze  = EPI_BRONZE_SCALE,
+  plum    = EPI_PLUM_SCALE
+)
+
 # === 折線專用加深版（細線比色塊顯淺，需加深以維持對比）===
 EPI_LINE_COLORS <- list(
   primary = "#5D7F58",

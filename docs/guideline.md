@@ -84,6 +84,30 @@
 | 5 | Bronze | `#916E46` | 第五類別 |
 | 6 | Plum | `#955F71` | 第六類別 |
 
+#### 3.1.1 類別色完整 10 級色階
+
+每個類別色都有對應 `PRIMARY_SCALE` 結構的 10 級色階(50/100/200/300/400/**500**/600/700/800/900),**500 級等於上表 base**。
+
+```python
+from epidemic_palette import (
+    PRIMARY_SCALE, SLATE_SCALE, MUSTARD_SCALE,
+    TEAL_SCALE, BRONZE_SCALE, PLUM_SCALE,
+    CATEGORICAL_SCALES,  # dict lookup
+)
+```
+
+用途:多序列圖表內,每序列同時用「淺色背景帶 + 深色主線」(M1 不確定性 modifier 與多序列 emphasis 場景);或 KPI dashboard 內各指標卡需要主色 + 淺色底 + 深色文字三層。
+
+| 色階 | 50 | 100 | 200 | 300 | 400 | **500** | 600 | 700 | 800 | 900 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Slate Blue | `#EBEDF0` | `#DBE0E6` | `#CBD6E2` | `#A8B9CD` | `#7E97B7` | **`#587A9D`** | `#486480` | `#394E64` | `#2A3B4D` | `#1C2835` |
+| Mustard | `#F2F0E8` | `#EBE6D6` | `#EDE4C0` | `#E1D299` | `#D4BD68` | **`#C8A041`** | `#A88531` | `#826727` | `#654F1C` | `#463612` |
+| Teal | `#EAF0F0` | `#DAE6E6` | `#C9E2E4` | `#A8CFD2` | `#7FB9BD` | **`#49888D`** | `#3C6F73` | `#2F575A` | `#234345` | `#172E2F` |
+| Bronze | `#F0EDEA` | `#E7DFDA` | `#E5D4C8` | `#D4B9A6` | `#C0987C` | **`#916E46`** | `#765A39` | `#5C462D` | `#473622` | `#312416` |
+| Plum | `#EFEBEE` | `#E5DCE2` | `#E0CDDA` | `#CCAEC0` | `#B4889E` | **`#955F71`** | `#7A4E5C` | `#5F3D48` | `#492E37` | `#321F25` |
+
+色階生成腳本:`dev-tools/generate_categorical_scales.py`(維護者用於調整或重生)。
+
 ### 3.2 強調色家族（紅／橙系）
 
 **不得作為一般類別色使用。** 一張圖中強調色出現的元素應少於 20%。
