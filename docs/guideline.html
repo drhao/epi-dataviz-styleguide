@@ -388,6 +388,8 @@ strong{color:var(--n-900); font-weight:600;}
   white-space:nowrap;
 }
 .scale-grid.has-primary{margin-top:36px;}
+/* 7 階色階(發散):7 等寬填滿整列;窄螢幕沿用 .scale-grid 的 5 欄回退換行 */
+.scale-grid--7{grid-template-columns:repeat(7,1fr);}
 
 /* === 類別配色 === */
 .cat-grid{
@@ -785,6 +787,7 @@ footer ul{list-style:none;}
   .principles, .do-dont, .chart-grid{grid-template-columns:1fr;}
   .cat-grid{grid-template-columns:repeat(2,1fr);}
   .scale-grid{grid-template-columns:repeat(5,1fr);}
+  .scale-grid--7{grid-template-columns:repeat(7,1fr);} /* 7 格在窄螢幕/A4 仍可一列容納,不回退換行 */
   .foot-inner{grid-template-columns:1fr;}
 }
 </style>
@@ -1288,19 +1291,19 @@ footer ul{list-style:none;}
 
     <h3>序列色階 Sequential（單向：低 → 高）</h3>
     <p>用於有明確高低、由小到大的數值，例如人口密度、預算規模、完成率。以主色相延伸 7 階。</p>
-    <div class="scale-grid">
-      <div class="swatch light" style="background:#F1F5F0; grid-column:span 2"><span class="step">step1</span><span class="hex">#F1F5F0</span></div>
-      <div class="swatch light" style="background:#D4E0D2; grid-column:span 1"><span class="step">step2</span><span class="hex">#D4E0D2</span></div>
-      <div class="swatch light" style="background:#AEC5AB; grid-column:span 2"><span class="step">step3</span><span class="hex">#AEC5AB</span></div>
-      <div class="swatch dark" style="background:#8BAC86; grid-column:span 1"><span class="step">step4</span><span class="hex">#8BAC86</span></div>
-      <div class="swatch dark" style="background:#6A9164; grid-column:span 2"><span class="step">step5</span><span class="hex">#6A9164</span></div>
-      <div class="swatch dark" style="background:#506D4B; grid-column:span 1"><span class="step">step6</span><span class="hex">#506D4B</span></div>
-      <div class="swatch dark" style="background:#354832; grid-column:span 1"><span class="step">step7</span><span class="hex">#354832</span></div>
+    <div class="scale-grid scale-grid--7">
+      <div class="swatch light" style="background:#F1F5F0"><span class="step">step1</span><span class="hex">#F1F5F0</span></div>
+      <div class="swatch light" style="background:#D4E0D2"><span class="step">step2</span><span class="hex">#D4E0D2</span></div>
+      <div class="swatch light" style="background:#AEC5AB"><span class="step">step3</span><span class="hex">#AEC5AB</span></div>
+      <div class="swatch dark" style="background:#8BAC86"><span class="step">step4</span><span class="hex">#8BAC86</span></div>
+      <div class="swatch dark" style="background:#6A9164"><span class="step">step5</span><span class="hex">#6A9164</span></div>
+      <div class="swatch dark" style="background:#506D4B"><span class="step">step6</span><span class="hex">#506D4B</span></div>
+      <div class="swatch dark" style="background:#354832"><span class="step">step7</span><span class="hex">#354832</span></div>
     </div>
 
     <h3>發散色階 Diverging（雙向：負 ← 中 → 正）</h3>
     <p>用於有自然中點的資料，例如預算差額（超支 vs. 結餘）、滿意度（正面 vs. 負面）、人口變動（流入 vs. 流出）。以主色（綠）與互補色（陶土橘紅）對稱發散。</p>
-    <div class="scale-grid">
+    <div class="scale-grid scale-grid--7">
       <div class="swatch dark" style="background:#476043"><span class="step">-3</span><span class="hex">#476043</span></div>
       <div class="swatch dark" style="background:#71936C"><span class="step">-2</span><span class="hex">#71936C</span></div>
       <div class="swatch light" style="background:#B2BFB0"><span class="step">-1</span><span class="hex">#B2BFB0</span></div>
